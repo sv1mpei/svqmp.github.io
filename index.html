@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс программирования — подготовка за месяц</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --border: #dee2e6;
+            --text: #212529;
+            --text-muted: #6c757d;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        /* Боковая панель */
+        .sidebar {
+            width: 300px;
+            background: var(--dark);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #495057;
+        }
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .progress-bar-container {
+            padding: 15px 20px;
+            background: #23272b;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #495057;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            font-size: 0.85rem;
+            color: #adb5bd;
+        }
+        .sidebar-nav {
+            list-style: none;
+            padding: 10px 0;
+            flex: 1;
+        }
+        .sidebar-nav li a {
+            display: block;
+            padding: 10px 20px;
+            color: #adb5bd;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: 0.2s;
+        }
+        .sidebar-nav li a:hover {
+            background: #495057;
+            color: #fff;
+        }
+        .sidebar-nav li a.active {
+            background: #495057;
+            color: #fff;
+            border-left-color: var(--primary);
+        }
+        .sidebar-nav li a.completed::after {
+            content: " ✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+        .module-title {
+            padding: 10px 20px 5px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        /* Основной контент */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 30px 40px;
+            max-width: 1000px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--primary-dark);
+        }
+        h3 {
+            font-size: 1.1rem;
+            margin: 20px 0 10px;
+            color: var(--dark);
+        }
+        p {
+            margin-bottom: 12px;
+        }
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .task {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .task-header h4 {
+            font-size: 1rem;
+            color: var(--primary-dark);
+        }
+        .task textarea {
+            width: 100%;
+            min-height: 140px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            resize: vertical;
+            margin: 10px 0;
+            background: #fafafa;
+        }
+        .task textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .result {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .result.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .solution {
+            display: none;
+            margin-top: 12px;
+        }
+        .solution.show {
+            display: block;
+        }
+        .theory {
+            background: #fff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-km {
+            background: var(--danger);
+            color: #fff;
+        }
+        .badge-week {
+            background: var(--primary);
+            color: #fff;
+        }
+        .test-cases {
+            background: #f1f3f5;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 0.85rem;
+        }
+        .test-cases strong {
+            color: var(--dark);
+        }
+        .test-cases ul {
+            margin: 5px 0 0 20px;
+        }
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+        /* Скрытие/показ */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Боковая панель -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>📘 Программирование</h2>
+        <p style="font-size: 0.8rem; color: #adb5bd; margin-top: 5px;">Подготовка за месяц</p>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-text">Прогресс: <span id="progress-percent">0%</span></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+    <ul class="sidebar-nav" id="nav-list">
+        <!-- Навигация генерируется JS -->
+    </ul>
+</aside>
+
+<!-- Основной контент -->
+<main class="main-content" id="main-content">
+    <!-- Контент генерируется JS -->
+</main>
+
+<script>
+    // ============================================================
+    // ДАННЫЕ КУРСА
+    // ============================================================
+    const courseData = {
+        modules: [
+            {
+                id: 'week1',
+                title: 'Неделя 1: Основы',
+                lessons: [
+                    {
+                        id: 'w1l1',
+                        title: '1.1. Вычисления по формулам',
+                        theory: `
+                            <h2>1.1. Вычисления по формулам</h2>
+                            <p>Программа — это последовательность инструкций. Простейшие программы вычисляют значения по математическим формулам.</p>
+                            <h3>Пример: вычисление выражения</h3>
+                            <p>Вычислить \( y = \frac{a + b}{c} \).</p>
+                            <pre><code>let a = 5, b = 3, c = 2;
+let y = (a + b) / c;
+console.log(y); // 4</code></pre>
+                            <h3>Важно!</h3>
+                            <ul>
+                                <li>Порядок операций: сначала умножение/деление, потом сложение/вычитание.</li>
+                                <li>Используйте скобки для изменения порядка.</li>
+                                <li>Математические функции: <code>Math.sqrt()</code>, <code>Math.sin()</code>, <code>Math.exp()</code>, <code>Math.log()</code>, <code>Math.abs()</code>.</li>
+                                <li>Константа π: <code>Math.PI</code>.</li>
+                            </ul>
+                        `,
+                        tasks: [
+                            {
+                                id: 't1_1',
+                                title: 'Задача 1.1. Формула с экспонентой и синусом',
+                                description: 'Вычислите значение функции <b>f(x) = √(e^(2.3x)) - sin(πx / (x + 2/3)) + 1.7</b> при x = 0.5. Результат должен быть примерно <b>2.45833</b>.',
+                                initialCode: 'let x = 0.5;\nlet f = // ваш код\nconsole.log(f);',
+                                solution: 'let x = 0.5;\nlet f = Math.sqrt(Math.exp(2.3 * x)) - Math.sin(Math.PI * x / (x + 2/3)) + 1.7;\nconsole.log(f);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output !== null && Math.abs(output - 2.45833) < 0.01,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'w1l2',
+                        title: '1.2. Ввод и вывод данных',
+                        theory: `
+                            <h2>1.2. Ввод и вывод данных</h2>
+                            <p>В реальных программах данные обычно вводятся пользователем. В JavaScript для ввода можно использовать <code>prompt()</code>, а для вывода — <code>console.log()</code> или <code>alert()</code>.</p>
+                            <h3>Пример</h3>
+                            <pre><code>let a = parseFloat(prompt("Введите a:"));
+let b = parseFloat(prompt("Введите b:"));
+alert("Сумма: " + (a + b));</code></pre>
+                            <p><b>Примечание:</b> В задачах на этом сайте мы используем <code>console.log()</code> для вывода результата, чтобы можно было проверить код.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 't1_2',
+                                title: 'Задача 1.2. Площадь круга',
+                                description: 'Вычислите площадь круга радиуса <b>r = 5</b> по формуле S = πr². Выведите результат в консоль. Ответ должен быть примерно <b>78.5398</b>.',
+                                initialCode: 'let r = 5;\nlet s = // ваш код\nconsole.log(s);',
+                                solution: 'let r = 5;\nlet s = Math.PI * r * r;\nconsole.log(s);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output !== null && Math.abs(output - 78.5398) < 0.1,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'week2',
+                title: 'Неделя 2: Циклы',
+                lessons: [
+                    {
+                        id: 'w2l1',
+                        title: '2.1. Условный оператор',
+                        theory: `
+                            <h2>2.1. Условный оператор</h2>
+                            <p>Позволяет выполнять разные действия в зависимости от условия.</p>
+                            <pre><code>if (x > 0) {
+    console.log("Положительное");
+} else if (x < 0) {
+    console.log("Отрицательное");
+} else {
+    console.log("Ноль");
+}</code></pre>
+                        `,
+                        tasks: [
+                            {
+                                id: 't2_1',
+                                title: 'Задача 2.1. Четное или нечетное',
+                                description: 'Напишите код, который проверяет число <b>n = 7</b>. Если оно четное, выведите "Четное", иначе — "Нечетное".',
+                                initialCode: 'let n = 7;\n// ваш код',
+                                solution: 'let n = 7;\nif (n % 2 === 0) {\n    console.log("Четное");\n} else {\n    console.log("Нечетное");\n}',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 'Нечетное',
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'w2l2',
+                        title: '2.2. Циклы и накопление сумм',
+                        theory: `
+                            <h2>2.2. Циклы и накопление сумм</h2>
+                            <p>Циклы позволяют многократно выполнять блок кода. Основные виды: <code>for</code>, <code>while</code>.</p>
+                            <h3>Пример: сумма чисел от 1 до 100</h3>
+                            <pre><code>let sum = 0;
+for (let i = 1; i <= 100; i++) {
+    sum += i;
+}
+console.log(sum); // 5050</code></pre>
+                            <h3>Накопление произведения</h3>
+                            <pre><code>let product = 1;
+for (let i = 1; i <= 5; i++) {
+    product *= i;
+}
+console.log(product); // 120</code></pre>
+                        `,
+                        tasks: [
+                            {
+                                id: 't2_2',
+                                title: 'Задача 2.2. Сумма чисел от 1 до N',
+                                description: 'Напишите код, который вычисляет сумму чисел от 1 до <b>N = 100</b>. Выведите результат в консоль. Ответ: <b>5050</b>.',
+                                initialCode: 'let N = 100;\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
+                                solution: 'let N = 100;\nlet sum = 0;\nfor (let i = 1; i <= N; i++) {\n    sum += i;\n}\nconsole.log(sum);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 5050,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            },
+                            {
+                                id: 't2_3',
+                                title: 'Задача 2.3. Табулирование функции',
+                                description: 'Выведите таблицу значений функции <b>y = x²</b> для x от 0 до 1 с шагом 0.1. Каждая строка: <code>x y</code>. Используйте <code>console.log(x, y)</code>.',
+                                initialCode: '// ваш код',
+                                solution: 'for (let x = 0; x <= 1.001; x += 0.1) {\n    console.log(x.toFixed(1), (x*x).toFixed(4));\n}',
+                                check: function(code) {
+                                    try {
+                                        let logs = [];
+                                        const originalLog = console.log;
+                                        console.log = (...args) => logs.push(args.join(' '));
+                                        eval(code);
+                                        console.log = originalLog;
+                                        // Проверяем, что выведено 11 строк
+                                        if (logs.length >= 11) {
+                                            return { success: true, message: `Выведено ${logs.length} строк. Проверьте значения.` };
+                                        } else {
+                                            return { success: false, message: `Выведено мало строк (${logs.length}). Ожидалось 11.` };
+                                        }
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'week3',
+                title: 'Неделя 3: Одномерные массивы',
+                lessons: [
+                    {
+                        id: 'w3l1',
+                        title: '3.1. Одномерные массивы',
+                        theory: `
+                            <h2>3.1. Одномерные массивы</h2>
+                            <p>Массив — это структура данных, хранящая набор элементов одного типа.</p>
+                            <pre><code>let arr = [10, 20, 30, 40, 50];
+console.log(arr[0]); // 10
+console.log(arr.length); // 5</code></pre>
+                            <h3>Типовые алгоритмы</h3>
+                            <ul>
+                                <li>Сумма элементов</li>
+                                <li>Поиск максимума/минимума</li>
+                                <li>Подсчет элементов по условию</li>
+                            </ul>
+                            <h3>Пример: сумма элементов</h3>
+                            <pre><code>let arr = [1, 2, 3, 4, 5];
+let sum = 0;
+for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+}
+console.log(sum); // 15</code></pre>
+                        `,
+                        tasks: [
+                            {
+                                id: 't3_1',
+                                title: 'Задача 3.1. Сумма элементов массива',
+                                description: 'Дан массив <b>[10, 20, 30, 40, 50]</b>. Вычислите сумму его элементов и выведите в консоль. Ответ: <b>150</b>.',
+                                initialCode: 'let arr = [10, 20, 30, 40, 50];\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
+                                solution: 'let arr = [10, 20, 30, 40, 50];\nlet sum = 0;\nfor (let i = 0; i < arr.length; i++) {\n    sum += arr[i];\n}\nconsole.log(sum);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 150,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            },
+                            {
+                                id: 't3_2',
+                                title: 'Задача 3.2. Максимум в массиве',
+                                description: 'Дан массив <b>[3, 7, 2, 9, 5]</b>. Найдите максимальный элемент и выведите в консоль. Ответ: <b>9</b>.',
+                                initialCode: 'let arr = [3, 7, 2, 9, 5];\nlet max = arr[0];\n// ваш код\nconsole.log(max);',
+                                solution: 'let arr = [3, 7, 2, 9, 5];\nlet max = arr[0];\nfor (let i = 1; i < arr.length; i++) {\n    if (arr[i] > max) max = arr[i];\n}\nconsole.log(max);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 9,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'w3l2',
+                        title: '3.2. Функции для работы с массивами',
+                        theory: `
+                            <h2>3.2. Функции для работы с массивами</h2>
+                            <p>Функции позволяют вынести повторяющийся код в отдельный блок и использовать его многократно.</p>
+                            <h3>Пример: функция суммы массива</h3>
+                            <pre><code>function sumArray(arr) {
+    let s = 0;
+    for (let i = 0; i < arr.length; i++) {
+        s += arr[i];
+    }
+    return s;
+}
+console.log(sumArray([1, 2, 3])); // 6</code></pre>
+                            <p><b>Статические функции</b> — это функции, которые не зависят от внешнего состояния и всегда возвращают одинаковый результат для одинаковых аргументов.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 't3_3',
+                                title: 'Задача 3.3. Функция поиска максимума',
+                                description: 'Напишите функцию <code>maxArray(arr)</code>, которая возвращает максимальный элемент массива. Проверьте на массиве <b>[4, 8, 1, 6]</b> — должно вернуться <b>8</b>.',
+                                initialCode: 'function maxArray(arr) {\n    // ваш код\n}\nconsole.log(maxArray([4, 8, 1, 6]));',
+                                solution: 'function maxArray(arr) {\n    let max = arr[0];\n    for (let i = 1; i < arr.length; i++) {\n        if (arr[i] > max) max = arr[i];\n    }\n    return max;\n}\nconsole.log(maxArray([4, 8, 1, 6]));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 8,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'week4',
+                title: 'Неделя 4: Двумерные массивы',
+                lessons: [
+                    {
+                        id: 'w4l1',
+                        title: '4.1. Двумерные массивы',
+                        theory: `
+                            <h2>4.1. Двумерные массивы</h2>
+                            <p>Двумерный массив — это массив массивов (матрица).</p>
+                            <pre><code>let matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+console.log(matrix[1][2]); // 6</code></pre>
+                            <h3>Обход матрицы</h3>
+                            <pre><code>for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+        console.log(matrix[i][j]);
+    }
+}</code></pre>
+                        `,
+                        tasks: [
+                            {
+                                id: 't4_1',
+                                title: 'Задача 4.1. Сумма всех элементов матрицы',
+                                description: 'Дана матрица <b>[[1,2],[3,4]]</b>. Вычислите сумму всех элементов и выведите в консоль. Ответ: <b>10</b>.',
+                                initialCode: 'let matrix = [[1,2],[3,4]];\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
+                                solution: 'let matrix = [[1,2],[3,4]];\nlet sum = 0;\nfor (let i = 0; i < matrix.length; i++) {\n    for (let j = 0; j < matrix[i].length; j++) {\n        sum += matrix[i][j];\n    }\n}\nconsole.log(sum);',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 10,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'w4l2',
+                        title: '4.2. Динамические функции и массивы',
+                        theory: `
+                            <h2>4.2. Динамические функции и массивы</h2>
+                            <p>В JavaScript памятью управляет сборщик мусора, но можно создавать массивы динамически.</p>
+                            <h3>Пример: создание массива заданной длины</h3>
+                            <pre><code>function createArray(n, value) {
+    let arr = [];
+    for (let i = 0; i < n; i++) {
+        arr.push(value);
+    }
+    return arr;
+}
+console.log(createArray(3, 7)); // [7, 7, 7]</code></pre>
+                            <p><b>Динамическая функция</b> — функция, которая ведет себя по-разному в зависимости от аргументов.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 't4_2',
+                                title: 'Задача 4.2. Создание массива',
+                                description: 'Напишите функцию <code>createFilledArray(n, value)</code>, которая создает массив длины <b>n</b>, заполненный значением <b>value</b>. Проверьте: <code>createFilledArray(3, 7)</code> должно вернуть <b>[7, 7, 7]</b>.',
+                                initialCode: 'function createFilledArray(n, value) {\n    // ваш код\n}\nconsole.log(JSON.stringify(createFilledArray(3, 7)));',
+                                solution: 'function createFilledArray(n, value) {\n    let arr = [];\n    for (let i = 0; i < n; i++) {\n        arr.push(value);\n    }\n    return arr;\n}\nconsole.log(JSON.stringify(createFilledArray(3, 7)));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === '[7,7,7]',
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'km',
+                title: '📦 Блок «Массивы» (КМ)',
+                lessons: [
+                    {
+                        id: 'km1',
+                        title: 'КМ. Задача 1: Количество положительных',
+                        theory: `
+                            <h2>Контрольное мероприятие: Задача 1</h2>
+                            <p>Напишите функцию <code>countPositive(arr)</code>, которая возвращает количество положительных чисел в массиве.</p>
+                            <p><b>Пример:</b> <code>countPositive([1, -2, 3, 0, -5, 6])</code> должно вернуть <b>3</b>.</p>
+                            <p><b>Внимание:</b> Это задача для сдачи КМ. Решите её самостоятельно, затем проверьте.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 'km_1',
+                                title: 'Задача 1. Количество положительных',
+                                description: 'Напишите функцию <code>countPositive(arr)</code>, которая возвращает количество положительных чисел в массиве. Проверьте на <b>[1, -2, 3, 0, -5, 6]</b> — должно быть <b>3</b>.',
+                                initialCode: 'function countPositive(arr) {\n    // ваш код\n}\nconsole.log(countPositive([1, -2, 3, 0, -5, 6]));',
+                                solution: 'function countPositive(arr) {\n    let count = 0;\n    for (let i = 0; i < arr.length; i++) {\n        if (arr[i] > 0) count++;\n    }\n    return count;\n}\nconsole.log(countPositive([1, -2, 3, 0, -5, 6]));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 3,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'km2',
+                        title: 'КМ. Задача 2: Реверс массива',
+                        theory: `
+                            <h2>Контрольное мероприятие: Задача 2</h2>
+                            <p>Напишите функцию <code>reverseArray(arr)</code>, которая возвращает новый массив — перевернутую копию исходного.</p>
+                            <p><b>Пример:</b> <code>reverseArray([1, 2, 3, 4])</code> должно вернуть <b>[4, 3, 2, 1]</b>.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 'km_2',
+                                title: 'Задача 2. Реверс массива',
+                                description: 'Напишите функцию <code>reverseArray(arr)</code>, которая возвращает новый массив — перевернутую копию. Проверьте на <b>[1,2,3,4]</b> — должно быть <b>[4,3,2,1]</b>.',
+                                initialCode: 'function reverseArray(arr) {\n    // ваш код\n}\nconsole.log(JSON.stringify(reverseArray([1,2,3,4])));',
+                                solution: 'function reverseArray(arr) {\n    let res = [];\n    for (let i = arr.length - 1; i >= 0; i--) {\n        res.push(arr[i]);\n    }\n    return res;\n}\nconsole.log(JSON.stringify(reverseArray([1,2,3,4])));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === '[4,3,2,1]',
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'km3',
+                        title: 'КМ. Задача 3: Сумма главной диагонали',
+                        theory: `
+                            <h2>Контрольное мероприятие: Задача 3</h2>
+                            <p>Напишите функцию <code>sumMainDiagonal(matrix)</code>, которая возвращает сумму элементов главной диагонали квадратной матрицы.</p>
+                            <p><b>Пример:</b> для матрицы <code>[[1,2,3],[4,5,6],[7,8,9]]</code> сумма = 1 + 5 + 9 = <b>15</b>.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 'km_3',
+                                title: 'Задача 3. Сумма главной диагонали',
+                                description: 'Напишите функцию <code>sumMainDiagonal(matrix)</code>, которая возвращает сумму элементов главной диагонали. Проверьте на <b>[[1,2,3],[4,5,6],[7,8,9]]</b> — должно быть <b>15</b>.',
+                                initialCode: 'function sumMainDiagonal(matrix) {\n    // ваш код\n}\nconsole.log(sumMainDiagonal([[1,2,3],[4,5,6],[7,8,9]]));',
+                                solution: 'function sumMainDiagonal(matrix) {\n    let sum = 0;\n    for (let i = 0; i < matrix.length; i++) {\n        sum += matrix[i][i];\n    }\n    return sum;\n}\nconsole.log(sumMainDiagonal([[1,2,3],[4,5,6],[7,8,9]]));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 15,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'km4',
+                        title: 'КМ. Задача 4: Максимум в матрице',
+                        theory: `
+                            <h2>Контрольное мероприятие: Задача 4</h2>
+                            <p>Напишите функцию <code>maxMatrix(matrix)</code>, которая возвращает максимальный элемент двумерного массива.</p>
+                            <p><b>Пример:</b> для <code>[[1,2,3],[4,9,6],[7,8,5]]</code> максимум = <b>9</b>.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 'km_4',
+                                title: 'Задача 4. Максимум в матрице',
+                                description: 'Напишите функцию <code>maxMatrix(matrix)</code>, которая возвращает максимальный элемент. Проверьте на <b>[[1,2,3],[4,9,6],[7,8,5]]</b> — должно быть <b>9</b>.',
+                                initialCode: 'function maxMatrix(matrix) {\n    // ваш код\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));',
+                                solution: 'function maxMatrix(matrix) {\n    let max = matrix[0][0];\n    for (let i = 0; i < matrix.length; i++) {\n        for (let j = 0; j < matrix[i].length; j++) {\n            if (matrix[i][j] > max) max = matrix[i][j];\n        }\n    }\n    return max;\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        return {
+                                            success: output === 9,
+                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'km5',
+                        title: 'КМ. Задача 5: Динамическое создание',
+                        theory: `
+                            <h2>Контрольное мероприятие: Задача 5</h2>
+                            <p>Напишите функцию <code>createRandomArray(n, min, max)</code>, которая создает массив из <b>n</b> случайных целых чисел в диапазоне [min, max].</p>
+                            <p><b>Подсказка:</b> используйте <code>Math.random()</code> и <code>Math.floor()</code>.</p>
+                        `,
+                        tasks: [
+                            {
+                                id: 'km_5',
+                                title: 'Задача 5. Случайный массив',
+                                description: 'Напишите функцию <code>createRandomArray(n, min, max)</code>, которая создает массив из n случайных целых чисел в диапазоне [min, max]. Проверьте: <code>createRandomArray(5, 1, 10)</code> — должно вернуть массив из 5 чисел от 1 до 10.',
+                                initialCode: 'function createRandomArray(n, min, max) {\n    // ваш код\n}\nconsole.log(JSON.stringify(createRandomArray(5, 1, 10)));',
+                                solution: 'function createRandomArray(n, min, max) {\n    let arr = [];\n    for (let i = 0; i < n; i++) {\n        arr.push(Math.floor(Math.random() * (max - min + 1)) + min);\n    }\n    return arr;\n}\nconsole.log(JSON.stringify(createRandomArray(5, 1, 10)));',
+                                check: function(code) {
+                                    try {
+                                        let output = null;
+                                        const originalLog = console.log;
+                                        console.log = (...args) => { output = args[0]; };
+                                        eval(code);
+                                        console.log = originalLog;
+                                        if (!output) return { success: false, message: 'Нет вывода в консоль' };
+                                        let arr = JSON.parse(output);
+                                        let ok = Array.isArray(arr) && arr.length === 5 && arr.every(v => Number.isInteger(v) && v >= 1 && v <= 10);
+                                        return {
+                                            success: ok,
+                                            message: ok ? 'Массив корректен' : 'Массив не соответствует условию'
+                                        };
+                                    } catch (e) {
+                                        return { success: false, message: 'Ошибка: ' + e.message };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+
+    // ============================================================
+    // ЛОГИКА ПРИЛОЖЕНИЯ
+    // ============================================================
+
+    // Состояние
+    let state = {
+        currentLessonId: null,
+        completed: JSON.parse(localStorage.getItem('course_completed') || '{}')
+    };
+
+    // Сохранение прогресса
+    function saveProgress() {
+        localStorage.setItem('course_completed', JSON.stringify(state.completed));
+        updateProgress();
+    }
+
+    // Обновление прогресс-бара
+    function updateProgress() {
+        let total = 0;
+        let done = 0;
+        courseData.modules.forEach(m => {
+            m.lessons.forEach(l => {
+                total++;
+                if (state.completed[l.id]) done++;
+            });
+        });
+        let percent = total > 0 ? Math.round((done / total) * 100) : 0;
+        document.getElementById('progress-percent').textContent = percent + '%';
+        document.getElementById('progress-fill').style.width = percent + '%';
+    }
+
+    // Поиск урока по id
+    function findLesson(id) {
+        for (let m of courseData.modules) {
+            for (let l of m.lessons) {
+                if (l.id === id) return { module: m, lesson: l };
+            }
+        }
+        return null;
+    }
+
+    // Рендер навигации
+    function renderNav() {
+        const nav = document.getElementById('nav-list');
+        nav.innerHTML = '';
+        courseData.modules.forEach(m => {
+            let moduleTitle = document.createElement('div');
+            moduleTitle.className = 'module-title';
+            moduleTitle.textContent = m.title;
+            nav.appendChild(moduleTitle);
+
+            m.lessons.forEach(l => {
+                let li = document.createElement('li');
+                let a = document.createElement('a');
+                a.href = '#';
+                a.textContent = l.title;
+                a.dataset.lessonId = l.id;
+                if (state.currentLessonId === l.id) a.classList.add('active');
+                if (state.completed[l.id]) a.classList.add('completed');
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loadLesson(l.id);
+                });
+                li.appendChild(a);
+                nav.appendChild(li);
+            });
+        });
+    }
+
+    // Загрузка урока
+    function loadLesson(id) {
+        let found = findLesson(id);
+        if (!found) return;
+        state.currentLessonId = id;
+        renderNav();
+
+        const main = document.getElementById('main-content');
+        let html = `<h1>${found.lesson.title}</h1>`;
+        html += `<div class="theory">${found.lesson.theory}</div>`;
+
+        found.lesson.tasks.forEach(task => {
+            html += `
+                <div class="task" id="task-${task.id}">
+                    <div class="task-header">
+                        <h4>${task.title}</h4>
+                    </div>
+                    <p>${task.description}</p>
+                    <div class="test-cases">
+                        <strong>Тесты:</strong> проверьте на примере из условия.
+                    </div>
+                    <textarea id="code-${task.id}" placeholder="Введите код здесь...">${task.initialCode}</textarea>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="checkTask('${task.id}')">Проверить</button>
+                        <button class="btn btn-secondary" onclick="toggleSolution('${task.id}')">Показать решение</button>
+                        <button class="btn btn-success" onclick="markCompleted('${found.lesson.id}')">Отметить урок пройденным</button>
+                    </div>
+                    <div class="result" id="result-${task.id}"></div>
+                    <div class="solution" id="solution-${task.id}">
+                        <pre><code>${escapeHtml(task.solution)}</code></pre>
+                    </div>
+                </div>
+            `;
+        });
+
+        main.innerHTML = html;
+
+        // Восстанавливаем код из localStorage
+        found.lesson.tasks.forEach(task => {
+            let saved = localStorage.getItem('code_' + task.id);
+            if (saved) {
+                let textarea = document.getElementById('code-' + task.id);
+                if (textarea) textarea.value = saved;
+            }
+        });
+    }
+
+    // Проверка задачи
+    function checkTask(taskId) {
+        let found = findLesson(state.currentLessonId);
+        if (!found) return;
+        let task = found.lesson.tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        let code = document.getElementById('code-' + taskId).value;
+        localStorage.setItem('code_' + taskId, code);
+
+        let resultDiv = document.getElementById('result-' + taskId);
+        resultDiv.className = 'result show';
+
+        try {
+            let res = task.check(code);
+            if (res.success) {
+                resultDiv.className = 'result show success';
+                resultDiv.textContent = '✅ ' + res.message;
+                // Автоматически отмечаем урок пройденным
+                markCompleted(found.lesson.id, true);
+            } else {
+                resultDiv.className = 'result show error';
+                resultDiv.textContent = '❌ ' + res.message;
+            }
+        } catch (e) {
+            resultDiv.className = 'result show error';
+            resultDiv.textContent = '❌ Ошибка: ' + e.message;
+        }
+    }
+
+    // Показать/скрыть решение
+    function toggleSolution(taskId) {
+        let el = document.getElementById('solution-' + taskId);
+        if (el) el.classList.toggle('show');
+    }
+
+    // Отметить урок пройденным
+    function markCompleted(lessonId, silent = false) {
+        state.completed[lessonId] = true;
+        saveProgress();
+        renderNav();
+        if (!silent) {
+            alert('Урок отмечен как пройденный!');
+        }
+    }
+
+    // Экранирование HTML
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // ============================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+    function init() {
+        renderNav();
+        updateProgress();
+        // Загружаем первый урок
+        let first = courseData.modules[0].lessons[0];
+        loadLesson(first.id);
+    }
+
+    init();
+
+    // Глобальные функции для onclick
+    window.checkTask = checkTask;
+    window.toggleSolution = toggleSolution;
+    window.markCompleted = markCompleted;
+</script>
+</body>
+</html>
