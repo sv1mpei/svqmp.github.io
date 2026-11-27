@@ -3,162 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Курс программирования · Ubuntu Edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Полный курс C · Типовник МЭИ</title>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 <style>
-:root{
-  --orange:#E95420; --orange-hover:#C7401E; --purple:#77216F;
-  --dark:#2C001E; --grey:#F2F1EF; --grey-2:#E8E6E3;
-  --text:#2C001E; --muted:#5E2750; --success:#0E8420; --danger:#C7162B;
-  --border:#DCD9D5; --shadow-sm:0 1px 3px rgba(44,0,30,.08);
-  --shadow-md:0 4px 12px rgba(44,0,30,.1); --shadow-lg:0 12px 32px rgba(44,0,30,.18);
-  --radius:8px; --radius-sm:4px;
+:root {
+  --orange: #E95420; --purple: #77216F; --dark: #2C001E;
+  --bg: #F2F1EF; --card: #FFFFFF; --text: #2C001E; --muted: #5E2750;
+  --border: #DCD9D5; --pre-bg: #300A24; --pre-text: #E8DEE6;
+  --success: #0E8420; --danger: #C7162B; --shadow: 0 4px 12px rgba(44,0,30,.1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Ubuntu',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--grey);color:var(--text);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-a{color:var(--orange);text-decoration:none}
-#auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(circle at 20% 20%,rgba(233,84,32,.25) 0%,transparent 40%),radial-gradient(circle at 80% 80%,rgba(119,33,111,.35) 0%,transparent 45%),linear-gradient(135deg,#2C001E 0%,#4A0E3C 50%,#77216F 100%);padding:24px}
-.auth-card{background:rgba(255,255,255,.98);border-radius:16px;padding:40px 36px;box-shadow:var(--shadow-lg);width:100%;max-width:420px;animation:fadeUp .6s cubic-bezier(.2,.8,.2,1)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.auth-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:28px}
-.auth-logo svg{width:72px;height:72px;filter:drop-shadow(0 4px 12px rgba(233,84,32,.35))}
-.auth-logo h1{font-size:1.65rem;font-weight:500;margin-top:16px;color:var(--dark)}
-.auth-logo p{color:var(--muted);font-size:.9rem;margin-top:4px}
-.auth-form{display:flex;flex-direction:column;gap:16px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:.82rem;font-weight:500;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
-.field input{padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius);font-size:1rem;background:#fafafa;transition:all .2s}
-.field input:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(233,84,32,.12)}
-.btn-auth{padding:13px;background:linear-gradient(135deg,var(--orange) 0%,#F27C3E 100%);color:#fff;border-radius:var(--radius);font-size:1rem;font-weight:500;margin-top:8px;transition:all .2s;box-shadow:0 2px 8px rgba(233,84,32,.35)}
-.btn-auth:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(233,84,32,.45)}
-.btn-auth:disabled{opacity:.65;cursor:not-allowed}
-.auth-toggle{text-align:center;margin-top:20px;font-size:.88rem;color:var(--muted)}
-.auth-toggle a{font-weight:500;color:var(--orange)}
-.auth-msg{padding:10px 14px;border-radius:var(--radius);font-size:.88rem;font-weight:500;display:none}
-.auth-msg.show{display:block}
-.auth-msg.error{background:#FFE5E8;color:#8B0A19;border-left:3px solid var(--danger)}
-.auth-msg.success{background:#E8F6EA;color:#0A5C16;border-left:3px solid var(--success)}
-#app-screen{display:none;min-height:100vh}
-#app-screen.show{display:flex}
-.sidebar{width:300px;flex-shrink:0;background:linear-gradient(180deg,var(--dark) 0%,#240019 100%);color:#F2F1EF;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;border-right:1px solid rgba(255,255,255,.06);z-index:100}
-.sidebar-header{padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
-.sidebar-header svg{width:28px;height:28px;flex-shrink:0}
-.sidebar-header h2{font-size:1rem;font-weight:500}
-.user-card{padding:14px 20px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:10px}
-.user-card .email{font-size:.82rem;color:#B6A0B0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.logout-btn{padding:6px 12px;background:rgba(233,84,32,.15);color:#F27C3E;border:1px solid rgba(233,84,32,.3);border-radius:var(--radius-sm);font-size:.75rem;font-weight:500;transition:all .2s}
-.logout-btn:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
-.progress-wrap{padding:16px 22px;background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.06)}
-.progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:#B6A0B0;margin-bottom:8px}
-.progress-label strong{color:#fff;font-weight:500}
-.progress-bar{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange) 0%,#F27C3E 100%);width:0%;transition:width .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(233,84,32,.5)}
-.nav-list{list-style:none;padding:12px 0;flex:1}
-.nav-module-title{padding:14px 22px 6px;font-size:.7rem;font-weight:700;color:#8B6A85;text-transform:uppercase;letter-spacing:.08em}
-.nav-item a{display:flex;align-items:center;gap:10px;padding:10px 22px;color:#C9B8C4;font-size:.9rem;border-left:3px solid transparent;transition:all .18s}
-.nav-item a:hover{background:rgba(233,84,32,.08);color:#fff;border-left-color:rgba(233,84,32,.4)}
-.nav-item a.active{background:rgba(233,84,32,.14);color:#fff;border-left-color:var(--orange);font-weight:500}
-.nav-item a.completed::after{content:'✓';margin-left:auto;color:var(--orange);font-weight:700}
-.admin-link{background:rgba(233,84,32,.18)!important;color:#F27C3E!important;font-weight:500!important;border-left-color:var(--orange)!important;margin:8px 12px;border-radius:6px;padding:12px 16px!important;display:block;text-align:center}
-.admin-link:hover{background:var(--orange)!important;color:#fff!important}
-.main-content{margin-left:300px;flex:1;padding:40px 48px;max-width:1000px;width:100%;min-height:100vh}
-h1{font-size:1.9rem;font-weight:500;color:var(--dark);margin-bottom:24px;display:flex;align-items:center;gap:12px}
-h1::before{content:'';display:inline-block;width:4px;height:32px;background:var(--orange);border-radius:2px}
-h2{font-size:1.3rem;font-weight:500;color:var(--purple);margin:24px 0 14px}
-h3{font-size:1.05rem;font-weight:500;color:var(--dark);margin:18px 0 10px}
-p{margin-bottom:12px}
-.theory{background:#fff;border-radius:var(--radius);padding:24px 28px;margin:16px 0 24px;box-shadow:var(--shadow-sm);border-left:4px solid var(--orange)}
-.theory h2:first-child{margin-top:0}
-pre{background:#300A24;color:#E8DEE6;padding:16px 20px;border-radius:var(--radius);overflow-x:auto;font-family:'Ubuntu Mono',monospace;font-size:.92rem;line-height:1.55;margin:12px 0}
-code{font-family:'Ubuntu Mono',monospace;background:var(--grey-2);padding:2px 7px;border-radius:3px;font-size:.9em;color:var(--purple)}
-pre code{background:none;padding:0;color:inherit}
-.task{background:#fff;border-radius:var(--radius);padding:24px 28px;margin:20px 0;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
-.task-title{font-size:1.05rem;font-weight:500;color:var(--dark);margin-bottom:10px;display:flex;align-items:center;gap:10px}
-.task-title::before{content:'📝';font-size:1.1rem}
-.task-desc{color:var(--text);margin-bottom:14px;font-size:.95rem}
-.task textarea{width:100%;min-height:150px;padding:14px 16px;border:2px solid var(--border);border-radius:var(--radius);font-family:'Ubuntu Mono',monospace;font-size:.92rem;line-height:1.5;background:#FAFAF9;resize:vertical;transition:all .2s;color:var(--dark)}
-.task textarea:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(233,84,32,.1)}
-.btn-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.btn{padding:10px 18px;border-radius:var(--radius);font-size:.9rem;font-weight:500;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--orange);color:#fff;box-shadow:0 2px 6px rgba(233,84,32,.3)}
-.btn-primary:hover{background:var(--orange-hover);transform:translateY(-1px)}
-.btn-secondary{background:var(--grey-2);color:var(--text)}
-.btn-secondary:hover{background:#D6D3D0}
-.btn-success{background:var(--success);color:#fff}
-.btn-success:hover{background:#0A6B18}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-danger:hover{background:#A01020}
-.result{margin-top:14px;padding:12px 16px;border-radius:var(--radius);font-size:.9rem;font-weight:500;display:none;white-space:pre-wrap}
-.result.show{display:block}
-.result.success{background:#E8F6EA;color:#0A5C16;border-left:4px solid var(--success)}
-.result.error{background:#FFE5E8;color:#8B0A19;border-left:4px solid var(--danger)}
-.solution{display:none;margin-top:14px}
-.solution.show{display:block}
-.saving-toast{position:fixed;top:24px;right:24px;background:var(--dark);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;font-weight:500;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(-10px);transition:all .25s;pointer-events:none;z-index:1000}
-.saving-toast.show{opacity:1;transform:translateY(0)}
-.admin-table{width:100%;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);border-collapse:collapse;margin:20px 0}
-.admin-table th,.admin-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.9rem}
-.admin-table th{background:var(--dark);color:#fff;font-weight:500;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
-.admin-table tr:last-child td{border-bottom:none}
-.admin-table tr:hover{background:#fafaf9}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0}
-.stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--orange)}
-.stat-card .label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500}
-.stat-card .value{font-size:2rem;font-weight:700;color:var(--dark);margin-top:6px}
-@media(max-width:900px){.sidebar{position:relative;width:100%;height:auto}.main-content{margin-left:0;padding:24px}#app-screen.show{flex-direction:column}}
-@media(max-width:480px){.auth-card{padding:28px 22px}.main-content{padding:18px}h1{font-size:1.5rem}.btn-group{flex-direction:column}.btn{width:100%;justify-content:center}}
+[data-theme="dark"] {
+  --bg: #1E1E1E; --card: #2D2D2D; --text: #F2F1EF; --muted: #A0A0A0;
+  --border: #3D3D3D; --dark: #121212; --pre-bg: #111; --pre-text: #D4D4D4;
+  --shadow: 0 4px 12px rgba(0,0,0,.5);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; transition: 0.2s; }
+body { font-family: 'Ubuntu', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+a { color: var(--orange); text-decoration: none; }
+
+/* AUTH */
+#auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #2C001E, #77216F); padding: 24px; }
+.auth-card { background: var(--card); border-radius: 16px; padding: 40px; width: 100%; max-width: 420px; box-shadow: var(--shadow); }
+.auth-card h1 { margin-bottom: 20px; text-align: center; font-weight: 500; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--muted); }
+.field input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+.field input:focus { outline: none; border-color: var(--orange); }
+.btn-auth { width: 100%; padding: 14px; background: var(--orange); color: #fff; border-radius: 8px; font-size: 1rem; font-weight: 500; margin-top: 10px; }
+.auth-toggle { text-align: center; margin-top: 20px; font-size: 0.9rem; }
+.auth-msg { padding: 10px; border-radius: 8px; font-size: 0.9rem; display: none; margin-bottom: 15px; }
+.auth-msg.error { background: #FFE5E8; color: #8B0A19; display: block; }
+
+/* APP */
+#app-screen { display: none; }
+#app-screen.show { display: flex; }
+.sidebar { width: 320px; background: var(--dark); color: #F2F1EF; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+.sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; }
+.theme-btn { font-size: 1.2rem; }
+.user-card { padding: 15px 20px; background: rgba(0,0,0,.2); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+.logout-btn { background: rgba(233,84,32,.2); color: var(--orange); padding: 5px 10px; border-radius: 4px; }
+.progress-wrap { padding: 15px 20px; background: rgba(0,0,0,.1); font-size: 0.8rem; }
+.progress-bar { height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--orange); width: 0%; }
+.nav-list { list-style: none; padding: 10px 0; flex: 1; }
+.nav-module { padding: 15px 20px 5px; font-size: 0.75rem; font-weight: 700; color: #8B6A85; text-transform: uppercase; }
+.nav-item a { display: block; padding: 10px 20px; color: #C9B8C4; font-size: 0.9rem; border-left: 3px solid transparent; }
+.nav-item a:hover, .nav-item a.active { background: rgba(233,84,32,.1); color: #fff; border-left-color: var(--orange); }
+.nav-item a.completed::after { content: '✓'; float: right; color: var(--orange); }
+
+/* MAIN */
+.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; }
+h1 { margin-bottom: 20px; font-weight: 500; border-left: 4px solid var(--orange); padding-left: 15px; }
+.theory { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); }
+pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'Ubuntu Mono', monospace; margin: 10px 0; }
+code { font-family: 'Ubuntu Mono', monospace; background: var(--border); padding: 2px 6px; border-radius: 4px; }
+pre code { background: transparent; padding: 0; }
+.task { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.task-title { font-weight: 500; font-size: 1.1rem; margin-bottom: 10px; color: var(--orange); }
+.task-desc { margin-bottom: 15px; font-size: 0.95rem; }
+textarea { width: 100%; height: 200px; padding: 15px; background: var(--pre-bg); color: var(--pre-text); border: 1px solid var(--border); border-radius: 8px; font-family: 'Ubuntu Mono', monospace; resize: vertical; }
+textarea:focus { outline: none; border-color: var(--orange); }
+.btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+.btn { padding: 10px 20px; border-radius: 8px; font-weight: 500; }
+.btn-primary { background: var(--orange); color: #fff; }
+.btn-secondary { background: var(--border); color: var(--text); }
+.btn-success { background: var(--success); color: #fff; }
+.result { margin-top: 15px; padding: 15px; border-radius: 8px; font-family: 'Ubuntu Mono', monospace; font-size: 0.9rem; white-space: pre-wrap; display: none; }
+.result.show { display: block; }
+.result.success { background: rgba(14,132,32,.15); border-left: 4px solid var(--success); color: var(--success); }
+.result.error { background: rgba(199,22,43,.15); border-left: 4px solid var(--danger); color: var(--danger); }
+.solution { display: none; margin-top: 15px; }
+.solution.show { display: block; }
 </style>
 </head>
 <body>
 
-<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-card">
-    <div class="auth-logo">
-      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#E95420" stroke-width="5"/><circle cx="50" cy="50" r="22" fill="#E95420"/><circle cx="50" cy="14" r="9" fill="#E95420"/><circle cx="81" cy="68" r="9" fill="#E95420"/><circle cx="19" cy="68" r="9" fill="#E95420"/></svg>
-      <h1 id="auth-title">Вход</h1>
-      <p id="auth-subtitle">Войдите, чтобы сохранять прогресс</p>
-    </div>
+    <h1 id="auth-title">Вход</h1>
     <div id="auth-error" class="auth-msg error"></div>
-    <div id="auth-success" class="auth-msg success"></div>
-    <form id="auth-form" class="auth-form">
-      <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="you@example.com"></div>
-      <div class="field"><label for="password">Пароль</label><input type="password" id="password" required placeholder="Минимум 6 символов" minlength="6"></div>
+    <form id="auth-form">
+      <div class="field"><label>Email</label><input type="email" id="email" required></div>
+      <div class="field"><label>Пароль</label><input type="password" id="password" required minlength="6"></div>
       <button type="submit" class="btn-auth" id="auth-submit">Войти</button>
     </form>
     <div class="auth-toggle"><span id="toggle-text">Нет аккаунта?</span> <a href="#" id="toggle-auth">Зарегистрироваться</a></div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app-screen">
   <aside class="sidebar">
-    <div class="sidebar-header">
-      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#E95420" stroke-width="5"/><circle cx="50" cy="50" r="22" fill="#E95420"/><circle cx="50" cy="14" r="9" fill="#E95420"/><circle cx="81" cy="68" r="9" fill="#E95420"/><circle cx="19" cy="68" r="9" fill="#E95420"/></svg>
-      <h2>Курс программирования</h2>
-    </div>
-    <div class="user-card"><span class="email" id="user-email">...</span><button class="logout-btn" onclick="logout()">Выйти</button></div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>Прогресс</span><strong id="progress-percent">0%</strong></div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    </div>
+    <div class="sidebar-header"><h2>Курс C</h2><button class="theme-btn" id="theme-toggle">🌙</button></div>
+    <div class="user-card"><span id="user-email">...</span><button class="logout-btn" onclick="logout()">Выйти</button></div>
+    <div class="progress-wrap"><span>Прогресс: <b id="progress-percent">0%</b></span><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div></div>
     <ul class="nav-list" id="nav-list"></ul>
-    <div id="admin-link-container"></div>
   </aside>
   <main class="main-content" id="main-content"></main>
 </div>
 
-<div class="saving-toast" id="saving-toast">Сохранение…</div>
-
-<!-- FIREBASE MODULE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBoNhWX_8vGWaQl9rgFeq2Ni-YXpjMbI5Q",
@@ -166,486 +113,192 @@ const firebaseConfig = {
   projectId: "mpei-aad98",
   storageBucket: "mpei-aad98.firebasestorage.app",
   messagingSenderId: "1012888887163",
-  appId: "1:1012888887163:web:a9fc5cc1f928277bf327de",
-  measurementId: "G-9WMYX3J1EV"
+  appId: "1:1012888887163:web:a9fc5cc1f928277bf327de"
 };
 
 const app = initializeApp(firebaseConfig);
-try { getAnalytics(app); } catch(e) { console.warn('Analytics:', e); }
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ============================================================
-// КУРС
-// ============================================================
-const courseData = { modules: [
+// === ТЕМА ===
+const themeBtn = document.getElementById('theme-toggle');
+document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+themeBtn.textContent = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+themeBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const nt = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nt);
+  localStorage.setItem('theme', nt);
+  themeBtn.textContent = nt === 'dark' ? '☀️' : '🌙';
+});
 
-{ id:'w1', title:'Неделя 1 · Основы', lessons:[
-  { id:'w1l1', title:'1.1. Вычисления по формулам', theory:`
-    <h2>Вычисления по формулам</h2>
-    <p>Простейшая программа — последовательность инструкций, вычисляющих выражение.</p>
-    <h3>Математические функции JS</h3>
-    <pre><code>Math.sqrt(x)  // √x
-Math.cbrt(x)  // ∛x
-Math.exp(x)   // e^x
-Math.log(x)   // ln(x)
-Math.sin(x)   // sin
-Math.abs(x)   // |x|
-Math.PI       // π</code></pre>
-    <p><b>Правило:</b> сомневаетесь в порядке операций — ставьте скобки.</p>
-  `, tasks:[
-    {id:'t1_1', title:'Формула с экспонентой', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Ответ ≈2.45833.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.sqrt(Math.exp(2.3*x))-Math.sin(Math.PI*x/(x+2/3))+1.7;\nconsole.log(f);', check:c=>num(c,2.45833,0.01)},
-    {id:'t1_2', title:'Кубический корень и логарифм', desc:'f(x)=∛(x⁴)+∛(x⁴−x)+ln|x−20.5| при x=0.5. Ответ ≈4.08657.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.cbrt(Math.pow(x,4))+Math.cbrt(Math.pow(x,4)-x)+Math.log(Math.abs(x-20.5));\nconsole.log(f);', check:c=>num(c,4.08657,0.01)},
-    {id:'t1_3', title:'Тригонометрия и модуль', desc:'f(x)=√x·sin(x²/2)−1.3 при x=0.5. Ответ ≈−0.19452.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.sqrt(x)*Math.sin(x*x/2)-1.3;\nconsole.log(f);', check:c=>num(c,-0.19452,0.01)},
+// === API C ===
+async function runC(code) {
+  try {
+    const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ language: "c", version: "10.2.0", files: [{ content: code }] })
+    });
+    const data = await res.json();
+    if (data.run.stderr) return { success: false, msg: data.run.stderr };
+    return { success: true, out: data.run.stdout.trim() };
+  } catch (e) { return { success: false, msg: e.message }; }
+}
+async function cExact(code, exp) {
+  const r = await runC(code); if (!r.success) return { success: false, message: r.msg };
+  return { success: r.out === exp, message: r.out === exp ? "Верно!" : `Ожидалось: ${exp}\nПолучено: ${r.out}` };
+}
+async function cNum(code, exp, eps) {
+  const r = await runC(code); if (!r.success) return { success: false, message: r.msg };
+  const n = parseFloat(r.out); const ok = Math.abs(n - exp) < eps;
+  return { success: ok, message: ok ? "Верно!" : `Ожидалось ≈${exp}, получено ${n}` };
+}
+
+// ==========================================
+// ВСТАВЬ СЮДА ЧАСТИ 2, 3 И 4 (МАССИВ КУРСА)
+// ==========================================
+const courseData = { modules: { id:'ch1', title:'Глава 1. Простые задачи', lessons:[
+  { id:'1.1', title:'1.1. Формулы', theory:`<p>Подключите <code>&lt;math.h&gt;</code> для формул.</p>`, tasks:[
+    {id:'t1_1', title:'Формула 1', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Ответ ≈2.45833.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(exp(2.3*x))-sin(M_PI*x/(x+2.0/3.0))+1.7);\n return 0;\n}', check:c=>cNum(c,2.45833,0.01)},
+    {id:'t1_2', title:'Формула 2', desc:'f(x)=√x·sin(x²/2)−1.3 при x=0.5. Ответ ≈−0.19452.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(x)*sin(x*x/2)-1.3);\n return 0;\n}', check:c=>cNum(c,-0.19452,0.01)}
   ]},
-  { id:'w1l2', title:'1.2. Ввод и вывод', theory:`
-    <h2>Ввод и вывод</h2>
-    <pre><code>let a = parseFloat(prompt("a:"));
-alert("Вы ввели " + a);</code></pre>
-  `, tasks:[
-    {id:'t1_4', title:'Площадь круга', desc:'r=5. Ответ ≈78.5398.', init:'let r=5, s=/* код */;\nconsole.log(s);', sol:'let r=5, s=Math.PI*r*r;\nconsole.log(s);', check:c=>num(c,78.5398,0.1)},
-    {id:'t1_5', title:'Периметр прямоугольника', desc:'a=7, b=3. Ответ 20.', init:'let a=7,b=3,p=/* код */;\nconsole.log(p);', sol:'let a=7,b=3,p=2*(a+b);\nconsole.log(p);', check:c=>exact(c,20)},
+  { id:'1.4', title:'1.4. Накопление сумм', theory:`<p>Сумма через цикл.</p>`, tasks:[
+    {id:'t1_3', title:'Сумма 1..N', desc:'Сумма от 1 до 100. Ответ 5050.', init:'#include <stdio.h>\nint main(){\n int s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int s=0;\n for(int i=1;i<=100;i++) s+=i;\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'5050')}
+  ]},
+  { id:'1.5', title:'1.5. Суммы и произведения', theory:`<p>Накопление произведения.</p>`, tasks:[
+    {id:'t1_4', title:'Факториал', desc:'5! = 120', init:'#include <stdio.h>\nint main(){\n int p=1;\n // код\n printf("%d\\n",p);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int p=1;\n for(int i=1;i<=5;i++) p*=i;\n printf("%d\\n",p);\n return 0;\n}', check:c=>cExact(c,'120')}
   ]}
 ]},
-
-{ id:'w2', title:'Неделя 2 · Циклы', lessons:[
-  { id:'w2l1', title:'2.1. Условный оператор', theory:`
-    <h2>2.1. Условный оператор</h2>
-    <pre><code>if (x > 0) console.log("+");
-else if (x < 0) console.log("-");
-else console.log("0");</code></pre>
-  `, tasks:[
-    {id:'t2_1_1', title:'Чётное / нечётное', desc:'n=7 → "Нечетное".', init:'let n=7;\n/* код */', sol:'let n=7;\nif(n%2===0) console.log("Четное");\nelse console.log("Нечетное");', check:c=>exact(c,'Нечетное')},
-    {id:'t2_1_2', title:'Знак числа', desc:'n=−5 → "отрицательное".', init:'let n=-5;\n/* код */', sol:'let n=-5;\nif(n>0) console.log("положительное");\nelse if(n<0) console.log("отрицательное");\nelse console.log("ноль");', check:c=>exact(c,'отрицательное')},
+{ id:'ch2', title:'Глава 2. 1D Массивы', lessons:[
+  { id:'2.2', title:'2.2. Ветвление в цикле ⭐', theory:`<p>Условие внутри цикла.</p>`, tasks:[
+    {id:'t2_1', title:'Сумма чётных', desc:'{1,2,3,4,5,6} → 12.', init:'#include <stdio.h>\nint main(){\n int a[]={1,2,3,4,5,6}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={1,2,3,4,5,6}, s=0;\n for(int i=0;i<6;i++) if(a[i]%2==0) s+=a[i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'12')}
   ]},
-  
-  // === 2.2. Обработка массива с ветвлением в теле цикла ===
-  { id:'w2l2', title:'2.2. Ветвление в теле цикла ⭐', theory:`
-    <h2>2.2. Обработка массива с ветвлением в теле цикла</h2>
-    <p><b>Идея раздела:</b> цикл <code>for</code> перебирает все элементы массива, а <code>if</code> внутри — решает, что делать с каждым.</p>
-    <h3>Шаблон</h3>
-    <pre><code>let sum = 0;
-for (let i = 0; i &lt; arr.length; i++) {
-    if (arr[i] % 2 === 0) {  // условие
-        sum += arr[i];       // действие
-    }
-}</code></pre>
-    <p><b>Важно:</b> мы проходим массив до конца, даже если уже нашли нужные элементы. Никаких <code>break</code>!</p>
-  `, tasks:[
-    {id:'t2_2_1', title:'Сумма чётных элементов', desc:'Дан массив [1,2,3,4,5,6,7,8]. Найдите сумму только чётных элементов. Ответ: 20.', init:'let a=[1,2,3,4,5,6,7,8], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,2,3,4,5,6,7,8], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]%2===0) s+=a[i];\nconsole.log(s);', check:c=>exact(c,20)},
-    {id:'t2_2_2', title:'Произведение положительных', desc:'Дан массив [2,-3,4,-1,5]. Найдите произведение только положительных. Ответ: 40.', init:'let a=[2,-3,4,-1,5], p=1;\n/* ваш код */\nconsole.log(p);', sol:'let a=[2,-3,4,-1,5], p=1;\nfor(let i=0;i<a.length;i++) if(a[i]>0) p*=a[i];\nconsole.log(p);', check:c=>exact(c,40)},
-    {id:'t2_2_3', title:'Количество кратных 3', desc:'Дан массив [1,3,6,7,9,12]. Сосчитайте элементы, кратные 3. Ответ: 4.', init:'let a=[1,3,6,7,9,12], cnt=0;\n/* ваш код */\nconsole.log(cnt);', sol:'let a=[1,3,6,7,9,12], cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]%3===0) cnt++;\nconsole.log(cnt);', check:c=>exact(c,4)},
-    {id:'t2_2_4', title:'Замена отрицательных на 0', desc:'Дан массив [3,-2,5,-1]. Замените все отрицательные на 0. Выведите через JSON.stringify. Ответ: [3,0,5,0].', init:'let a=[3,-2,5,-1];\n/* ваш код */\nconsole.log(JSON.stringify(a));', sol:'let a=[3,-2,5,-1];\nfor(let i=0;i<a.length;i++) if(a[i]<0) a[i]=0;\nconsole.log(JSON.stringify(a));', check:c=>exact(c,'[3,0,5,0]')},
-    {id:'t2_2_5', title:'Сумма элементов > 3', desc:'Дан массив [1,5,2,7,4,9]. Найдите сумму элементов, строго больших 3. Ответ: 25.', init:'let a=[1,5,2,7,4,9], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,5,2,7,4,9], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>3) s+=a[i];\nconsole.log(s);', check:c=>exact(c,25)},
+  { id:'2.3', title:'2.3. Экстремумы', theory:`<p>Поиск максимума.</p>`, tasks:[
+    {id:'t2_2', title:'Максимум', desc:'{3,7,2,9,5} → 9.', init:'#include <stdio.h>\nint main(){\n int a[]={3,7,2,9,5}, m=a[0];\n // код\n printf("%d\\n",m);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={3,7,2,9,5}, m=a[0];\n for(int i=1;i<5;i++) if(a[i]>m) m=a[i];\n printf("%d\\n",m);\n return 0;\n}', check:c=>cExact(c,'9')}
   ]},
+  { id:'2.4', title:'2.4. Поиск по условию ⭐', theory:`<p>Без break! Используем флаги.</p>`, tasks:[
+    {id:'t2_3', title:'Первый отрицательный', desc:'{5,3,-2,7,-1} → индекс 2.', init:'#include <stdio.h>\nint main(){\n int a[]={5,3,-2,7,-1}, idx=-1;\n // код (без break)\n printf("%d\\n",idx);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={5,3,-2,7,-1}, idx=-1;\n for(int i=0;i<5;i++) if(a[i]<0 && idx==-1) idx=i;\n printf("%d\\n",idx);\n return 0;\n}', check:c=>cExact(c,'2')}
+  ]}
 ]},
-
-{ id:'w3', title:'Неделя 3 · Поиск в массивах', lessons:[
-  { id:'w3l1', title:'3.1. Базовые операции с массивами', theory:`
-    <h2>Одномерные массивы</h2>
-    <pre><code>let arr = [10, 20, 30];
-console.log(arr[0]);      // 10
-console.log(arr.length);  // 3</code></pre>
-  `, tasks:[
-    {id:'t3_1_1', title:'Сумма элементов', desc:'[10,20,30,40,50] → 150.', init:'let a=[10,20,30,40,50],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[10,20,30,40,50],s=0;\nfor(let i=0;i<a.length;i++) s+=a[i];\nconsole.log(s);', check:c=>exact(c,150)},
-    {id:'t3_1_2', title:'Максимум в массиве', desc:'[3,7,2,9,5] → 9.', init:'let a=[3,7,2,9,5],m=a[0];\n/* код */\nconsole.log(m);', sol:'let a=[3,7,2,9,5],m=a[0];\nfor(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\nconsole.log(m);', check:c=>exact(c,9)},
+{ id:'ch3', title:'Глава 3. 2D Массивы', lessons:[
+  { id:'3.1', title:'3.1. Обработка матриц', theory:`<p>Двумерные массивы в C.</p>`, tasks:[
+    {id:'t3_1', title:'Сумма элементов', desc:'Матрица 2x2 {{1,2},{3,4}}. Сумма = 10.', init:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n for(int i=0;i<2;i++) for(int j=0;j<2;j++) s+=m[i][j];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'10')}
   ]},
+  { id:'3.4', title:'3.4. Строки и столбцы', theory:`<p>Поиск по строкам.</p>`, tasks:[
+    {id:'t3_2', title:'Главная диагональ', desc:'Сумма элементов главной диагонали матрицы 3x3 {{1,2,3},{4,5,6},{7,8,9}}. Ответ 15.', init:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n for(int i=0;i<3;i++) s+=m[i][i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'15')}
+  ]}
+]}, }; 
+// (Скопируй содержимое modules из следующих частей сюда)
 
-  // === 2.4. Поиск элементов без break ===
-  { id:'w3l2', title:'2.4. Поиск элементов по условию ⭐', theory:`
-    <h2>2.4. Поиск элементов, удовлетворяющих условию</h2>
-    <p><b>Отличие от 2.2:</b> здесь мы ищем <b>первый</b> подходящий элемент или проверяем, есть ли он вообще.</p>
-    <p>⚠️ <b>Важное правило типовика:</b> в этом разделе мы <b>НЕ ИСПОЛЬЗУЕМ `break`</b>. Массив всегда просматривается до конца. Для остановки поиска используются переменные-флаги.</p>
-    <h3>Шаблон «Поиск первого» (без break)</h3>
-    <pre><code>let idx = -1;
-for (let i = 0; i &lt; a.length; i++) {
-    // если нашли, и до этого не находили (idx == -1)
-    if (a[i] &lt; 0 && idx === -1) { 
-        idx = i;
-    }
+// === ЛОГИКА ===
+let state = { user: null, id: null, comp: {}, code: {}, reg: false, loading: false };
+const $ = id => document.getElementById(id);
+
+async function save() {
+  if (!state.user || state.loading) return;
+  try { await setDoc(doc(db, 'users', state.user.uid), { email: state.user.email, completed: state.comp, code: state.code, updatedAt: serverTimestamp() }, { merge: true }); } catch(e) {}
 }
-console.log(idx);</code></pre>
-  `, tasks:[
-    {id:'t2_4_1', title:'Индекс первого отрицательного', desc:'Массив [5,3,-2,7,-1]. Найдите индекс первого отрицательного. Ответ: 2. (Используйте проверку idx === -1 вместо break).', init:'let a=[5,3,-2,7,-1], idx=-1;\n/* ваш код */\nconsole.log(idx);', sol:'let a=[5,3,-2,7,-1], idx=-1;\nfor(let i=0;i<a.length;i++) if(a[i]<0 && idx===-1) idx=i;\nconsole.log(idx);', check:c=>exact(c,2)},
-    {id:'t2_4_2', title:'Сколько элементов = максимум', desc:'Массив [3,7,2,7,5]. Сколько элементов равны максимальному? Ответ: 2.', init:'let a=[3,7,2,7,5], mx=a[0], cnt=0;\n/* ваш код */\nconsole.log(cnt);', sol:'let a=[3,7,2,7,5], mx=a[0], cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]>mx) mx=a[i];\nfor(let i=0;i<a.length;i++) if(a[i]===mx) cnt++;\nconsole.log(cnt);', check:c=>exact(c,2)},
-    {id:'t2_4_3', title:'Сумма в диапазоне [3;7]', desc:'Массив [1,5,3,9,7,2]. Сумма элементов в диапазоне [3; 7]. Ответ: 15.', init:'let a=[1,5,3,9,7,2], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,5,3,9,7,2], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>=3 && a[i]<=7) s+=a[i];\nconsole.log(s);', check:c=>exact(c,15)},
-    {id:'t2_4_4', title:'Первое кратное 7', desc:'Массив [4,8,14,21]. Найдите первое число, кратное 7. Ответ: 14. (Без break)', init:'let a=[4,8,14,21], found=null;\n/* ваш код */\nconsole.log(found);', sol:'let a=[4,8,14,21], found=null;\nfor(let i=0;i<a.length;i++) if(a[i]%7===0 && found===null) found=a[i];\nconsole.log(found);', check:c=>exact(c,14)},
-    {id:'t2_4_5', title:'Есть ли элемент 5', desc:'Массив [1,3,5,7,9]. Проверьте, есть ли число 5. Выведите true или false. (Без break)', init:'let a=[1,3,5,7,9], has=false;\n/* ваш код */\nconsole.log(has);', sol:'let a=[1,3,5,7,9], has=false;\nfor(let i=0;i<a.length;i++) if(a[i]===5) has=true;\nconsole.log(has);', check:c=>exact(c,'true')},
-  ]},
-]},
-
-{ id:'w4', title:'Неделя 4 · Подпрограммы', lessons:[
-  
-  // === 4.1. Универсальные функции ===
-  { id:'w4l1', title:'4.1. Подпрограмма для разных объектов ⭐', theory:`
-    <h2>4.1. Применение подпрограммы к различным объектам</h2>
-    <p><b>Идея:</b> одна функция — много массивов. Пишем алгоритм один раз, а применяем к любому массиву.</p>
-    <p>⚠️ Функция не должна знать конкретных чисел — она принимает массив как параметр и работает с его структурой.</p>
-    <pre><code>function sumArray(arr) {
-    let s = 0;
-    for (let i = 0; i &lt; arr.length; i++) s += arr[i];
-    return s;
-}
-// Применяем к разным массивам:
-console.log(sumArray([1, 2, 3]));    // 6
-console.log(sumArray([10, 20, 30])); // 60</code></pre>
-  `, tasks:[
-    {id:'t4_1_1', title:'Функция sumArray', desc:'Напишите функцию sumArray(arr) и примените к двум массивам: [1,2,3] → 6, [10,20,30] → 60. Выведите результаты (две строки).', init:'function sumArray(a){\n  /* код */\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', check:c=>exactLines(c,'6\n60')},
-    {id:'t4_1_2', title:'Функция maxArray', desc:'Напишите функцию maxArray(arr) и примените к трём массивам: [4,8,1] → 8, [2,2,2] → 2, [-5,-2,-9] → -2.', init:'function maxArray(a){\n  /* код */\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', sol:'function maxArray(a){\n  let m=a[0];\n  for(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\n  return m;\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', check:c=>exactLines(c,'8\n2\n-2')},
-    {id:'t4_1_3', title:'Функция countPositive', desc:'Напишите функцию countPositive(arr) и примените: [1,-2,3,0,-5,6] → 3, [-1,-2,-3] → 0.', init:'function countPositive(a){\n  /* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', check:c=>exactLines(c,'3\n0')},
-    {id:'t4_1_4', title:'Функция productArray', desc:'Напишите функцию productArray(arr) и примените: [1,2,3,4] → 24, [5,5] → 25.', init:'function productArray(a){\n  /* код */\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', sol:'function productArray(a){\n  let p=1;\n  for(let i=0;i<a.length;i++) p*=a[i];\n  return p;\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', check:c=>exactLines(c,'24\n25')},
-    {id:'t4_1_5', title:'Функция averageArray', desc:'Напишите функцию averageArray(arr) и примените: [2,4,6] → 4, [10,20,30,40] → 25.', init:'function averageArray(a){\n  /* код */\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', sol:'function averageArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', check:c=>exactLines(c,'4\n25')},
-  ]},
-
-  // === 4.3. Обработка нескольких массивов ===
-  { id:'w4l2', title:'4.3. Обработка нескольких массивов ⭐', theory:`
-    <h2>4.3. Обработка нескольких массивов</h2>
-    <p>Функция принимает <b>два и более</b> массива и обрабатывает их совместно.</p>
-    <h3>Типовые операции</h3>
-    <ul>
-      <li><b>Сравнение</b> — найти массив с большей суммой</li>
-      <li><b>Объединение</b> — склеить в один</li>
-      <li><b>Пересечение</b> — найти общие элементы</li>
-      <li><b>Поэлементно</b> — C[i] = A[i] + B[i]</li>
-    </ul>
-    <pre><code>let C = [];
-for (let i = 0; i &lt; A.length; i++) {
-    if (B.indexOf(A[i]) !== -1) C.push(A[i]);
-}</code></pre>
-  `, tasks:[
-    {id:'t4_3_1', title:'Большая из двух сумм', desc:'A=[1,2,3], B=[5,10,15]. Выведите сумму того массива, у которого она больше. Ответ: 30.', init:'let A=[1,2,3], B=[5,10,15];\n/* код */', sol:'let A=[1,2,3], B=[5,10,15];\nfunction s(a){let r=0;for(let i=0;i<a.length;i++)r+=a[i];return r;}\nconsole.log(Math.max(s(A),s(B)));', check:c=>exact(c,30)},
-    {id:'t4_3_2', title:'Объединение двух массивов', desc:'A=[1,2,3], B=[4,5]. Получите один массив [1,2,3,4,5]. Выведите через JSON.stringify.', init:'let A=[1,2,3], B=[4,5];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3], B=[4,5];\nlet C=[...A,...B];\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[1,2,3,4,5]')},
-    {id:'t4_3_3', title:'Общие элементы', desc:'A=[1,2,3,4,5], B=[3,4,5,6,7]. Выведите общие элементы [3,4,5] через JSON.stringify.', init:'let A=[1,2,3,4,5], B=[3,4,5,6,7];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3,4,5], B=[3,4,5,6,7];\nlet C=[];\nfor(let i=0;i<A.length;i++) if(B.indexOf(A[i])!==-1) C.push(A[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[3,4,5]')},
-    {id:'t4_3_4', title:'Поэлементная сумма', desc:'A=[1,2,3], B=[10,20,30]. Получите C[i] = A[i] + B[i] = [11,22,33]. Выведите через JSON.stringify.', init:'let A=[1,2,3], B=[10,20,30];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3], B=[10,20,30];\nlet C=[];\nfor(let i=0;i<A.length;i++) C.push(A[i]+B[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[11,22,33]')},
-    {id:'t4_3_5', title:'Максимум из двух массивов', desc:'A=[3,9,1], B=[2,7,8]. Найдите максимум среди всех элементов. Ответ: 9.', init:'let A=[3,9,1], B=[2,7,8];\n/* код */\nconsole.log(/*...*/);', sol:'let A=[3,9,1], B=[2,7,8];\nlet m=A[0];\nfor(let i=0;i<A.length;i++) if(A[i]>m) m=A[i];\nfor(let i=0;i<B.length;i++) if(B[i]>m) m=B[i];\nconsole.log(m);', check:c=>exact(c,9)},
-  ]},
-]},
-
-{ id:'km', title:'📦 Блок «Массивы» · КМ', lessons:[
-  { id:'km1', title:'КМ1 · Количество положительных', theory:`<h2>КМ1</h2><p><code>countPositive([1,-2,3,0,-5,6])</code> → 3.</p>`, tasks:[
-    {id:'km_1', title:'countPositive', desc:'[1,-2,3,0,-5,6] → 3.', init:'function countPositive(a){\n/* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));', check:c=>exact(c,3)},
-  ]},
-  { id:'km2', title:'КМ2 · Сумма элементов', theory:`<h2>КМ2</h2><p><code>sumArray([5,10,15])</code> → 30.</p>`, tasks:[
-    {id:'km_2', title:'sumArray', desc:'[5,10,15] → 30.', init:'function sumArray(a){\n/* код */\n}\nconsole.log(sumArray([5,10,15]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([5,10,15]));', check:c=>exact(c,30)},
-  ]},
-  { id:'km3', title:'КМ3 · Максимум в матрице', theory:`<h2>КМ3</h2><p><code>maxMatrix([[1,2,3],[4,9,6],[7,8,5]])</code> → 9.</p>`, tasks:[
-    {id:'km_3', title:'maxMatrix', desc:'→ 9.', init:'function maxMatrix(m){\n/* код */\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));', sol:'function maxMatrix(m){\n  let mx=m[0][0];\n  for(let i=0;i<m.length;i++) for(let j=0;j<m[i].length;j++) if(m[i][j]>mx) mx=m[i][j];\n  return mx;\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));', check:c=>exact(c,9)},
-  ]},
-  { id:'km4', title:'КМ4 · Подсчёт чётных', theory:`<h2>КМ4</h2><p><code>countEven([1,2,4,7,8])</code> → 3.</p>`, tasks:[
-    {id:'km_4', title:'countEven', desc:'[1,2,4,7,8] → 3.', init:'function countEven(a){\n/* код */\n}\nconsole.log(countEven([1,2,4,7,8]));', sol:'function countEven(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]%2===0) c++;\n  return c;\n}\nconsole.log(countEven([1,2,4,7,8]));', check:c=>exact(c,3)},
-  ]},
-  { id:'km5', title:'КМ5 · Среднее арифметическое', theory:`<h2>КМ5</h2><p><code>average([2,4,6])</code> → 4.</p>`, tasks:[
-    {id:'km_5', title:'average', desc:'[2,4,6] → 4.', init:'function average(a){\n/* код */\n}\nconsole.log(average([2,4,6]));', sol:'function average(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(average([2,4,6]));', check:c=>exact(c,4)},
-  ]},
-]},
-]};
-
-// ============================================================
-// ХЕЛПЕРЫ
-// ============================================================
-function captureLog(code){
-  let out=[]; const orig=console.log;
-  console.log=(...a)=>out.push(a.join(' '));
-  try{eval(code);}finally{console.log=orig;}
-  return out;
-}
-function exact(code, expected){
-  try{
-    let out=captureLog(code).join('\n').trim();
-    let ok=out===String(expected).trim();
-    return {success:ok, message:ok?'Правильно!':`Ожидалось: ${expected}\nПолучено: ${out}`};
-  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
-}
-function exactLines(code, expected){
-  try{
-    let out=captureLog(code).join('\n').trim();
-    let ok=out===String(expected).trim();
-    return {success:ok, message:ok?'Правильно!':`Ожидалось:\n${expected}\nПолучено:\n${out}`};
-  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
-}
-function num(code, expected, eps){
-  try{
-    let out=captureLog(code)[0];
-    let n=parseFloat(out);
-    if(isNaN(n)) return{success:false,message:'Нет числа'};
-    let ok=Math.abs(n-expected)<eps;
-    return{success:ok, message:ok?`Правильно! ${n}`:`Ожидалось ≈${expected}, получено ${n}`};
-  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
+async function load() {
+  if (!state.user) return; state.loading = true;
+  try {
+    const snap = await getDoc(doc(db, 'users', state.user.uid));
+    if (snap.exists()) { state.comp = snap.data().completed || {}; state.code = snap.data().code || {}; }
+  } catch(e) {} state.loading = false;
 }
 
-// ============================================================
-// СОСТОЯНИЕ
-// ============================================================
-let state={currentUser:null,currentLessonId:null,completed:{},code:{},register:false,isAdmin:false,saveTimer:null,loading:false};
-const $=id=>document.getElementById(id);
-const totalLessons=()=>courseData.modules.reduce((s,m)=>s+m.lessons.length,0);
-
-// ============================================================
-// ОБЛАКО
-// ============================================================
-async function saveCloud(){
-  if(!state.currentUser||state.loading) return;
-  const t=$('saving-toast');
-  t.textContent='Сохранение…'; t.classList.add('show');
-  try{
-    await setDoc(doc(db,'users',state.currentUser.uid),{
-      email:state.currentUser.email,
-      completed:state.completed,
-      code:state.code,
-      updatedAt:serverTimestamp()
-    },{merge:true});
-  }catch(e){console.error('save:',e);}
-  clearTimeout(state.saveTimer);
-  state.saveTimer=setTimeout(()=>t.classList.remove('show'),1200);
-}
-async function loadCloud(){
-  if(!state.currentUser) return;
-  state.loading=true;
-  try{
-    const snap=await getDoc(doc(db,'users',state.currentUser.uid));
-    if(snap.exists()){
-      const d=snap.data();
-      state.completed=d.completed||{};
-      state.code=d.code||{};
-    }
-    // проверка на админа
-    try{
-      const adminSnap=await getDoc(doc(db,'config','admins'));
-      if(adminSnap.exists()){
-        const emails=adminSnap.data().emails||[];
-        state.isAdmin=emails.map(e=>e.toLowerCase()).includes((state.currentUser.email||'').toLowerCase());
-      }
-    }catch(e){console.warn('admin check:',e);}
-  }catch(e){console.error('load:',e);}
-  state.loading=false;
+function updateAuthUI() {
+  $('auth-title').textContent = state.reg ? 'Регистрация' : 'Вход';
+  $('auth-submit').textContent = state.reg ? 'Зарегистрироваться' : 'Войти';
+  $('toggle-text').textContent = state.reg ? 'Уже есть аккаунт?' : 'Нет аккаунта?';
+  $('toggle-auth').textContent = state.reg ? 'Войти' : 'Зарегистрироваться';
 }
 
-// ============================================================
-// AUTH UI
-// ============================================================
-function updateAuthUI(){
-  $('auth-title').textContent=state.register?'Регистрация':'Вход';
-  $('auth-subtitle').textContent=state.register?'Создайте аккаунт для сохранения прогресса':'Войдите, чтобы сохранять прогресс';
-  $('auth-submit').textContent=state.register?'Зарегистрироваться':'Войти';
-  $('toggle-text').textContent=state.register?'Уже есть аккаунт?':'Нет аккаунта?';
-  $('toggle-auth').textContent=state.register?'Войти':'Зарегистрироваться';
-}
-function authMsg(el,msg,type){el.textContent=msg;el.className='auth-msg '+type+' show';setTimeout(()=>el.classList.remove('show'),5000);}
-function translateErr(code){
-  return {'auth/invalid-email':'Некорректный email.','auth/user-not-found':'Пользователь не найден.','auth/wrong-password':'Неверный пароль.','auth/invalid-credential':'Неверный email или пароль.','auth/email-already-in-use':'Email уже зарегистрирован.','auth/weak-password':'Пароль слишком слабый (мин. 6).','auth/too-many-requests':'Слишком много попыток.','auth/network-request-failed':'Проблема с сетью.','auth/operation-not-allowed':'Email/Password не включён в Firebase.','auth/unauthorized-domain':'Домен не добавлен в Firebase (Authorized domains).','auth/configuration-not-found':'Firebase не настроен.'}[code]||('Ошибка: '+code);
-}
-$('auth-form').addEventListener('submit',async e=>{
+$('auth-form').addEventListener('submit', async e => {
   e.preventDefault();
-  const email=$('email').value.trim(), pass=$('password').value;
-  const btn=$('auth-submit'); btn.disabled=true; btn.textContent='Загрузка…';
-  try{
-    if(state.register) await createUserWithEmailAndPassword(auth,email,pass);
-    else await signInWithEmailAndPassword(auth,email,pass);
-  }catch(err){
-    authMsg($('auth-error'),translateErr(err.code),'error');
-    btn.disabled=false; updateAuthUI();
+  const email = $('email').value, pass = $('password').value;
+  $('auth-submit').disabled = true;
+  try {
+    if (state.reg) await createUserWithEmailAndPassword(auth, email, pass);
+    else await signInWithEmailAndPassword(auth, email, pass);
+  } catch(err) {
+    $('auth-error').textContent = err.message; $('auth-error').style.display = 'block';
+    $('auth-submit').disabled = false;
   }
 });
-$('toggle-auth').addEventListener('click',e=>{e.preventDefault();state.register=!state.register;updateAuthUI();});
+$('toggle-auth').addEventListener('click', e => { e.preventDefault(); state.reg = !state.reg; updateAuthUI(); });
 
-// ============================================================
-// OBSERVER
-// ============================================================
-onAuthStateChanged(auth,async user=>{
-  if(user){
-    state.currentUser=user;
-    $('user-email').textContent=user.email;
-    await loadCloud();
-    $('auth-screen').style.display='none';
-    $('app-screen').classList.add('show');
-    renderApp();
-  }else{
-    state.currentUser=null; state.completed={}; state.code={}; state.isAdmin=false;
-    $('auth-screen').style.display='flex';
-    $('app-screen').classList.remove('show');
-    $('admin-link-container').innerHTML='';
-    updateAuthUI();
+onAuthStateChanged(auth, async u => {
+  if (u) {
+    state.user = u; $('user-email').textContent = u.email; await load();
+    $('auth-screen').style.display = 'none'; $('app-screen').classList.add('show');
+    render();
+  } else {
+    state.user = null; state.comp = {}; state.code = {};
+    $('auth-screen').style.display = 'flex'; $('app-screen').classList.remove('show');
   }
 });
-async function logout(){ if(!confirm('Выйти?')) return; await signOut(auth); }
+async function logout() { if(confirm('Выйти?')) await signOut(auth); }
 
-// ============================================================
-// APP UI
-// ============================================================
-function updateProgress(){
-  let total=0, done=0;
-  courseData.modules.forEach(m=>m.lessons.forEach(l=>{total++; if(state.completed[l.id]) done++;}));
-  const p=total?Math.round(done/total*100):0;
-  $('progress-percent').textContent=p+'%';
-  $('progress-fill').style.width=p+'%';
-}
-function renderNav(){
-  const nav=$('nav-list'); nav.innerHTML='';
-  courseData.modules.forEach(m=>{
-    const t=document.createElement('div'); t.className='nav-module-title'; t.textContent=m.title; nav.appendChild(t);
-    m.lessons.forEach(l=>{
-      const li=document.createElement('li'); li.className='nav-item';
-      const a=document.createElement('a'); a.href='#'; a.textContent=l.title;
-      if(state.currentLessonId===l.id) a.classList.add('active');
-      if(state.completed[l.id]) a.classList.add('completed');
-      a.addEventListener('click',ev=>{ev.preventDefault();loadLesson(l.id);});
-      li.appendChild(a); nav.appendChild(li);
+function render() {
+  const nav = $('nav-list'); nav.innerHTML = '';
+  courseData.modules.forEach(m => {
+    nav.innerHTML += `<div class="nav-module">${m.title}</div>`;
+    m.lessons.forEach(l => {
+      const a = document.createElement('a'); a.href = '#'; a.textContent = l.title;
+      if (state.id === l.id) a.classList.add('active');
+      if (state.comp[l.id]) a.classList.add('completed');
+      a.onclick = e => { e.preventDefault(); loadLesson(l.id); };
+      const li = document.createElement('li'); li.className = 'nav-item'; li.appendChild(a); nav.appendChild(li);
     });
   });
-  // кнопка админа
-  const ac=$('admin-link-container');
-  ac.innerHTML='';
-  if(state.isAdmin){
-    const b=document.createElement('a');
-    b.href='#'; b.className='admin-link'; b.textContent='👑 Админ-панель';
-    b.addEventListener('click',ev=>{ev.preventDefault();loadAdmin();});
-    ac.appendChild(b);
-  }
+  let t = 0, d = 0; courseData.modules.forEach(m => m.lessons.forEach(l => { t++; if (state.comp[l.id]) d++; }));
+  $('progress-percent').textContent = (t ? Math.round(d/t*100) : 0) + '%';
+  $('progress-fill').style.width = (t ? Math.round(d/t*100) : 0) + '%';
 }
-function loadLesson(id){
-  const found=findLesson(id);
-  if(!found) return;
-  state.currentLessonId=id;
-  renderNav();
-  const main=$('main-content');
-  let html=`<h1>${found.lesson.title}</h1><div class="theory">${found.lesson.theory}</div>`;
-  found.lesson.tasks.forEach(t=>{
-    const saved=state.code[t.id]!==undefined?state.code[t.id]:t.init;
-    html+=`<div class="task" id="task-${t.id}">
+
+function loadLesson(id) {
+  state.id = id; render();
+  let found;
+  courseData.modules.forEach(m => m.lessons.forEach(l => { if (l.id === id) found = l; }));
+  if (!found) return;
+  
+  let html = `<h1>${found.title}</h1><div class="theory">${found.theory}</div>`;
+  found.tasks.forEach(t => {
+    const saved = state.code[t.id] !== undefined ? state.code[t.id] : t.init;
+    html += `<div class="task">
       <div class="task-title">${t.title}</div>
-      <p class="task-desc">${t.desc}</p>
-      <textarea id="code-${t.id}" spellcheck="false">${esc(saved)}</textarea>
+      <div class="task-desc">${t.desc}</div>
+      <textarea id="code-${t.id}" spellcheck="false">${saved}</textarea>
       <div class="btn-group">
-        <button class="btn btn-primary" onclick="checkTask('${t.id}')">▶ Проверить</button>
-        <button class="btn btn-secondary" onclick="toggleSol('${t.id}')">Показать решение</button>
-        <button class="btn btn-success" onclick="markDone('${found.lesson.id}')">✓ Отметить пройденным</button>
+        <button class="btn btn-primary" onclick="check('${t.id}')">▶ Проверить (C)</button>
+        <button class="btn btn-secondary" onclick="sol('${t.id}')">Решение</button>
+        <button class="btn btn-success" onclick="done('${found.id}')">✓ Пройдено</button>
       </div>
       <div class="result" id="res-${t.id}"></div>
-      <div class="solution" id="sol-${t.id}"><pre><code>${esc(t.sol)}</code></pre></div>
+      <div class="solution" id="sol-${t.id}"><pre><code>${t.sol.replace(/</g,'&lt;')}</code></pre></div>
     </div>`;
   });
-  main.innerHTML=html;
-  found.lesson.tasks.forEach(t=>{
-    const ta=$('code-'+t.id); if(!ta) return;
-    let timer;
-    ta.addEventListener('input',()=>{
-      state.code[t.id]=ta.value;
-      clearTimeout(timer);
-      timer=setTimeout(saveCloud,1500);
-    });
+  $('main-content').innerHTML = html;
+  found.tasks.forEach(t => {
+    $('code-'+t.id).addEventListener('input', e => { state.code[t.id] = e.target.value; setTimeout(save, 1500); });
   });
 }
-function findLesson(id){for(let m of courseData.modules)for(let l of m.lessons)if(l.id===id)return{module:m,lesson:l};return null;}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function checkTask(id){
-  const found=findLesson(state.currentLessonId);
-  const t=found.lesson.tasks.find(x=>x.id===id);
-  const code=$('code-'+id).value; state.code[id]=code;
-  const res=$('res-'+id); res.className='result show';
-  try{
-    const r=t.check(code);
-    if(r.success){res.className='result show success';res.textContent='✅ '+r.message;markDone(found.lesson.id,true);}
-    else{res.className='result show error';res.textContent='❌ '+r.message;}
-  }catch(e){res.className='result show error';res.textContent='❌ '+e.message;}
-  saveCloud();
-}
-function toggleSol(id){$('sol-'+id).classList.toggle('show');}
-function markDone(lessonId,silent){
-  state.completed[lessonId]=true;
-  updateProgress(); renderNav(); saveCloud();
-  if(!silent){const t=$('saving-toast');t.textContent='Урок пройден ✓';t.classList.add('show');clearTimeout(state.saveTimer);state.saveTimer=setTimeout(()=>t.classList.remove('show'),1500);}
-}
-function renderApp(){ renderNav(); updateProgress(); loadLesson(courseData.modules[0].lessons[0].id); }
 
-// ============================================================
-// АДМИН-ПАНЕЛЬ (ROOT)
-// ============================================================
-async function loadAdmin(){
-  const main=$('main-content');
-  main.innerHTML=`<h1>👑 Админ-панель</h1><p>Загрузка пользователей…</p>`;
-  try{
-    const snap=await getDocs(collection(db,'users'));
-    const users=[];
-    snap.forEach(d=>users.push({uid:d.id, ...d.data()}));
-    users.sort((a,b)=>{
-      const ta=a.updatedAt?.seconds||0, tb=b.updatedAt?.seconds||0;
-      return tb-ta;
-    });
-    const total=totalLessons();
-    const avgProgress=users.length?Math.round(users.reduce((s,u)=>{
-      const done=Object.keys(u.completed||{}).length;
-      return s+(done/total*100);
-    },0)/users.length):0;
-    const activeToday=users.filter(u=>{
-      const t=u.updatedAt?.seconds||0;
-      return Date.now()/1000-t<86400;
-    }).length;
-
-    let html=`
-      <h1>👑 Админ-панель</h1>
-      <p style="color:var(--muted);margin-bottom:20px">Полный доступ ко всем пользователям. Только для администраторов.</p>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="label">Всего пользователей</div><div class="value">${users.length}</div></div>
-        <div class="stat-card"><div class="label">Средний прогресс</div><div class="value">${avgProgress}%</div></div>
-        <div class="stat-card"><div class="label">Активны за сутки</div><div class="value">${activeToday}</div></div>
-        <div class="stat-card"><div class="label">Уроков в курсе</div><div class="value">${total}</div></div>
-      </div>
-      <h2>Пользователи</h2>
-      <table class="admin-table">
-        <thead><tr><th>Email</th><th>Прогресс</th><th>Уроков</th><th>Последняя активность</th><th>Действия</th></tr></thead>
-        <tbody>`;
-    users.forEach(u=>{
-      const done=Object.keys(u.completed||{}).length;
-      const pct=Math.round(done/total*100);
-      const dt=u.updatedAt?.toDate?.()||null;
-      const dateStr=dt?dt.toLocaleString('ru-RU'):'—';
-      const isMe=u.uid===state.currentUser.uid;
-      html+=`<tr>
-        <td>${esc(u.email||'—')}${isMe?' <span style="color:var(--orange);font-size:.75rem">(вы)</span>':''}</td>
-        <td><b>${pct}%</b></td>
-        <td>${done} / ${total}</td>
-        <td style="font-size:.82rem;color:var(--muted)">${dateStr}</td>
-        <td>
-          ${!isMe?`<button class="btn btn-danger" style="padding:6px 12px;font-size:.8rem" onclick="resetUser('${u.uid}','${esc(u.email||'')}')">Сбросить прогресс</button>`:'<span style="color:var(--muted);font-size:.82rem">—</span>'}
-        </td>
-      </tr>`;
-    });
-    html+=`</tbody></table>
-      <div class="theory" style="margin-top:24px">
-        <h3>⚠️ Что можно и нельзя</h3>
-        <ul>
-          <li>✅ <b>Смотреть</b> прогресс любого пользователя</li>
-          <li>✅ <b>Сбрасывать</b> прогресс (обнуляет Firestore-документ)</li>
-          <li>❌ <b>Удалять аккаунт</b> — только через Firebase Console (Authentication)</li>
-          <li>❌ <b>Менять пароль</b> другого пользователя — только он сам или через консоль</li>
-        </ul>
-      </div>`;
-    main.innerHTML=html;
-  }catch(e){
-    main.innerHTML=`<h1>👑 Админ-панель</h1><div class="theory" style="border-left-color:var(--danger)"><h3>Ошибка доступа</h3><p>${esc(e.message)}</p><p>Проверь правила Firestore и документ <code>config/admins</code>.</p></div>`;
-  }
+async function check(id) {
+  let found, task;
+  courseData.modules.forEach(m => m.lessons.forEach(l => {
+    if (l.id === state.id) { found = l; task = l.tasks.find(x => x.id === id); }
+  }));
+  const code = $('code-'+id).value; state.code[id] = code;
+  const res = $('res-'+id); res.className = 'result show'; res.textContent = '⏳ Компиляция...';
+  const r = await task.check(code);
+  if (r.success) { res.className = 'result show success'; res.textContent = '✅ ' + r.message; done(found.id, true); }
+  else { res.className = 'result show error'; res.textContent = '❌ ' + r.message; }
+  save();
 }
-async function resetUser(uid,email){
-  if(!confirm(`Сбросить прогресс пользователя ${email}?\n\nЭто обнулит все выполненные уроки и сохранённый код.`)) return;
-  try{
-    await updateDoc(doc(db,'users',uid),{
-      completed:{},
-      code:{},
-      updatedAt:serverTimestamp()
-    });
-    alert('Прогресс сброшен.');
-    loadAdmin();
-  }catch(e){ alert('Ошибка: '+e.message); }
-}
-
-// ============================================================
-// ГЛОБАЛЬНЫЕ ОБРАБОТЧИКИ
-// ============================================================
-window.checkTask=checkTask;
-window.toggleSol=toggleSol;
-window.markDone=markDone;
-window.logout=logout;
-window.resetUser=resetUser;
+function sol(id) { $('sol-'+id).classList.toggle('show'); }
+function done(id, silent) { state.comp[id] = true; render(); save(); }
+window.check = check; window.sol = sol; window.done = done; window.logout = logout;
 </script>
 </body>
 </html>
