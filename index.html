@@ -38,7 +38,7 @@ a { color: var(--orange); text-decoration: none; }
 /* APP */
 #app-screen { display: none; }
 #app-screen.show { display: flex; }
-.sidebar { width: 320px; background: var(--dark); color: #F2F1EF; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+.sidebar { width: 320px; background: var(--dark); color: #F2F1EF; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 100; }
 .sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; }
 .theme-btn { font-size: 1.2rem; }
 .user-card { padding: 15px 20px; background: rgba(0,0,0,.2); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
@@ -53,7 +53,7 @@ a { color: var(--orange); text-decoration: none; }
 .nav-item a.completed::after { content: '✓'; float: right; color: var(--orange); }
 
 /* MAIN */
-.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; }
+.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; width: calc(100% - 320px); }
 h1 { margin-bottom: 20px; font-weight: 500; border-left: 4px solid var(--orange); padding-left: 15px; }
 .theory { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); }
 pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'Ubuntu Mono', monospace; margin: 10px 0; }
@@ -62,7 +62,7 @@ pre code { background: transparent; padding: 0; }
 .task { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
 .task-title { font-weight: 500; font-size: 1.1rem; margin-bottom: 10px; color: var(--orange); }
 .task-desc { margin-bottom: 15px; font-size: 0.95rem; }
-textarea { width: 100%; height: 200px; padding: 15px; background: var(--pre-bg); color: var(--pre-text); border: 1px solid var(--border); border-radius: 8px; font-family: 'Ubuntu Mono', monospace; resize: vertical; }
+textarea { width: 100%; height: 220px; padding: 15px; background: var(--pre-bg); color: var(--pre-text); border: 1px solid var(--border); border-radius: 8px; font-family: 'Ubuntu Mono', monospace; resize: vertical; }
 textarea:focus { outline: none; border-color: var(--orange); }
 .btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
 .btn { padding: 10px 20px; border-radius: 8px; font-weight: 500; }
@@ -154,10 +154,9 @@ async function cNum(code, exp, eps) {
   return { success: ok, message: ok ? "Верно!" : `Ожидалось ≈${exp}, получено ${n}` };
 }
 
-// ==========================================
-// ВСТАВЬ СЮДА ЧАСТИ 2, 3 И 4 (МАССИВ КУРСА)
-// ==========================================
-const courseData = { modules: { id:'ch1', title:'Глава 1. Простые задачи', lessons:[
+// === КУРС ===
+const courseData = { modules: [
+{ id:'ch1', title:'Глава 1. Простые задачи', lessons:[
   { id:'1.1', title:'1.1. Формулы', theory:`<p>Подключите <code>&lt;math.h&gt;</code> для формул.</p>`, tasks:[
     {id:'t1_1', title:'Формула 1', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Ответ ≈2.45833.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(exp(2.3*x))-sin(M_PI*x/(x+2.0/3.0))+1.7);\n return 0;\n}', check:c=>cNum(c,2.45833,0.01)},
     {id:'t1_2', title:'Формула 2', desc:'f(x)=√x·sin(x²/2)−1.3 при x=0.5. Ответ ≈−0.19452.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(x)*sin(x*x/2)-1.3);\n return 0;\n}', check:c=>cNum(c,-0.19452,0.01)}
@@ -185,10 +184,47 @@ const courseData = { modules: { id:'ch1', title:'Глава 1. Простые з
     {id:'t3_1', title:'Сумма элементов', desc:'Матрица 2x2 {{1,2},{3,4}}. Сумма = 10.', init:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n for(int i=0;i<2;i++) for(int j=0;j<2;j++) s+=m[i][j];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'10')}
   ]},
   { id:'3.4', title:'3.4. Строки и столбцы', theory:`<p>Поиск по строкам.</p>`, tasks:[
-    {id:'t3_2', title:'Главная диагональ', desc:'Сумма элементов главной диагонали матрицы 3x3 {{1,2,3},{4,5,6},{7,8,9}}. Ответ 15.', init:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n for(int i=0;i<3;i++) s+=m[i][i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'15')}
+    {id:'t3_2', title:'Главная диагональ', desc:'Сумма элементов главной диагонали матрицы 3x3. Ответ 15.', init:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n for(int i=0;i<3;i++) s+=m[i][i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'15')}
   ]}
-]}, }; 
-// (Скопируй содержимое modules из следующих частей сюда)
+]},
+{ id:'ch4', title:'Глава 4. Подпрограммы', lessons:[
+  { id:'4.1', title:'4.1. Функции для массивов ⭐', theory:`<p>Передача массива: <code>int func(int a[], int n)</code>.</p>`, tasks:[
+    {id:'t4_1', title:'sumArray', desc:'Напишите функцию суммы. Проверка: {1,2,3} → 6.', init:'#include <stdio.h>\nint sumArray(int a[], int n){\n // код\n}\nint main(){\n int x[]={1,2,3};\n printf("%d\\n", sumArray(x,3));\n return 0;\n}', sol:'#include <stdio.h>\nint sumArray(int a[], int n){\n int s=0; for(int i=0;i<n;i++) s+=a[i]; return s;\n}\nint main(){\n int x[]={1,2,3};\n printf("%d\\n", sumArray(x,3));\n return 0;\n}', check:c=>cExact(c,'6')}
+  ]},
+  { id:'4.3', title:'4.3. Несколько массивов ⭐', theory:`<p>Обработка двух массивов.</p>`, tasks:[
+    {id:'t4_2', title:'Поэлементная сумма', desc:'A={1,2}, B={10,20} → 11 22', init:'#include <stdio.h>\nint main(){\n int A[]={1,2}, B[]={10,20};\n // код\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int A[]={1,2}, B[]={10,20};\n for(int i=0;i<2;i++) printf("%d ", A[i]+B[i]);\n printf("\\n");\n return 0;\n}', check:c=>cExact(c,'11 22')}
+  ]},
+  { id:'4.6', title:'4.6. Формирование массива', theory:`<p>Создание нового массива.</p>`, tasks:[
+    {id:'t4_3', title:'Копирование', desc:'Скопируйте массив {1,2,3} и выведите его.', init:'#include <stdio.h>\nint main(){\n int a[]={1,2,3}, b[3];\n // код\n for(int i=0;i<3;i++) printf("%d ",b[i]);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={1,2,3}, b[3];\n for(int i=0;i<3;i++) b[i]=a[i];\n for(int i=0;i<3;i++) printf("%d ",b[i]);\n return 0;\n}', check:c=>cExact(c,'1 2 3')}
+  ]}
+]},
+{ id:'ch5', title:'Глава 5. Проектирование', lessons:[
+  { id:'5.1', title:'5.1. Экстремумы с условием', theory:`<p>Поиск максимума среди четных.</p>`, tasks:[
+    {id:'t5_1', title:'Максимум среди четных', desc:'{3,8,2,9,4} → 8.', init:'#include <stdio.h>\nint main(){\n int a[]={3,8,2,9,4}, m=-1;\n // код\n printf("%d\\n",m);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={3,8,2,9,4}, m=-1;\n for(int i=0;i<5;i++) if(a[i]%2==0 && a[i]>m) m=a[i];\n printf("%d\\n",m);\n return 0;\n}', check:c=>cExact(c,'8')}
+  ]}
+]},
+{ id:'ch6', title:'Глава 6. Текст и структуры', lessons:[
+  { id:'6.1', title:'6.1. Структуры', theory:`<p>Struct в C.</p>`, tasks:[
+    {id:'t6_1', title:'Студенты', desc:'Создайте структуру Student, задайте имя "Ivan" и оценку 5. Выведите "Ivan 5".', init:'#include <stdio.h>\n#include <string.h>\nstruct Student { char name[50]; int grade; };\nint main(){\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <string.h>\nstruct Student { char name[50]; int grade; };\nint main(){\n struct Student s;\n strcpy(s.name, "Ivan");\n s.grade = 5;\n printf("%s %d\\n", s.name, s.grade);\n return 0;\n}', check:c=>cExact(c,'Ivan 5')}
+  ]},
+  { id:'6.2', title:'6.2. Обработка текста', theory:`<p>Строки (char[]).</p>`, tasks:[
+    {id:'t6_2', title:'Длина строки', desc:'Найдите длину строки "Hello" (без string.h).', init:'#include <stdio.h>\nint main(){\n char str[]="Hello";\n int len=0;\n // код\n printf("%d\\n",len);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n char str[]="Hello";\n int len=0;\n while(str[len]!=\'\\0\') len++;\n printf("%d\\n",len);\n return 0;\n}', check:c=>cExact(c,'5')}
+  ]}
+]},
+{ id:'ch7-8', title:'Глава 7-8. ООП (C)', lessons:[
+  { id:'7.1', title:'7.1. Эмуляция ООП', theory:`<p>В C нет классов, но есть структуры.</p>`, tasks:[
+    {id:'t7_1', title:'Массив структур', desc:'Найдите сумму оценок двух студентов.', init:'#include <stdio.h>\nstruct Student { int grade; };\nint main(){\n struct Student s[2] = {{4}, {5}};\n int sum=0;\n // код\n printf("%d\\n",sum);\n return 0;\n}', sol:'#include <stdio.h>\nstruct Student { int grade; };\nint main(){\n struct Student s[2] = {{4}, {5}};\n int sum=0;\n for(int i=0;i<2;i++) sum+=s[i].grade;\n printf("%d\\n",sum);\n return 0;\n}', check:c=>cExact(c,'9')}
+  ]}
+]},
+{ id:'ch9', title:'Глава 9. Сложные задачи', lessons:[
+  { id:'9.5', title:'9.5. Рекурсия', theory:`<p>Функция вызывает саму себя.</p>`, tasks:[
+    {id:'t9_1', title:'Факториал (рекурсия)', desc:'Напишите рекурсивную функцию факториала. 5! = 120.', init:'#include <stdio.h>\nint fact(int n){\n // код\n}\nint main(){\n printf("%d\\n", fact(5));\n return 0;\n}', sol:'#include <stdio.h>\nint fact(int n){\n if(n<=1) return 1;\n return n * fact(n-1);\n}\nint main(){\n printf("%d\\n", fact(5));\n return 0;\n}', check:c=>cExact(c,'120')}
+  ]},
+  { id:'9.3', title:'9.3. Ряды (Разложение)', theory:`<p>Вычисление суммы ряда.</p>`, tasks:[
+    {id:'t9_2', title:'Сумма 1/n', desc:'Сумма 1 + 1/2 + 1/3 + 1/4. Выведите с 2 знаками (2.08).', init:'#include <stdio.h>\nint main(){\n double sum=0;\n // код\n printf("%.2f\\n",sum);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n double sum=0;\n for(int i=1;i<=4;i++) sum += 1.0/i;\n printf("%.2f\\n",sum);\n return 0;\n}', check:c=>cExact(c,'2.08')}
+  ]}
+]}
+]};
 
 // === ЛОГИКА ===
 let state = { user: null, id: null, comp: {}, code: {}, reg: false, loading: false };
