@@ -3,90 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Полный курс C · Типовник МЭИ</title>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+<title>Курс C · Ubuntu Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --orange: #E95420; --purple: #77216F; --dark: #2C001E;
-  --bg: #F2F1EF; --card: #FFFFFF; --text: #2C001E; --muted: #5E2750;
-  --border: #DCD9D5; --pre-bg: #300A24; --pre-text: #E8DEE6;
-  --success: #0E8420; --danger: #C7162B; --shadow: 0 4px 12px rgba(44,0,30,.1);
+  /* Светлая тема (Ubuntu Yaru Light) */
+  --orange: #E95420;
+  --orange-hover: #C7401E;
+  --purple: #77216F;
+  --dark: #2C001E;
+  --bg: #F2F1EF;
+  --card-bg: #FFFFFF;
+  --text: #2C001E;
+  --muted: #5E2750;
+  --border: #DCD9D5;
+  --pre-bg: #300A24;
+  --pre-text: #E8DEE6;
+  --success: #0E8420;
+  --danger: #C7162B;
+  --shadow-sm: 0 1px 3px rgba(44,0,30,.08);
+  --shadow-md: 0 4px 12px rgba(44,0,30,.1);
+  --shadow-lg: 0 12px 32px rgba(44,0,30,.18);
+  --radius: 8px;
 }
 [data-theme="dark"] {
-  --bg: #1E1E1E; --card: #2D2D2D; --text: #F2F1EF; --muted: #A0A0A0;
-  --border: #3D3D3D; --dark: #121212; --pre-bg: #111; --pre-text: #D4D4D4;
-  --shadow: 0 4px 12px rgba(0,0,0,.5);
+  /* Темная тема (Ubuntu Yaru Dark) */
+  --bg: #1E1E1E;
+  --card-bg: #2D2D2D;
+  --text: #F2F1EF;
+  --muted: #A0A0A0;
+  --border: #3D3D3D;
+  --dark: #121212;
+  --pre-bg: #111111;
+  --pre-text: #D4D4D4;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.5);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.7);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; transition: 0.2s; }
-body { font-family: 'Ubuntu', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+* { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+body { font-family: 'Ubuntu', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 a { color: var(--orange); text-decoration: none; }
 
-/* ==== ЭКРАН ВХОДА ==== */
-#auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #2C001E, #77216F); padding: 24px; }
-.auth-card { background: var(--card); border-radius: 16px; padding: 40px; width: 100%; max-width: 420px; box-shadow: var(--shadow); }
-.auth-card h1 { margin-bottom: 20px; text-align: center; font-weight: 500; border: none; padding: 0; font-size: 1.8rem; color: var(--text); }
-.field { margin-bottom: 16px; }
-.field label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--muted); }
-.field input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; }
+/* AUTH */
+#auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at 20% 20%, rgba(233,84,32,.25) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(119,33,111,.35) 0%, transparent 45%), linear-gradient(135deg, #2C001E 0%, #4A0E3C 50%, #77216F 100%); padding: 24px; }
+.auth-card { background: var(--card-bg); border-radius: 16px; padding: 40px 36px; box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; animation: fadeUp .6s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.auth-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 28px; }
+.auth-logo svg { width: 72px; height: 72px; filter: drop-shadow(0 4px 12px rgba(233,84,32,.35)); }
+.auth-logo h1 { font-size: 1.65rem; font-weight: 500; margin-top: 16px; color: var(--text); }
+.auth-logo p { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.field label { font-size: .82rem; font-weight: 500; color: var(--muted); text-transform: uppercase; }
+.field input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 1rem; background: var(--bg); color: var(--text); }
 .field input:focus { outline: none; border-color: var(--orange); }
-.field input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px var(--bg) inset !important; -webkit-text-fill-color: var(--text) !important; }
-.btn-auth { width: 100%; padding: 14px; background: var(--orange); color: #fff; border-radius: 8px; font-size: 1rem; font-weight: 500; margin-top: 10px; }
-.auth-toggle { text-align: center; margin-top: 20px; font-size: 0.9rem; }
-.auth-msg { padding: 10px; border-radius: 8px; font-size: 0.9rem; display: none; margin-bottom: 15px; }
+.btn-auth { padding: 13px; background: linear-gradient(135deg, var(--orange) 0%, #F27C3E 100%); color: #fff; border-radius: var(--radius); font-size: 1rem; font-weight: 500; margin-top: 8px; }
+.btn-auth:disabled { opacity: .65; }
+.auth-toggle { text-align: center; margin-top: 20px; font-size: .88rem; color: var(--muted); }
+.auth-msg { padding: 10px 14px; border-radius: var(--radius); font-size: .88rem; display: none; }
 .auth-msg.show { display: block; }
-.auth-msg.error { background: #FFE5E8; color: #8B0A19; border-left: 4px solid var(--danger); }
+.auth-msg.error { background: #FFE5E8; color: #8B0A19; border-left: 3px solid var(--danger); }
+.auth-msg.success { background: #E8F6EA; color: #0A5C16; border-left: 3px solid var(--success); }
 
-/* ==== ОСНОВНОЙ САЙТ ==== */
-#app-screen { display: none; }
+/* APP */
+#app-screen { display: none; min-height: 100vh; }
 #app-screen.show { display: flex; }
-.sidebar { width: 320px; background: var(--dark); color: #F2F1EF; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 100; }
-.sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; }
-.sidebar-header h2 { color: #fff; margin: 0; }
-.theme-btn { font-size: 1.2rem; }
-.user-card { padding: 15px 20px; background: rgba(0,0,0,.2); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-.logout-btn { background: rgba(233,84,32,.2); color: var(--orange); padding: 5px 10px; border-radius: 4px; }
-.progress-wrap { padding: 15px 20px; background: rgba(0,0,0,.1); font-size: 0.8rem; }
-.progress-bar { height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; margin-top: 8px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--orange); width: 0%; }
-.nav-list { list-style: none; padding: 10px 0; flex: 1; }
-.nav-module { padding: 15px 20px 5px; font-size: 0.75rem; font-weight: 700; color: #8B6A85; text-transform: uppercase; }
-.nav-item a { display: block; padding: 10px 20px; color: #C9B8C4; font-size: 0.9rem; border-left: 3px solid transparent; }
-.nav-item a:hover, .nav-item a.active { background: rgba(233,84,32,.1); color: #fff; border-left-color: var(--orange); }
-.nav-item a.completed::after { content: '✓'; float: right; color: var(--orange); }
+.sidebar { width: 300px; flex-shrink: 0; background: var(--dark); color: #F2F1EF; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; border-right: 1px solid rgba(255,255,255,.06); z-index: 100; }
+.sidebar-header { padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; justify-content: space-between; align-items: center; }
+.sidebar-header h2 { font-size: 1rem; font-weight: 500; color: #fff; }
+.theme-btn { background: rgba(255,255,255,.1); padding: 6px 10px; border-radius: 6px; font-size: 1.2rem; }
+.user-card { padding: 14px 20px; background: rgba(0,0,0,.2); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,.06); }
+.user-card .email { font-size: .82rem; color: #B6A0B0; overflow: hidden; text-overflow: ellipsis; }
+.logout-btn { padding: 6px 12px; background: rgba(233,84,32,.15); color: #F27C3E; border-radius: 4px; font-size: .75rem; }
+.progress-wrap { padding: 16px 22px; background: rgba(0,0,0,.15); }
+.progress-label { display: flex; justify-content: space-between; font-size: .78rem; color: #B6A0B0; margin-bottom: 8px; }
+.progress-bar { height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--orange); width: 0%; transition: width .5s; }
+.nav-list { list-style: none; padding: 12px 0; flex: 1; }
+.nav-module-title { padding: 14px 22px 6px; font-size: .7rem; font-weight: 700; color: #8B6A85; text-transform: uppercase; }
+.nav-item a { display: flex; align-items: center; padding: 10px 22px; color: #C9B8C4; font-size: .9rem; border-left: 3px solid transparent; }
+.nav-item a:hover, .nav-item a.active { background: rgba(233,84,32,.14); color: #fff; border-left-color: var(--orange); }
+.nav-item a.completed::after { content: '✓'; margin-left: auto; color: var(--orange); }
+.admin-link { background: rgba(233,84,32,.18); color: #F27C3E; margin: 8px 12px; border-radius: 6px; padding: 12px; text-align: center; display: block; font-weight: 500; }
 
-.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; width: calc(100% - 320px); color: var(--text); }
-.main-content h1 { margin-bottom: 20px; font-weight: 500; border-left: 4px solid var(--orange); padding-left: 15px; color: var(--text); }
-.theory { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); color: var(--text); }
-pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'Ubuntu Mono', monospace; margin: 10px 0; }
-code { font-family: 'Ubuntu Mono', monospace; background: var(--border); padding: 2px 6px; border-radius: 4px; color: var(--purple); }
-[data-theme="dark"] code { color: #E2A6DD; }
-pre code { background: transparent; padding: 0; color: inherit; }
-.task { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); color: var(--text); }
-.task-title { font-weight: 500; font-size: 1.1rem; margin-bottom: 10px; color: var(--orange); }
-.task-desc { margin-bottom: 15px; font-size: 0.95rem; color: var(--text); }
-textarea { width: 100%; height: 220px; padding: 15px; background: var(--pre-bg); color: var(--pre-text); border: 1px solid var(--border); border-radius: 8px; font-family: 'Ubuntu Mono', monospace; resize: vertical; }
-textarea:focus { outline: none; border-color: var(--orange); }
-.btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-.btn { padding: 10px 20px; border-radius: 8px; font-weight: 500; }
+/* MAIN CONTENT */
+.main-content { margin-left: 300px; flex: 1; padding: 40px 48px; max-width: 1000px; width: 100%; min-height: 100vh; }
+h1 { font-size: 1.9rem; font-weight: 500; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+h1::before { content: ''; display: inline-block; width: 4px; height: 32px; background: var(--orange); border-radius: 2px; }
+h2 { font-size: 1.3rem; font-weight: 500; color: var(--purple); margin: 24px 0 14px; }
+[data-theme="dark"] h2 { color: #D18ECC; }
+.theory { background: var(--card-bg); border-radius: var(--radius); padding: 24px; margin: 16px 0 24px; box-shadow: var(--shadow-sm); border-left: 4px solid var(--orange); }
+pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px 20px; border-radius: var(--radius); overflow-x: auto; font-family: 'Ubuntu Mono', monospace; font-size: .92rem; margin: 12px 0; }
+code { font-family: 'Ubuntu Mono', monospace; background: var(--border); padding: 2px 6px; border-radius: 3px; color: var(--purple); }
+[data-theme="dark"] code { color: #E2A6DD; background: #3D3D3D; }
+pre code { background: none; color: inherit; }
+
+/* TASKS */
+.task { background: var(--card-bg); border-radius: var(--radius); padding: 24px; margin: 20px 0; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+.task-title { font-size: 1.05rem; font-weight: 500; margin-bottom: 10px; display: flex; gap: 10px; }
+.task-title::before { content: '📝'; }
+.task-desc { margin-bottom: 14px; font-size: .95rem; }
+.task textarea { width: 100%; min-height: 200px; padding: 14px; border: 2px solid var(--border); border-radius: var(--radius); font-family: 'Ubuntu Mono', monospace; font-size: .92rem; background: var(--bg); color: var(--text); resize: vertical; }
+.task textarea:focus { outline: none; border-color: var(--orange); }
+.btn-group { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.btn { padding: 10px 18px; border-radius: var(--radius); font-size: .9rem; font-weight: 500; }
 .btn-primary { background: var(--orange); color: #fff; }
 .btn-secondary { background: var(--border); color: var(--text); }
 .btn-success { background: var(--success); color: #fff; }
-.result { margin-top: 15px; padding: 15px; border-radius: 8px; font-family: 'Ubuntu Mono', monospace; font-size: 0.9rem; white-space: pre-wrap; display: none; }
+.result { margin-top: 14px; padding: 12px; border-radius: var(--radius); font-size: .9rem; display: none; white-space: pre-wrap; font-family: 'Ubuntu Mono', monospace; }
 .result.show { display: block; }
-.result.success { background: rgba(14,132,32,.15); border-left: 4px solid var(--success); color: var(--success); }
-.result.error { background: rgba(199,22,43,.15); border-left: 4px solid var(--danger); color: var(--danger); }
-.solution { display: none; margin-top: 15px; }
+.result.success { background: #E8F6EA; color: #0A5C16; border-left: 4px solid var(--success); }
+.result.error { background: #FFE5E8; color: #8B0A19; border-left: 4px solid var(--danger); }
+[data-theme="dark"] .result.success { background: rgba(14,132,32,.2); color: #7BE48B; }
+[data-theme="dark"] .result.error { background: rgba(199,22,43,.2); color: #FF8A9A; }
+.solution { display: none; margin-top: 14px; }
 .solution.show { display: block; }
+
+/* ADMIN */
+.admin-table { width: 100%; background: var(--card-bg); border-radius: var(--radius); border-collapse: collapse; margin: 20px 0; }
+.admin-table th, .admin-table td { padding: 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: .9rem; }
+.admin-table th { background: var(--dark); color: #fff; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
+.stat-card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--orange); }
+.saving-toast { position: fixed; top: 24px; right: 24px; background: var(--dark); color: #fff; padding: 10px 18px; border-radius: 999px; opacity: 0; transition: opacity .3s; z-index: 1000; pointer-events: none; }
+.saving-toast.show { opacity: 1; }
 </style>
 </head>
 <body>
 
 <div id="auth-screen">
   <div class="auth-card">
-    <h1 id="auth-title">Вход</h1>
+    <div class="auth-logo">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#E95420" stroke-width="5"/><circle cx="50" cy="50" r="22" fill="#E95420"/><circle cx="50" cy="14" r="9" fill="#E95420"/><circle cx="81" cy="68" r="9" fill="#E95420"/><circle cx="19" cy="68" r="9" fill="#E95420"/></svg>
+      <h1 id="auth-title">Вход</h1>
+      <p id="auth-subtitle">Войдите, чтобы сохранять прогресс</p>
+    </div>
     <div id="auth-error" class="auth-msg error"></div>
-    <form id="auth-form">
+    <form id="auth-form" class="auth-form">
       <div class="field"><label>Email</label><input type="email" id="email" required></div>
       <div class="field"><label>Пароль</label><input type="password" id="password" required minlength="6"></div>
       <button type="submit" class="btn-auth" id="auth-submit">Войти</button>
@@ -97,21 +152,28 @@ textarea:focus { outline: none; border-color: var(--orange); }
 
 <div id="app-screen">
   <aside class="sidebar">
-    <div class="sidebar-header"><h2>Курс C</h2><button class="theme-btn" id="theme-toggle">🌙</button></div>
-    <div class="user-card"><span id="user-email">...</span><button class="logout-btn" onclick="logout()">Выйти</button></div>
-    <div class="progress-wrap"><span>Прогресс: <b id="progress-percent">0%</b></span><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div></div>
+    <div class="sidebar-header">
+      <h2>Курс C (Ubuntu)</h2>
+      <button class="theme-btn" id="theme-toggle" title="Сменить тему">🌙</button>
+    </div>
+    <div class="user-card"><span class="email" id="user-email">...</span><button class="logout-btn" onclick="logout()">Выйти</button></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Прогресс</span><strong id="progress-percent">0%</strong></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
     <ul class="nav-list" id="nav-list"></ul>
+    <div id="admin-link-container"></div>
   </aside>
-  <main class="main-content" id="main-content">
-    <h1>Добро пожаловать!</h1>
-    <p>Выберите тему в левом меню, чтобы начать.</p>
-  </main>
+  <main class="main-content" id="main-content"></main>
 </div>
+
+<div class="saving-toast" id="saving-toast">Сохранение…</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBoNhWX_8vGWaQl9rgFeq2Ni-YXpjMbI5Q",
@@ -119,244 +181,362 @@ const firebaseConfig = {
   projectId: "mpei-aad98",
   storageBucket: "mpei-aad98.firebasestorage.app",
   messagingSenderId: "1012888887163",
-  appId: "1:1012888887163:web:a9fc5cc1f928277bf327de"
+  appId: "1:1012888887163:web:a9fc5cc1f928277bf327de",
+  measurementId: "G-9WMYX3J1EV"
 };
 
 const app = initializeApp(firebaseConfig);
+try { getAnalytics(app); } catch(e) {}
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// === ТЕМА ===
+// ============================================================
+// ТЕМА
+// ============================================================
 const themeBtn = document.getElementById('theme-toggle');
-document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-themeBtn.textContent = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+const currentTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', currentTheme);
+themeBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
 themeBtn.addEventListener('click', () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const nt = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', nt);
-  localStorage.setItem('theme', nt);
-  themeBtn.textContent = nt === 'dark' ? '☀️' : '🌙';
+  const newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
 });
 
-// === API C ===
-async function runC(code) {
+// ============================================================
+// API КОМПИЛЯТОРА C
+// ============================================================
+async function runCCode(code) {
   try {
-    const res = await fetch("https://emkc.org/api/v2/piston/execute", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ language: "c", version: "10.2.0", files: [{ content: code }] })
     });
-    const data = await res.json();
-    if (data.run.stderr) return { success: false, msg: data.run.stderr };
-    return { success: true, out: data.run.stdout.trim() };
-  } catch (e) { return { success: false, msg: e.message }; }
-}
-async function cExact(code, exp) {
-  const r = await runC(code); if (!r.success) return { success: false, message: r.msg };
-  return { success: r.out === exp, message: r.out === exp ? "Верно!" : `Ожидалось: ${exp}\nПолучено: ${r.out}` };
-}
-async function cNum(code, exp, eps) {
-  const r = await runC(code); if (!r.success) return { success: false, message: r.msg };
-  const n = parseFloat(r.out); const ok = Math.abs(n - exp) < eps;
-  return { success: ok, message: ok ? "Верно!" : `Ожидалось ≈${exp}, получено ${n}` };
+    const data = await response.json();
+    if (data.run && data.run.stderr) return { success: false, message: "Ошибка компиляции:\n" + data.run.stderr };
+    if (!data.run || !data.run.stdout) return { success: false, message: "Нет вывода (используйте printf)" };
+    return { success: true, output: data.run.stdout.trim() };
+  } catch (e) {
+    return { success: false, message: "Ошибка сети (API): " + e.message };
+  }
 }
 
-// === КУРС ===
+async function checkExact(code, expected) {
+  const res = await runCCode(code);
+  if (!res.success) return res;
+  const ok = res.output === expected.trim();
+  return { success: ok, message: ok ? "Верно!" : `Ожидалось:\n${expected}\nПолучено:\n${res.output}` };
+}
+
+async function checkNum(code, expected, eps) {
+  const res = await runCCode(code);
+  if (!res.success) return res;
+  const num = parseFloat(res.output);
+  if (isNaN(num)) return { success: false, message: "Не удалось распознать число в выводе" };
+  const ok = Math.abs(num - expected) < eps;
+  return { success: ok, message: ok ? `Верно! ${num}` : `Ожидалось ≈${expected}, получено ${num}` };
+}
+
+async function checkLines(code, expected) {
+  const res = await runCCode(code);
+  if (!res.success) return res;
+  const ok = res.output === expected.trim();
+  return { success: ok, message: ok ? "Верно!" : `Ожидалось:\n${expected}\nПолучено:\n${res.output}` };
+}
+
+// ============================================================
+// КУРС НА C
+// ============================================================
 const courseData = { modules: [
-{ id:'ch1', title:'Глава 1. Простые задачи', lessons:[
-  { id:'1.1', title:'1.1. Формулы', theory:`<p>Подключите <code>&lt;math.h&gt;</code> для формул.</p>`, tasks:[
-    {id:'t1_1', title:'Формула 1', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Ответ ≈2.45833.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(exp(2.3*x))-sin(M_PI*x/(x+2.0/3.0))+1.7);\n return 0;\n}', check:c=>cNum(c,2.45833,0.01)},
-    {id:'t1_2', title:'Формула 2', desc:'f(x)=√x·sin(x²/2)−1.3 при x=0.5. Ответ ≈−0.19452.', init:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\nint main(){\n double x=0.5;\n printf("%.5f\\n", sqrt(x)*sin(x*x/2)-1.3);\n return 0;\n}', check:c=>cNum(c,-0.19452,0.01)}
+{ id:'w1', title:'Неделя 1 · Основы C', lessons:[
+  { id:'w1l1', title:'1.1. Вычисления по формулам', theory:`
+    <h2>Вычисления по формулам (C)</h2>
+    <p>В C для математики нужна библиотека <code>&lt;math.h&gt;</code>. Не забудьте подключить её.</p>
+    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main() {
+    double x = 0.5;
+    double f = sqrt(x) + sin(x);
+    printf("%.5f\\n", f);
+    return 0;
+}</code></pre>
+    <p>Округление до 5 знаков: <code>%.5f</code>. Константа Пи: <code>M_PI</code>.</p>
+  `, tasks:[
+    {id:'t1_1', title:'Формула с экспонентой', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Выведите с 5 знаками. Ответ ≈2.45833.', init:'#include <stdio.h>\n#include <math.h>\n\nint main() {\n    double x = 0.5;\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\n\nint main() {\n    double x = 0.5;\n    double f = sqrt(exp(2.3*x)) - sin(M_PI*x/(x+2.0/3.0)) + 1.7;\n    printf("%.5f\\n", f);\n    return 0;\n}', check:c=>checkNum(c,2.45833,0.01)},
+    {id:'t1_2', title:'Кубический корень', desc:'f(x)=∛(x⁴)+∛(x⁴−x)+ln|x−20.5| при x=0.5. Ответ ≈4.08657.', init:'#include <stdio.h>\n#include <math.h>\n\nint main() {\n    double x = 0.5;\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n#include <math.h>\n\nint main() {\n    double x = 0.5;\n    double f = cbrt(pow(x,4)) + cbrt(pow(x,4)-x) + log(fabs(x-20.5));\n    printf("%.5f\\n", f);\n    return 0;\n}', check:c=>checkNum(c,4.08657,0.01)}
   ]},
-  { id:'1.4', title:'1.4. Накопление сумм', theory:`<p>Сумма через цикл.</p>`, tasks:[
-    {id:'t1_3', title:'Сумма 1..N', desc:'Сумма от 1 до 100. Ответ 5050.', init:'#include <stdio.h>\nint main(){\n int s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int s=0;\n for(int i=1;i<=100;i++) s+=i;\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'5050')}
-  ]},
-  { id:'1.5', title:'1.5. Суммы и произведения', theory:`<p>Накопление произведения.</p>`, tasks:[
-    {id:'t1_4', title:'Факториал', desc:'5! = 120', init:'#include <stdio.h>\nint main(){\n int p=1;\n // код\n printf("%d\\n",p);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int p=1;\n for(int i=1;i<=5;i++) p*=i;\n printf("%d\\n",p);\n return 0;\n}', check:c=>cExact(c,'120')}
+  { id:'w1l2', title:'1.4. Накопление сумм', theory:`
+    <h2>Накопление сумм</h2>
+    <pre><code>int sum = 0;
+for (int i = 1; i &lt;= 10; i++) {
+    sum += i;
+}
+printf("%d\\n", sum); // 55</code></pre>
+  `, tasks:[
+    {id:'t1_4', title:'Сумма от 1 до 100', desc:'Найдите сумму чисел от 1 до 100. Ответ: 5050.', init:'#include <stdio.h>\n\nint main() {\n    int sum = 0;\n    // код\n    printf("%d\\n", sum);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int sum = 0;\n    for (int i = 1; i <= 100; i++) sum += i;\n    printf("%d\\n", sum);\n    return 0;\n}', check:c=>checkExact(c,'5050')},
+    {id:'t1_5', title:'Факториал 5', desc:'Вычислите 5! (произведение от 1 до 5). Ответ: 120.', init:'#include <stdio.h>\n\nint main() {\n    int p = 1;\n    // код\n    printf("%d\\n", p);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int p = 1;\n    for (int i = 1; i <= 5; i++) p *= i;\n    printf("%d\\n", p);\n    return 0;\n}', check:c=>checkExact(c,'120')}
   ]}
 ]},
-{ id:'ch2', title:'Глава 2. 1D Массивы', lessons:[
-  { id:'2.2', title:'2.2. Ветвление в цикле ⭐', theory:`<p>Условие внутри цикла.</p>`, tasks:[
-    {id:'t2_1', title:'Сумма чётных', desc:'{1,2,3,4,5,6} → 12.', init:'#include <stdio.h>\nint main(){\n int a[]={1,2,3,4,5,6}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={1,2,3,4,5,6}, s=0;\n for(int i=0;i<6;i++) if(a[i]%2==0) s+=a[i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'12')}
+
+{ id:'w2', title:'Неделя 2 · Ветвления', lessons:[
+  { id:'w2l1', title:'2.1. Условный оператор', theory:`
+    <h2>2.1. Условный оператор</h2>
+    <pre><code>if (x > 0) printf("+");
+else if (x < 0) printf("-");
+else printf("0");</code></pre>
+  `, tasks:[
+    {id:'t2_1_1', title:'Чётное / нечётное', desc:'n=7. Выведите "Четное" или "Нечетное".', init:'#include <stdio.h>\n\nint main() {\n    int n = 7;\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int n = 7;\n    if (n % 2 == 0) printf("Четное\\n");\n    else printf("Нечетное\\n");\n    return 0;\n}', check:c=>checkExact(c,'Нечетное')},
+    {id:'t2_1_2', title:'Знак числа', desc:'n=-5. Выведите "положительное", "отрицательное" или "ноль".', init:'#include <stdio.h>\n\nint main() {\n    int n = -5;\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int n = -5;\n    if (n > 0) printf("положительное\\n");\n    else if (n < 0) printf("отрицательное\\n");\n    else printf("ноль\\n");\n    return 0;\n}', check:c=>checkExact(c,'отрицательное')}
   ]},
-  { id:'2.3', title:'2.3. Экстремумы', theory:`<p>Поиск максимума.</p>`, tasks:[
-    {id:'t2_2', title:'Максимум', desc:'{3,7,2,9,5} → 9.', init:'#include <stdio.h>\nint main(){\n int a[]={3,7,2,9,5}, m=a[0];\n // код\n printf("%d\\n",m);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={3,7,2,9,5}, m=a[0];\n for(int i=1;i<5;i++) if(a[i]>m) m=a[i];\n printf("%d\\n",m);\n return 0;\n}', check:c=>cExact(c,'9')}
-  ]},
-  { id:'2.4', title:'2.4. Поиск по условию ⭐', theory:`<p>Без break! Используем флаги.</p>`, tasks:[
-    {id:'t2_3', title:'Первый отрицательный', desc:'{5,3,-2,7,-1} → индекс 2.', init:'#include <stdio.h>\nint main(){\n int a[]={5,3,-2,7,-1}, idx=-1;\n // код (без break)\n printf("%d\\n",idx);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={5,3,-2,7,-1}, idx=-1;\n for(int i=0;i<5;i++) if(a[i]<0 && idx==-1) idx=i;\n printf("%d\\n",idx);\n return 0;\n}', check:c=>cExact(c,'2')}
+  { id:'w2l2', title:'2.2. Ветвление в теле цикла ⭐', theory:`
+    <h2>2.2. Ветвление в цикле</h2>
+    <pre><code>int a[] = {1, 2, 3, 4, 5};
+int sum = 0;
+for (int i = 0; i &lt; 5; i++) {
+    if (a[i] % 2 == 0) sum += a[i];
+}</code></pre>
+  `, tasks:[
+    {id:'t2_2_1', title:'Сумма чётных', desc:'{1,2,3,4,5,6,7,8} → сумма чётных = 20.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,2,3,4,5,6,7,8};\n    int sum = 0;\n    // код\n    printf("%d\\n", sum);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,2,3,4,5,6,7,8};\n    int sum = 0;\n    for (int i = 0; i < 8; i++) {\n        if (a[i] % 2 == 0) sum += a[i];\n    }\n    printf("%d\\n", sum);\n    return 0;\n}', check:c=>checkExact(c,'20')},
+    {id:'t2_2_2', title:'Произведение положительных', desc:'{2,-3,4,-1,5} → 40.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {2,-3,4,-1,5};\n    int p = 1;\n    // код\n    printf("%d\\n", p);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {2,-3,4,-1,5};\n    int p = 1;\n    for (int i = 0; i < 5; i++) {\n        if (a[i] > 0) p *= a[i];\n    }\n    printf("%d\\n", p);\n    return 0;\n}', check:c=>checkExact(c,'40')},
+    {id:'t2_2_3', title:'Замена отрицательных', desc:'{3,-2,5,-1} замените отрицательные на 0. Выведите: 3 0 5 0', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {3,-2,5,-1};\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {3,-2,5,-1};\n    for (int i = 0; i < 4; i++) {\n        if (a[i] < 0) a[i] = 0;\n        printf("%d ", a[i]);\n    }\n    printf("\\n");\n    return 0;\n}', check:c=>checkExact(c,'3 0 5 0')}
   ]}
 ]},
-{ id:'ch3', title:'Глава 3. 2D Массивы', lessons:[
-  { id:'3.1', title:'3.1. Обработка матриц', theory:`<p>Двумерные массивы в C.</p>`, tasks:[
-    {id:'t3_1', title:'Сумма элементов', desc:'Матрица 2x2 {{1,2},{3,4}}. Сумма = 10.', init:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[2][2]={{1,2},{3,4}}, s=0;\n for(int i=0;i<2;i++) for(int j=0;j<2;j++) s+=m[i][j];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'10')}
+
+{ id:'w3', title:'Неделя 3 · Поиск в C', lessons:[
+  { id:'w3l1', title:'2.3. Экстремумы', theory:`
+    <h2>2.3. Нахождение максимума</h2>
+    <pre><code>int mx = a[0];
+for (int i = 1; i &lt; n; i++) {
+    if (a[i] > mx) mx = a[i];
+}</code></pre>
+  `, tasks:[
+    {id:'t2_3_1', title:'Максимум', desc:'{3,7,2,9,5} → 9.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {3,7,2,9,5};\n    int mx = a[0];\n    // код\n    printf("%d\\n", mx);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {3,7,2,9,5};\n    int mx = a[0];\n    for (int i = 1; i < 5; i++) {\n        if (a[i] > mx) mx = a[i];\n    }\n    printf("%d\\n", mx);\n    return 0;\n}', check:c=>checkExact(c,'9')}
   ]},
-  { id:'3.4', title:'3.4. Строки и столбцы', theory:`<p>Поиск по строкам.</p>`, tasks:[
-    {id:'t3_2', title:'Главная диагональ', desc:'Сумма элементов главной диагонали матрицы 3x3. Ответ 15.', init:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n // код\n printf("%d\\n",s);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int m[3][3]={{1,2,3},{4,5,6},{7,8,9}}, s=0;\n for(int i=0;i<3;i++) s+=m[i][i];\n printf("%d\\n",s);\n return 0;\n}', check:c=>cExact(c,'15')}
+  { id:'w3l2', title:'2.4. Поиск по условию (без break) ⭐', theory:`
+    <h2>2.4. Поиск по условию</h2>
+    <p>⚠️ <b>Без break!</b> Используем флаг <code>idx == -1</code>.</p>
+    <pre><code>int idx = -1;
+for (int i = 0; i &lt; n; i++) {
+    if (a[i] &lt; 0 && idx == -1) idx = i;
+}</code></pre>
+  `, tasks:[
+    {id:'t2_4_1', title:'Индекс первого отрицательного', desc:'{5,3,-2,7,-1} → 2.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {5,3,-2,7,-1};\n    int idx = -1;\n    // код (без break)\n    printf("%d\\n", idx);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {5,3,-2,7,-1};\n    int idx = -1;\n    for (int i = 0; i < 5; i++) {\n        if (a[i] < 0 && idx == -1) idx = i;\n    }\n    printf("%d\\n", idx);\n    return 0;\n}', check:c=>checkExact(c,'2')},
+    {id:'t2_4_2', title:'Сумма в диапазоне', desc:'{1,5,3,9,7,2} в диапазоне [3;7] → 15.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,5,3,9,7,2};\n    int sum = 0;\n    // код\n    printf("%d\\n", sum);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,5,3,9,7,2};\n    int sum = 0;\n    for (int i = 0; i < 6; i++) {\n        if (a[i] >= 3 && a[i] <= 7) sum += a[i];\n    }\n    printf("%d\\n", sum);\n    return 0;\n}', check:c=>checkExact(c,'15')},
+    {id:'t2_4_3', title:'Есть ли элемент', desc:'{1,3,5,7,9}, есть ли 5? Выведите 1 (да) или 0 (нет).', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,3,5,7,9};\n    int has = 0;\n    // код\n    printf("%d\\n", has);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {1,3,5,7,9};\n    int has = 0;\n    for (int i = 0; i < 5; i++) if (a[i] == 5) has = 1;\n    printf("%d\\n", has);\n    return 0;\n}', check:c=>checkExact(c,'1')}
   ]}
 ]},
-{ id:'ch4', title:'Глава 4. Подпрограммы', lessons:[
-  { id:'4.1', title:'4.1. Функции для массивов ⭐', theory:`<p>Передача массива: <code>int func(int a[], int n)</code>.</p>`, tasks:[
-    {id:'t4_1', title:'sumArray', desc:'Напишите функцию суммы. Проверка: {1,2,3} → 6.', init:'#include <stdio.h>\nint sumArray(int a[], int n){\n // код\n}\nint main(){\n int x[]={1,2,3};\n printf("%d\\n", sumArray(x,3));\n return 0;\n}', sol:'#include <stdio.h>\nint sumArray(int a[], int n){\n int s=0; for(int i=0;i<n;i++) s+=a[i]; return s;\n}\nint main(){\n int x[]={1,2,3};\n printf("%d\\n", sumArray(x,3));\n return 0;\n}', check:c=>cExact(c,'6')}
+
+{ id:'w4', title:'Неделя 4 · Функции', lessons:[
+  { id:'w4l1', title:'4.1. Функции для разных объектов ⭐', theory:`
+    <h2>4.1. Универсальные функции</h2>
+    <pre><code>int sumArray(int a[], int n) {
+    int s = 0;
+    for (int i = 0; i &lt; n; i++) s += a[i];
+    return s;
+}</code></pre>
+  `, tasks:[
+    {id:'t4_1_1', title:'sumArray', desc:'{1,2,3}→6, {10,20,30}→60.', init:'#include <stdio.h>\n\nint sumArray(int a[], int n) {\n    // код\n}\n\nint main() {\n    int arr1[] = {1,2,3};\n    int arr2[] = {10,20,30};\n    printf("%d\\n", sumArray(arr1, 3));\n    printf("%d\\n", sumArray(arr2, 3));\n    return 0;\n}', sol:'#include <stdio.h>\n\nint sumArray(int a[], int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++) s += a[i];\n    return s;\n}\n\nint main() {\n    int arr1[] = {1,2,3};\n    int arr2[] = {10,20,30};\n    printf("%d\\n", sumArray(arr1, 3));\n    printf("%d\\n", sumArray(arr2, 3));\n    return 0;\n}', check:c=>checkLines(c,'6\n60')},
+    {id:'t4_1_2', title:'maxArray', desc:'{4,8,1}→8, {2,2,2}→2, {-5,-2,-9}→-2.', init:'#include <stdio.h>\n\nint maxArray(int a[], int n) {\n    // код\n}\n\nint main() {\n    int arr1[] = {4,8,1};\n    int arr2[] = {2,2,2};\n    int arr3[] = {-5,-2,-9};\n    printf("%d\\n", maxArray(arr1, 3));\n    printf("%d\\n", maxArray(arr2, 3));\n    printf("%d\\n", maxArray(arr3, 3));\n    return 0;\n}', sol:'#include <stdio.h>\n\nint maxArray(int a[], int n) {\n    int m = a[0];\n    for (int i = 1; i < n; i++) if (a[i] > m) m = a[i];\n    return m;\n}\n\nint main() {\n    int arr1[] = {4,8,1};\n    int arr2[] = {2,2,2};\n    int arr3[] = {-5,-2,-9};\n    printf("%d\\n", maxArray(arr1, 3));\n    printf("%d\\n", maxArray(arr2, 3));\n    printf("%d\\n", maxArray(arr3, 3));\n    return 0;\n}', check:c=>checkLines(c,'8\n2\n-2')}
   ]},
-  { id:'4.3', title:'4.3. Несколько массивов ⭐', theory:`<p>Обработка двух массивов.</p>`, tasks:[
-    {id:'t4_2', title:'Поэлементная сумма', desc:'A={1,2}, B={10,20} → 11 22', init:'#include <stdio.h>\nint main(){\n int A[]={1,2}, B[]={10,20};\n // код\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int A[]={1,2}, B[]={10,20};\n for(int i=0;i<2;i++) printf("%d ", A[i]+B[i]);\n printf("\\n");\n return 0;\n}', check:c=>cExact(c,'11 22')}
-  ]},
-  { id:'4.6', title:'4.6. Формирование массива', theory:`<p>Создание нового массива.</p>`, tasks:[
-    {id:'t4_3', title:'Копирование', desc:'Скопируйте массив {1,2,3} и выведите его.', init:'#include <stdio.h>\nint main(){\n int a[]={1,2,3}, b[3];\n // код\n for(int i=0;i<3;i++) printf("%d ",b[i]);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={1,2,3}, b[3];\n for(int i=0;i<3;i++) b[i]=a[i];\n for(int i=0;i<3;i++) printf("%d ",b[i]);\n return 0;\n}', check:c=>cExact(c,'1 2 3')}
+  { id:'w4l2', title:'4.3. Обработка нескольких массивов ⭐', theory:`
+    <h2>4.3. Обработка нескольких массивов</h2>
+    <pre><code>for (int i = 0; i &lt; n; i++) {
+    c[i] = a[i] + b[i];
+}</code></pre>
+  `, tasks:[
+    {id:'t4_3_1', title:'Объединение', desc:'A={1,2,3}, B={4,5} → 1 2 3 4 5', init:'#include <stdio.h>\n\nint main() {\n    int A[] = {1,2,3};\n    int B[] = {4,5};\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int A[] = {1,2,3};\n    int B[] = {4,5};\n    for (int i = 0; i < 3; i++) printf("%d ", A[i]);\n    for (int i = 0; i < 2; i++) printf("%d ", B[i]);\n    printf("\\n");\n    return 0;\n}', check:c=>checkExact(c,'1 2 3 4 5')},
+    {id:'t4_3_2', title:'Поэлементная сумма', desc:'A={1,2,3}, B={10,20,30} → 11 22 33', init:'#include <stdio.h>\n\nint main() {\n    int A[] = {1,2,3};\n    int B[] = {10,20,30};\n    // код\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int A[] = {1,2,3};\n    int B[] = {10,20,30};\n    for (int i = 0; i < 3; i++) {\n        printf("%d ", A[i] + B[i]);\n    }\n    printf("\\n");\n    return 0;\n}', check:c=>checkExact(c,'11 22 33')}
   ]}
 ]},
-{ id:'ch5', title:'Глава 5. Проектирование', lessons:[
-  { id:'5.1', title:'5.1. Экстремумы с условием', theory:`<p>Поиск максимума среди четных.</p>`, tasks:[
-    {id:'t5_1', title:'Максимум среди четных', desc:'{3,8,2,9,4} → 8.', init:'#include <stdio.h>\nint main(){\n int a[]={3,8,2,9,4}, m=-1;\n // код\n printf("%d\\n",m);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n int a[]={3,8,2,9,4}, m=-1;\n for(int i=0;i<5;i++) if(a[i]%2==0 && a[i]>m) m=a[i];\n printf("%d\\n",m);\n return 0;\n}', check:c=>cExact(c,'8')}
-  ]}
-]},
-{ id:'ch6', title:'Глава 6. Текст и структуры', lessons:[
-  { id:'6.1', title:'6.1. Структуры', theory:`<p>Struct в C.</p>`, tasks:[
-    {id:'t6_1', title:'Студенты', desc:'Создайте структуру Student, задайте имя "Ivan" и оценку 5. Выведите "Ivan 5".', init:'#include <stdio.h>\n#include <string.h>\nstruct Student { char name[50]; int grade; };\nint main(){\n // код\n return 0;\n}', sol:'#include <stdio.h>\n#include <string.h>\nstruct Student { char name[50]; int grade; };\nint main(){\n struct Student s;\n strcpy(s.name, "Ivan");\n s.grade = 5;\n printf("%s %d\\n", s.name, s.grade);\n return 0;\n}', check:c=>cExact(c,'Ivan 5')}
-  ]},
-  { id:'6.2', title:'6.2. Обработка текста', theory:`<p>Строки (char[]).</p>`, tasks:[
-    {id:'t6_2', title:'Длина строки', desc:'Найдите длину строки "Hello" (без string.h).', init:'#include <stdio.h>\nint main(){\n char str[]="Hello";\n int len=0;\n // код\n printf("%d\\n",len);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n char str[]="Hello";\n int len=0;\n while(str[len]!=\'\\0\') len++;\n printf("%d\\n",len);\n return 0;\n}', check:c=>cExact(c,'5')}
-  ]}
-]},
-{ id:'ch7-8', title:'Глава 7-8. ООП (C)', lessons:[
-  { id:'7.1', title:'7.1. Эмуляция ООП', theory:`<p>В C нет классов, но есть структуры.</p>`, tasks:[
-    {id:'t7_1', title:'Массив структур', desc:'Найдите сумму оценок двух студентов.', init:'#include <stdio.h>\nstruct Student { int grade; };\nint main(){\n struct Student s[2] = {{4}, {5}};\n int sum=0;\n // код\n printf("%d\\n",sum);\n return 0;\n}', sol:'#include <stdio.h>\nstruct Student { int grade; };\nint main(){\n struct Student s[2] = {{4}, {5}};\n int sum=0;\n for(int i=0;i<2;i++) sum+=s[i].grade;\n printf("%d\\n",sum);\n return 0;\n}', check:c=>cExact(c,'9')}
-  ]}
-]},
-{ id:'ch9', title:'Глава 9. Сложные задачи', lessons:[
-  { id:'9.5', title:'9.5. Рекурсия', theory:`<p>Функция вызывает саму себя.</p>`, tasks:[
-    {id:'t9_1', title:'Факториал (рекурсия)', desc:'Напишите рекурсивную функцию факториала. 5! = 120.', init:'#include <stdio.h>\nint fact(int n){\n // код\n}\nint main(){\n printf("%d\\n", fact(5));\n return 0;\n}', sol:'#include <stdio.h>\nint fact(int n){\n if(n<=1) return 1;\n return n * fact(n-1);\n}\nint main(){\n printf("%d\\n", fact(5));\n return 0;\n}', check:c=>cExact(c,'120')}
-  ]},
-  { id:'9.3', title:'9.3. Ряды (Разложение)', theory:`<p>Вычисление суммы ряда.</p>`, tasks:[
-    {id:'t9_2', title:'Сумма 1/n', desc:'Сумма 1 + 1/2 + 1/3 + 1/4. Выведите с 2 знаками (2.08).', init:'#include <stdio.h>\nint main(){\n double sum=0;\n // код\n printf("%.2f\\n",sum);\n return 0;\n}', sol:'#include <stdio.h>\nint main(){\n double sum=0;\n for(int i=1;i<=4;i++) sum += 1.0/i;\n printf("%.2f\\n",sum);\n return 0;\n}', check:c=>cExact(c,'2.08')}
+
+{ id:'km', title:'📦 КМ (Массивы)', lessons:[
+  { id:'km1', title:'КМ1 · Максимум и сумма', theory:`<h2>КМ1</h2><p>Найдите сумму и максимум массива {5,2,9,1,7}.</p>`, tasks:[
+    {id:'km_1', title:'Сумма и максимум', desc:'Выведите: сумму (24) и максимум (9) через пробел.', init:'#include <stdio.h>\n\nint main() {\n    int a[] = {5,2,9,1,7};\n    int sum = 0, mx = a[0];\n    // код\n    printf("%d %d\\n", sum, mx);\n    return 0;\n}', sol:'#include <stdio.h>\n\nint main() {\n    int a[] = {5,2,9,1,7};\n    int sum = 0, mx = a[0];\n    for (int i = 0; i < 5; i++) {\n        sum += a[i];\n        if (a[i] > mx) mx = a[i];\n    }\n    printf("%d %d\\n", sum, mx);\n    return 0;\n}', check:c=>checkExact(c,'24 9')}
   ]}
 ]}
 ]};
 
-// === ЛОГИКА ===
-let state = { user: null, id: null, comp: {}, code: {}, reg: false, loading: false };
-const $ = id => document.getElementById(id);
+// ============================================================
+// ЛОГИКА
+// ============================================================
+let state={currentUser:null,currentLessonId:null,completed:{},code:{},register:false,isAdmin:false,saveTimer:null,loading:false};
+const $=id=>document.getElementById(id);
 
-async function save() {
-  if (!state.user || state.loading) return;
-  try { await setDoc(doc(db, 'users', state.user.uid), { email: state.user.email, completed: state.comp, code: state.code, updatedAt: serverTimestamp() }, { merge: true }); } catch(e) {}
-}
-async function load() {
-  if (!state.user) return; state.loading = true;
-  try {
-    const snap = await getDoc(doc(db, 'users', state.user.uid));
-    if (snap.exists()) { state.comp = snap.data().completed || {}; state.code = snap.data().code || {}; }
-  } catch(e) {} state.loading = false;
-}
-
-function updateAuthUI() {
-  $('auth-title').textContent = state.reg ? 'Регистрация' : 'Вход';
-  $('auth-submit').textContent = state.reg ? 'Зарегистрироваться' : 'Войти';
-  $('toggle-text').textContent = state.reg ? 'Уже есть аккаунт?' : 'Нет аккаунта?';
-  $('toggle-auth').textContent = state.reg ? 'Войти' : 'Зарегистрироваться';
+async function saveCloud(){
+  if(!state.currentUser||state.loading) return;
+  const t=$('saving-toast'); t.classList.add('show');
+  try{
+    await setDoc(doc(db,'users',state.currentUser.uid),{
+      email:state.currentUser.email, completed:state.completed, code:state.code, updatedAt:serverTimestamp()
+    },{merge:true});
+  }catch(e){console.error(e);}
+  clearTimeout(state.saveTimer);
+  state.saveTimer=setTimeout(()=>t.classList.remove('show'),1200);
 }
 
-$('auth-form').addEventListener('submit', async e => {
+async function loadCloud(){
+  if(!state.currentUser) return;
+  state.loading=true;
+  try{
+    const snap=await getDoc(doc(db,'users',state.currentUser.uid));
+    if(snap.exists()){ state.completed=snap.data().completed||{}; state.code=snap.data().code||{}; }
+    try{
+      const adminSnap=await getDoc(doc(db,'config','admins'));
+      if(adminSnap.exists()){
+        state.isAdmin=adminSnap.data().emails.map(e=>e.toLowerCase()).includes(state.currentUser.email.toLowerCase());
+      }
+    }catch(e){}
+  }catch(e){console.error(e);}
+  state.loading=false;
+}
+
+function updateAuthUI(){
+  $('auth-title').textContent=state.register?'Регистрация':'Вход';
+  $('auth-submit').textContent=state.register?'Зарегистрироваться':'Войти';
+  $('toggle-text').textContent=state.register?'Уже есть аккаунт?':'Нет аккаунта?';
+  $('toggle-auth').textContent=state.register?'Войти':'Зарегистрироваться';
+}
+
+function translateErr(code){
+  return {'auth/invalid-email':'Некорректный email.','auth/user-not-found':'Пользователь не найден.','auth/wrong-password':'Неверный пароль.','auth/invalid-credential':'Неверный email или пароль.','auth/email-already-in-use':'Email уже зарегистрирован.','auth/weak-password':'Пароль слишком слабый (мин. 6).','auth/unauthorized-domain':'Домен не добавлен в Firebase.'}[code]||('Ошибка: '+code);
+}
+
+$('auth-form').addEventListener('submit',async e=>{
   e.preventDefault();
-  const email = $('email').value, pass = $('password').value;
-  const errDiv = $('auth-error');
-  errDiv.classList.remove('show');
-  $('auth-submit').disabled = true;
-  $('auth-submit').textContent = 'Загрузка...';
-  
-  try {
-    if (state.reg) await createUserWithEmailAndPassword(auth, email, pass);
-    else await signInWithEmailAndPassword(auth, email, pass);
-  } catch(err) {
-    errDiv.textContent = 'Ошибка: ' + (err.code || err.message);
-    errDiv.classList.add('show');
-    $('auth-submit').disabled = false;
-    updateAuthUI();
+  const email=$('email').value.trim(), pass=$('password').value;
+  const btn=$('auth-submit'); btn.disabled=true; btn.textContent='Загрузка…';
+  try{
+    if(state.register) await createUserWithEmailAndPassword(auth,email,pass);
+    else await signInWithEmailAndPassword(auth,email,pass);
+  }catch(err){
+    const el=$('auth-error'); el.textContent=translateErr(err.code); el.classList.add('show');
+    btn.disabled=false; updateAuthUI();
+    setTimeout(()=>el.classList.remove('show'), 5000);
   }
 });
-$('toggle-auth').addEventListener('click', e => { e.preventDefault(); state.reg = !state.reg; updateAuthUI(); });
+$('toggle-auth').addEventListener('click',e=>{e.preventDefault();state.register=!state.register;updateAuthUI();});
 
-onAuthStateChanged(auth, async u => {
-  if (u) {
-    state.user = u; $('user-email').textContent = u.email; await load();
-    $('auth-screen').style.display = 'none'; $('app-screen').classList.add('show');
-    render();
-    // Автоматически загружаем первый урок при входе
-    if (courseData.modules.length > 0 && courseData.modules[0].lessons.length > 0) {
-      loadLesson(courseData.modules[0].lessons[0].id);
-    }
-  } else {
-    state.user = null; state.comp = {}; state.code = {};
-    $('auth-screen').style.display = 'flex'; $('app-screen').classList.remove('show');
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    state.currentUser=user; $('user-email').textContent=user.email;
+    await loadCloud();
+    $('auth-screen').style.display='none'; $('app-screen').classList.add('show');
+    renderApp();
+  }else{
+    state.currentUser=null; state.completed={}; state.code={}; state.isAdmin=false;
+    $('auth-screen').style.display='flex'; $('app-screen').classList.remove('show');
+    $('admin-link-container').innerHTML=''; updateAuthUI();
   }
 });
-async function logout() { if(confirm('Выйти?')) await signOut(auth); }
 
-function render() {
-  const nav = $('nav-list'); nav.innerHTML = '';
-  courseData.modules.forEach(m => {
-    nav.innerHTML += `<div class="nav-module">${m.title}</div>`;
-    m.lessons.forEach(l => {
-      const a = document.createElement('a'); a.href = '#'; a.textContent = l.title;
-      if (state.id === l.id) a.classList.add('active');
-      if (state.comp[l.id]) a.classList.add('completed');
-      a.onclick = e => { e.preventDefault(); loadLesson(l.id); };
-      const li = document.createElement('li'); li.className = 'nav-item'; li.appendChild(a); nav.appendChild(li);
+async function logout(){ if(confirm('Выйти?')) await signOut(auth); }
+
+function updateProgress(){
+  let total=0, done=0;
+  courseData.modules.forEach(m=>m.lessons.forEach(l=>{total++; if(state.completed[l.id]) done++;}));
+  const p=total?Math.round(done/total*100):0;
+  $('progress-percent').textContent=p+'%'; $('progress-fill').style.width=p+'%';
+}
+
+function renderNav(){
+  const nav=$('nav-list'); nav.innerHTML='';
+  courseData.modules.forEach(m=>{
+    const t=document.createElement('div'); t.className='nav-module-title'; t.textContent=m.title; nav.appendChild(t);
+    m.lessons.forEach(l=>{
+      const li=document.createElement('li'); li.className='nav-item';
+      const a=document.createElement('a'); a.href='#'; a.textContent=l.title;
+      if(state.currentLessonId===l.id) a.classList.add('active');
+      if(state.completed[l.id]) a.classList.add('completed');
+      a.addEventListener('click',ev=>{ev.preventDefault();loadLesson(l.id);});
+      li.appendChild(a); nav.appendChild(li);
     });
   });
-  let t = 0, d = 0; courseData.modules.forEach(m => m.lessons.forEach(l => { t++; if (state.comp[l.id]) d++; }));
-  $('progress-percent').textContent = (t ? Math.round(d/t*100) : 0) + '%';
-  $('progress-fill').style.width = (t ? Math.round(d/t*100) : 0) + '%';
-}
-
-function loadLesson(id) {
-  state.id = id; render();
-  let found;
-  courseData.modules.forEach(m => m.lessons.forEach(l => { if (l.id === id) found = l; }));
-  if (!found) return;
-  
-  try {
-    let html = `<h1>${found.title}</h1><div class="theory">${found.theory}</div>`;
-    found.tasks.forEach(t => {
-      const saved = state.code[t.id] !== undefined ? state.code[t.id] : t.init;
-      html += `<div class="task">
-        <div class="task-title">${t.title}</div>
-        <div class="task-desc">${t.desc}</div>
-        <textarea id="code-${t.id}" spellcheck="false">${saved}</textarea>
-        <div class="btn-group">
-          <button class="btn btn-primary" onclick="check('${t.id}')">▶ Проверить (C)</button>
-          <button class="btn btn-secondary" onclick="sol('${t.id}')">Решение</button>
-          <button class="btn btn-success" onclick="done('${found.id}')">✓ Пройдено</button>
-        </div>
-        <div class="result" id="res-${t.id}"></div>
-        <div class="solution" id="sol-${t.id}"><pre><code>${(t.sol || '').replace(/</g,'&lt;')}</code></pre></div>
-      </div>`;
-    });
-    $('main-content').innerHTML = html;
-    found.tasks.forEach(t => {
-      $('code-'+t.id).addEventListener('input', e => { state.code[t.id] = e.target.value; setTimeout(save, 1500); });
-    });
-  } catch (error) {
-    $('main-content').innerHTML = `<h1>Ошибка рендера</h1><p style="color:red">${error.message}</p>`;
+  const ac=$('admin-link-container'); ac.innerHTML='';
+  if(state.isAdmin){
+    const b=document.createElement('a'); b.href='#'; b.className='admin-link'; b.textContent='👑 Админ-панель';
+    b.addEventListener('click',ev=>{ev.preventDefault();loadAdmin();}); ac.appendChild(b);
   }
 }
 
-async function check(id) {
-  let found, task;
-  courseData.modules.forEach(m => m.lessons.forEach(l => {
-    if (l.id === state.id) { found = l; task = l.tasks.find(x => x.id === id); }
-  }));
-  if (!task) return;
-  
-  const code = $('code-'+id).value; state.code[id] = code;
-  const res = $('res-'+id); res.className = 'result show'; res.textContent = '⏳ Компиляция...';
-  const r = await task.check(code);
-  if (r.success) { res.className = 'result show success'; res.textContent = '✅ ' + r.message; done(found.id, true); }
-  else { res.className = 'result show error'; res.textContent = '❌ ' + r.message; }
-  save();
+function loadLesson(id){
+  const found=findLesson(id);
+  if(!found) return;
+  state.currentLessonId=id; renderNav();
+  const main=$('main-content');
+  let html=`<h1>${found.lesson.title}</h1><div class="theory">${found.lesson.theory}</div>`;
+  found.lesson.tasks.forEach(t=>{
+    const saved=state.code[t.id]!==undefined?state.code[t.id]:t.init;
+    html+=`<div class="task" id="task-${t.id}">
+      <div class="task-title">${t.title}</div>
+      <p class="task-desc">${t.desc}</p>
+      <textarea id="code-${t.id}" spellcheck="false">${esc(saved)}</textarea>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="checkTask('${t.id}')">▶ Компилировать и проверить</button>
+        <button class="btn btn-secondary" onclick="toggleSol('${t.id}')">Показать решение</button>
+        <button class="btn btn-success" onclick="markDone('${found.lesson.id}')">✓ Отметить пройденным</button>
+      </div>
+      <div class="result" id="res-${t.id}"></div>
+      <div class="solution" id="sol-${t.id}"><pre><code>${esc(t.sol)}</code></pre></div>
+    </div>`;
+  });
+  main.innerHTML=html;
+  found.lesson.tasks.forEach(t=>{
+    const ta=$('code-'+t.id); if(!ta) return;
+    let timer;
+    ta.addEventListener('input',()=>{
+      state.code[t.id]=ta.value; clearTimeout(timer); timer=setTimeout(saveCloud,1500);
+    });
+  });
 }
-function sol(id) { $('sol-'+id).classList.toggle('show'); }
-function done(id, silent) { state.comp[id] = true; render(); save(); }
-window.check = check; window.sol = sol; window.done = done; window.logout = logout;
+
+function findLesson(id){for(let m of courseData.modules)for(let l of m.lessons)if(l.id===id)return{module:m,lesson:l};return null;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+async function checkTask(id){
+  const found=findLesson(state.currentLessonId);
+  const t=found.lesson.tasks.find(x=>x.id===id);
+  const code=$('code-'+id).value; state.code[id]=code;
+  const res=$('res-'+id); res.className='result show'; res.textContent='⏳ Отправка на сервер C...';
+  try{
+    const r=await t.check(code);
+    if(r.success){ res.className='result show success'; res.textContent='✅ '+r.message; markDone(found.lesson.id,true); }
+    else { res.className='result show error'; res.textContent='❌ '+r.message; }
+  }catch(e){ res.className='result show error'; res.textContent='❌ '+e.message; }
+  saveCloud();
+}
+
+function toggleSol(id){$('sol-'+id).classList.toggle('show');}
+function markDone(lessonId,silent){
+  state.completed[lessonId]=true; updateProgress(); renderNav(); saveCloud();
+}
+function renderApp(){ renderNav(); updateProgress(); loadLesson(courseData.modules[0].lessons[0].id); }
+
+// АДМИНКА
+async function loadAdmin(){
+  const main=$('main-content'); main.innerHTML=`<h1>👑 Админ-панель</h1><p>Загрузка…</p>`;
+  try{
+    const snap=await getDocs(collection(db,'users'));
+    let html=`<h1>👑 Админ-панель</h1><table class="admin-table"><thead><tr><th>Email</th><th>Действия</th></tr></thead><tbody>`;
+    snap.forEach(d=>{
+      const u=d.data();
+      const isMe=d.id===state.currentUser.uid;
+      html+=`<tr><td>${esc(u.email)} ${isMe?'(вы)':''}</td><td>${!isMe?`<button class="btn btn-secondary" onclick="resetUser('${d.id}')">Сбросить</button>`:'-'}</td></tr>`;
+    });
+    html+='</tbody></table>'; main.innerHTML=html;
+  }catch(e){ main.innerHTML=`<h1>Ошибка</h1><p>${e.message}</p>`; }
+}
+async function resetUser(uid){
+  if(!confirm('Сбросить прогресс?')) return;
+  try{ await updateDoc(doc(db,'users',uid),{completed:{},code:{}}); loadAdmin(); }catch(e){alert(e.message);}
+}
+
+window.checkTask=checkTask; window.toggleSol=toggleSol; window.markDone=markDone;
+window.logout=logout; window.resetUser=resetUser;
 </script>
 </body>
 </html>
