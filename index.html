@@ -22,24 +22,27 @@ body { font-family: 'Ubuntu', sans-serif; background: var(--bg); color: var(--te
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 a { color: var(--orange); text-decoration: none; }
 
-/* AUTH */
+/* ==== ЭКРАН ВХОДА ==== */
 #auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #2C001E, #77216F); padding: 24px; }
 .auth-card { background: var(--card); border-radius: 16px; padding: 40px; width: 100%; max-width: 420px; box-shadow: var(--shadow); }
-.auth-card h1 { margin-bottom: 20px; text-align: center; font-weight: 500; }
+.auth-card h1 { margin-bottom: 20px; text-align: center; font-weight: 500; border: none; padding: 0; font-size: 1.8rem; color: var(--text); }
 .field { margin-bottom: 16px; }
 .field label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--muted); }
-.field input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+.field input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; }
 .field input:focus { outline: none; border-color: var(--orange); }
+.field input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px var(--bg) inset !important; -webkit-text-fill-color: var(--text) !important; }
 .btn-auth { width: 100%; padding: 14px; background: var(--orange); color: #fff; border-radius: 8px; font-size: 1rem; font-weight: 500; margin-top: 10px; }
 .auth-toggle { text-align: center; margin-top: 20px; font-size: 0.9rem; }
 .auth-msg { padding: 10px; border-radius: 8px; font-size: 0.9rem; display: none; margin-bottom: 15px; }
-.auth-msg.error { background: #FFE5E8; color: #8B0A19; display: block; }
+.auth-msg.show { display: block; }
+.auth-msg.error { background: #FFE5E8; color: #8B0A19; border-left: 4px solid var(--danger); }
 
-/* APP */
+/* ==== ОСНОВНОЙ САЙТ ==== */
 #app-screen { display: none; }
 #app-screen.show { display: flex; }
 .sidebar { width: 320px; background: var(--dark); color: #F2F1EF; position: fixed; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 100; }
 .sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; }
+.sidebar-header h2 { color: #fff; margin: 0; }
 .theme-btn { font-size: 1.2rem; }
 .user-card { padding: 15px 20px; background: rgba(0,0,0,.2); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
 .logout-btn { background: rgba(233,84,32,.2); color: var(--orange); padding: 5px 10px; border-radius: 4px; }
@@ -52,16 +55,16 @@ a { color: var(--orange); text-decoration: none; }
 .nav-item a:hover, .nav-item a.active { background: rgba(233,84,32,.1); color: #fff; border-left-color: var(--orange); }
 .nav-item a.completed::after { content: '✓'; float: right; color: var(--orange); }
 
-/* MAIN */
-.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; width: calc(100% - 320px); }
-h1 { margin-bottom: 20px; font-weight: 500; border-left: 4px solid var(--orange); padding-left: 15px; }
-.theory { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); }
+.main-content { margin-left: 320px; padding: 40px; flex: 1; max-width: 1000px; width: calc(100% - 320px); color: var(--text); }
+.main-content h1 { margin-bottom: 20px; font-weight: 500; border-left: 4px solid var(--orange); padding-left: 15px; color: var(--text); }
+.theory { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); color: var(--text); }
 pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'Ubuntu Mono', monospace; margin: 10px 0; }
-code { font-family: 'Ubuntu Mono', monospace; background: var(--border); padding: 2px 6px; border-radius: 4px; }
-pre code { background: transparent; padding: 0; }
-.task { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+code { font-family: 'Ubuntu Mono', monospace; background: var(--border); padding: 2px 6px; border-radius: 4px; color: var(--purple); }
+[data-theme="dark"] code { color: #E2A6DD; }
+pre code { background: transparent; padding: 0; color: inherit; }
+.task { background: var(--card); padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); color: var(--text); }
 .task-title { font-weight: 500; font-size: 1.1rem; margin-bottom: 10px; color: var(--orange); }
-.task-desc { margin-bottom: 15px; font-size: 0.95rem; }
+.task-desc { margin-bottom: 15px; font-size: 0.95rem; color: var(--text); }
 textarea { width: 100%; height: 220px; padding: 15px; background: var(--pre-bg); color: var(--pre-text); border: 1px solid var(--border); border-radius: 8px; font-family: 'Ubuntu Mono', monospace; resize: vertical; }
 textarea:focus { outline: none; border-color: var(--orange); }
 .btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
@@ -99,7 +102,10 @@ textarea:focus { outline: none; border-color: var(--orange); }
     <div class="progress-wrap"><span>Прогресс: <b id="progress-percent">0%</b></span><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div></div>
     <ul class="nav-list" id="nav-list"></ul>
   </aside>
-  <main class="main-content" id="main-content"></main>
+  <main class="main-content" id="main-content">
+    <h1>Добро пожаловать!</h1>
+    <p>Выберите тему в левом меню, чтобы начать.</p>
+  </main>
 </div>
 
 <script type="module">
@@ -252,13 +258,19 @@ function updateAuthUI() {
 $('auth-form').addEventListener('submit', async e => {
   e.preventDefault();
   const email = $('email').value, pass = $('password').value;
+  const errDiv = $('auth-error');
+  errDiv.classList.remove('show');
   $('auth-submit').disabled = true;
+  $('auth-submit').textContent = 'Загрузка...';
+  
   try {
     if (state.reg) await createUserWithEmailAndPassword(auth, email, pass);
     else await signInWithEmailAndPassword(auth, email, pass);
   } catch(err) {
-    $('auth-error').textContent = err.message; $('auth-error').style.display = 'block';
+    errDiv.textContent = 'Ошибка: ' + (err.code || err.message);
+    errDiv.classList.add('show');
     $('auth-submit').disabled = false;
+    updateAuthUI();
   }
 });
 $('toggle-auth').addEventListener('click', e => { e.preventDefault(); state.reg = !state.reg; updateAuthUI(); });
@@ -268,6 +280,10 @@ onAuthStateChanged(auth, async u => {
     state.user = u; $('user-email').textContent = u.email; await load();
     $('auth-screen').style.display = 'none'; $('app-screen').classList.add('show');
     render();
+    // Автоматически загружаем первый урок при входе
+    if (courseData.modules.length > 0 && courseData.modules[0].lessons.length > 0) {
+      loadLesson(courseData.modules[0].lessons[0].id);
+    }
   } else {
     state.user = null; state.comp = {}; state.code = {};
     $('auth-screen').style.display = 'flex'; $('app-screen').classList.remove('show');
@@ -298,26 +314,30 @@ function loadLesson(id) {
   courseData.modules.forEach(m => m.lessons.forEach(l => { if (l.id === id) found = l; }));
   if (!found) return;
   
-  let html = `<h1>${found.title}</h1><div class="theory">${found.theory}</div>`;
-  found.tasks.forEach(t => {
-    const saved = state.code[t.id] !== undefined ? state.code[t.id] : t.init;
-    html += `<div class="task">
-      <div class="task-title">${t.title}</div>
-      <div class="task-desc">${t.desc}</div>
-      <textarea id="code-${t.id}" spellcheck="false">${saved}</textarea>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="check('${t.id}')">▶ Проверить (C)</button>
-        <button class="btn btn-secondary" onclick="sol('${t.id}')">Решение</button>
-        <button class="btn btn-success" onclick="done('${found.id}')">✓ Пройдено</button>
-      </div>
-      <div class="result" id="res-${t.id}"></div>
-      <div class="solution" id="sol-${t.id}"><pre><code>${t.sol.replace(/</g,'&lt;')}</code></pre></div>
-    </div>`;
-  });
-  $('main-content').innerHTML = html;
-  found.tasks.forEach(t => {
-    $('code-'+t.id).addEventListener('input', e => { state.code[t.id] = e.target.value; setTimeout(save, 1500); });
-  });
+  try {
+    let html = `<h1>${found.title}</h1><div class="theory">${found.theory}</div>`;
+    found.tasks.forEach(t => {
+      const saved = state.code[t.id] !== undefined ? state.code[t.id] : t.init;
+      html += `<div class="task">
+        <div class="task-title">${t.title}</div>
+        <div class="task-desc">${t.desc}</div>
+        <textarea id="code-${t.id}" spellcheck="false">${saved}</textarea>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="check('${t.id}')">▶ Проверить (C)</button>
+          <button class="btn btn-secondary" onclick="sol('${t.id}')">Решение</button>
+          <button class="btn btn-success" onclick="done('${found.id}')">✓ Пройдено</button>
+        </div>
+        <div class="result" id="res-${t.id}"></div>
+        <div class="solution" id="sol-${t.id}"><pre><code>${(t.sol || '').replace(/</g,'&lt;')}</code></pre></div>
+      </div>`;
+    });
+    $('main-content').innerHTML = html;
+    found.tasks.forEach(t => {
+      $('code-'+t.id).addEventListener('input', e => { state.code[t.id] = e.target.value; setTimeout(save, 1500); });
+    });
+  } catch (error) {
+    $('main-content').innerHTML = `<h1>Ошибка рендера</h1><p style="color:red">${error.message}</p>`;
+  }
 }
 
 async function check(id) {
@@ -325,6 +345,8 @@ async function check(id) {
   courseData.modules.forEach(m => m.lessons.forEach(l => {
     if (l.id === state.id) { found = l; task = l.tasks.find(x => x.id === id); }
   }));
+  if (!task) return;
+  
   const code = $('code-'+id).value; state.code[id] = code;
   const res = $('res-'+id); res.className = 'result show'; res.textContent = '⏳ Компиляция...';
   const r = await task.check(code);
