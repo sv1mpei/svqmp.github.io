@@ -218,29 +218,31 @@ else console.log("0");</code></pre>
     {id:'t2_1_1', title:'Чётное / нечётное', desc:'n=7 → "Нечетное".', init:'let n=7;\n/* код */', sol:'let n=7;\nif(n%2===0) console.log("Четное");\nelse console.log("Нечетное");', check:c=>exact(c,'Нечетное')},
     {id:'t2_1_2', title:'Знак числа', desc:'n=−5 → "отрицательное".', init:'let n=-5;\n/* код */', sol:'let n=-5;\nif(n>0) console.log("положительное");\nelse if(n<0) console.log("отрицательное");\nelse console.log("ноль");', check:c=>exact(c,'отрицательное')},
   ]},
+  
+  // === 2.2. Обработка массива с ветвлением в теле цикла ===
   { id:'w2l2', title:'2.2. Ветвление в теле цикла ⭐', theory:`
     <h2>2.2. Обработка массива с ветвлением в теле цикла</h2>
-    <p><b>Идея:</b> цикл перебирает все элементы, <code>if</code> внутри решает, что делать с каждым.</p>
+    <p><b>Идея раздела:</b> цикл <code>for</code> перебирает все элементы массива, а <code>if</code> внутри — решает, что делать с каждым.</p>
     <h3>Шаблон</h3>
     <pre><code>let sum = 0;
 for (let i = 0; i &lt; arr.length; i++) {
-    if (arr[i] % 2 === 0) {
-        sum += arr[i];
+    if (arr[i] % 2 === 0) {  // условие
+        sum += arr[i];       // действие
     }
-}
-console.log(sum);</code></pre>
+}</code></pre>
+    <p><b>Важно:</b> мы проходим массив до конца, даже если уже нашли нужные элементы. Никаких <code>break</code>!</p>
   `, tasks:[
-    {id:'t2_2_1', title:'Сумма чётных элементов', desc:'[1,2,3,4,5,6,7,8] → сумма чётных = 20.', init:'let a=[1,2,3,4,5,6,7,8],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,2,3,4,5,6,7,8],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]%2===0) s+=a[i];\nconsole.log(s);', check:c=>exact(c,20)},
-    {id:'t2_2_2', title:'Произведение положительных', desc:'[2,-3,4,-1,5] → произведение положительных = 40.', init:'let a=[2,-3,4,-1,5],p=1;\n/* код */\nconsole.log(p);', sol:'let a=[2,-3,4,-1,5],p=1;\nfor(let i=0;i<a.length;i++) if(a[i]>0) p*=a[i];\nconsole.log(p);', check:c=>exact(c,40)},
-    {id:'t2_2_3', title:'Количество кратных 3', desc:'[1,3,6,7,9,12] → 4.', init:'let a=[1,3,6,7,9,12],cnt=0;\n/* код */\nconsole.log(cnt);', sol:'let a=[1,3,6,7,9,12],cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]%3===0) cnt++;\nconsole.log(cnt);', check:c=>exact(c,4)},
-    {id:'t2_2_4', title:'Замена отрицательных на 0', desc:'[3,-2,5,-1] → [3,0,5,0].', init:'let a=[3,-2,5,-1];\n/* код */\nconsole.log(JSON.stringify(a));', sol:'let a=[3,-2,5,-1];\nfor(let i=0;i<a.length;i++) if(a[i]<0) a[i]=0;\nconsole.log(JSON.stringify(a));', check:c=>exact(c,'[3,0,5,0]')},
-    {id:'t2_2_5', title:'Сумма элементов > 3', desc:'[1,5,2,7,4,9] → 25.', init:'let a=[1,5,2,7,4,9],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,5,2,7,4,9],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>3) s+=a[i];\nconsole.log(s);', check:c=>exact(c,25)},
+    {id:'t2_2_1', title:'Сумма чётных элементов', desc:'Дан массив [1,2,3,4,5,6,7,8]. Найдите сумму только чётных элементов. Ответ: 20.', init:'let a=[1,2,3,4,5,6,7,8], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,2,3,4,5,6,7,8], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]%2===0) s+=a[i];\nconsole.log(s);', check:c=>exact(c,20)},
+    {id:'t2_2_2', title:'Произведение положительных', desc:'Дан массив [2,-3,4,-1,5]. Найдите произведение только положительных. Ответ: 40.', init:'let a=[2,-3,4,-1,5], p=1;\n/* ваш код */\nconsole.log(p);', sol:'let a=[2,-3,4,-1,5], p=1;\nfor(let i=0;i<a.length;i++) if(a[i]>0) p*=a[i];\nconsole.log(p);', check:c=>exact(c,40)},
+    {id:'t2_2_3', title:'Количество кратных 3', desc:'Дан массив [1,3,6,7,9,12]. Сосчитайте элементы, кратные 3. Ответ: 4.', init:'let a=[1,3,6,7,9,12], cnt=0;\n/* ваш код */\nconsole.log(cnt);', sol:'let a=[1,3,6,7,9,12], cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]%3===0) cnt++;\nconsole.log(cnt);', check:c=>exact(c,4)},
+    {id:'t2_2_4', title:'Замена отрицательных на 0', desc:'Дан массив [3,-2,5,-1]. Замените все отрицательные на 0. Выведите через JSON.stringify. Ответ: [3,0,5,0].', init:'let a=[3,-2,5,-1];\n/* ваш код */\nconsole.log(JSON.stringify(a));', sol:'let a=[3,-2,5,-1];\nfor(let i=0;i<a.length;i++) if(a[i]<0) a[i]=0;\nconsole.log(JSON.stringify(a));', check:c=>exact(c,'[3,0,5,0]')},
+    {id:'t2_2_5', title:'Сумма элементов > 3', desc:'Дан массив [1,5,2,7,4,9]. Найдите сумму элементов, строго больших 3. Ответ: 25.', init:'let a=[1,5,2,7,4,9], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,5,2,7,4,9], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>3) s+=a[i];\nconsole.log(s);', check:c=>exact(c,25)},
   ]},
 ]},
 
-{ id:'w3', title:'Неделя 3 · Поиск', lessons:[
-  { id:'w3l1', title:'3.1. Одномерные массивы', theory:`
-    <h2>3.1. Одномерные массивы</h2>
+{ id:'w3', title:'Неделя 3 · Поиск в массивах', lessons:[
+  { id:'w3l1', title:'3.1. Базовые операции с массивами', theory:`
+    <h2>Одномерные массивы</h2>
     <pre><code>let arr = [10, 20, 30];
 console.log(arr[0]);      // 10
 console.log(arr.length);  // 3</code></pre>
@@ -248,67 +250,74 @@ console.log(arr.length);  // 3</code></pre>
     {id:'t3_1_1', title:'Сумма элементов', desc:'[10,20,30,40,50] → 150.', init:'let a=[10,20,30,40,50],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[10,20,30,40,50],s=0;\nfor(let i=0;i<a.length;i++) s+=a[i];\nconsole.log(s);', check:c=>exact(c,150)},
     {id:'t3_1_2', title:'Максимум в массиве', desc:'[3,7,2,9,5] → 9.', init:'let a=[3,7,2,9,5],m=a[0];\n/* код */\nconsole.log(m);', sol:'let a=[3,7,2,9,5],m=a[0];\nfor(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\nconsole.log(m);', check:c=>exact(c,9)},
   ]},
-  { id:'w3l2', title:'2.4. Поиск по условию ⭐', theory:`
+
+  // === 2.4. Поиск элементов без break ===
+  { id:'w3l2', title:'2.4. Поиск элементов по условию ⭐', theory:`
     <h2>2.4. Поиск элементов, удовлетворяющих условию</h2>
-    <p><b>Отличие от 2.2:</b> ищем <b>один</b> или <b>несколько</b> нужных элементов, а не обрабатываем все подходящие.</p>
-    <h3>Приёмы</h3>
-    <ul>
-      <li><b>Первый подходящий</b> — <code>break</code> в цикле</li>
-      <li><b>Все подходящие</b> — <code>push</code> в новый массив</li>
-      <li><b>Максимум</b> — два прохода: найти max, затем искать совпадения</li>
-    </ul>
+    <p><b>Отличие от 2.2:</b> здесь мы ищем <b>первый</b> подходящий элемент или проверяем, есть ли он вообще.</p>
+    <p>⚠️ <b>Важное правило типовика:</b> в этом разделе мы <b>НЕ ИСПОЛЬЗУЕМ `break`</b>. Массив всегда просматривается до конца. Для остановки поиска используются переменные-флаги.</p>
+    <h3>Шаблон «Поиск первого» (без break)</h3>
     <pre><code>let idx = -1;
 for (let i = 0; i &lt; a.length; i++) {
-    if (a[i] &lt; 0) { idx = i; break; }
+    // если нашли, и до этого не находили (idx == -1)
+    if (a[i] &lt; 0 && idx === -1) { 
+        idx = i;
+    }
 }
 console.log(idx);</code></pre>
   `, tasks:[
-    {id:'t2_4_1', title:'Индекс первого отрицательного', desc:'[5,3,-2,7,-1] → индекс = 2.', init:'let a=[5,3,-2,7,-1],idx=-1;\n/* код */\nconsole.log(idx);', sol:'let a=[5,3,-2,7,-1],idx=-1;\nfor(let i=0;i<a.length;i++) if(a[i]<0){idx=i;break;}\nconsole.log(idx);', check:c=>exact(c,2)},
-    {id:'t2_4_2', title:'Сколько элементов = максимум', desc:'[3,7,2,7,5] → 2.', init:'let a=[3,7,2,7,5],mx=a[0],cnt=0;\n/* код */\nconsole.log(cnt);', sol:'let a=[3,7,2,7,5],mx=a[0],cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]>mx) mx=a[i];\nfor(let i=0;i<a.length;i++) if(a[i]===mx) cnt++;\nconsole.log(cnt);', check:c=>exact(c,2)},
-    {id:'t2_4_3', title:'Сумма в диапазоне [3;7]', desc:'[1,5,3,9,7,2] → 15.', init:'let a=[1,5,3,9,7,2],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,5,3,9,7,2],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>=3 && a[i]<=7) s+=a[i];\nconsole.log(s);', check:c=>exact(c,15)},
-    {id:'t2_4_4', title:'Первое кратное 7', desc:'[4,8,14,21] → 14.', init:'let a=[4,8,14,21],found=null;\n/* код */\nconsole.log(found);', sol:'let a=[4,8,14,21],found=null;\nfor(let i=0;i<a.length;i++) if(a[i]%7===0){found=a[i];break;}\nconsole.log(found);', check:c=>exact(c,14)},
-    {id:'t2_4_5', title:'Есть ли элемент 5', desc:'[1,3,5,7,9] → true.', init:'let a=[1,3,5,7,9],has=false;\n/* код */\nconsole.log(has);', sol:'let a=[1,3,5,7,9],has=false;\nfor(let i=0;i<a.length;i++) if(a[i]===5){has=true;break;}\nconsole.log(has);', check:c=>exact(c,'true')},
+    {id:'t2_4_1', title:'Индекс первого отрицательного', desc:'Массив [5,3,-2,7,-1]. Найдите индекс первого отрицательного. Ответ: 2. (Используйте проверку idx === -1 вместо break).', init:'let a=[5,3,-2,7,-1], idx=-1;\n/* ваш код */\nconsole.log(idx);', sol:'let a=[5,3,-2,7,-1], idx=-1;\nfor(let i=0;i<a.length;i++) if(a[i]<0 && idx===-1) idx=i;\nconsole.log(idx);', check:c=>exact(c,2)},
+    {id:'t2_4_2', title:'Сколько элементов = максимум', desc:'Массив [3,7,2,7,5]. Сколько элементов равны максимальному? Ответ: 2.', init:'let a=[3,7,2,7,5], mx=a[0], cnt=0;\n/* ваш код */\nconsole.log(cnt);', sol:'let a=[3,7,2,7,5], mx=a[0], cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]>mx) mx=a[i];\nfor(let i=0;i<a.length;i++) if(a[i]===mx) cnt++;\nconsole.log(cnt);', check:c=>exact(c,2)},
+    {id:'t2_4_3', title:'Сумма в диапазоне [3;7]', desc:'Массив [1,5,3,9,7,2]. Сумма элементов в диапазоне [3; 7]. Ответ: 15.', init:'let a=[1,5,3,9,7,2], s=0;\n/* ваш код */\nconsole.log(s);', sol:'let a=[1,5,3,9,7,2], s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>=3 && a[i]<=7) s+=a[i];\nconsole.log(s);', check:c=>exact(c,15)},
+    {id:'t2_4_4', title:'Первое кратное 7', desc:'Массив [4,8,14,21]. Найдите первое число, кратное 7. Ответ: 14. (Без break)', init:'let a=[4,8,14,21], found=null;\n/* ваш код */\nconsole.log(found);', sol:'let a=[4,8,14,21], found=null;\nfor(let i=0;i<a.length;i++) if(a[i]%7===0 && found===null) found=a[i];\nconsole.log(found);', check:c=>exact(c,14)},
+    {id:'t2_4_5', title:'Есть ли элемент 5', desc:'Массив [1,3,5,7,9]. Проверьте, есть ли число 5. Выведите true или false. (Без break)', init:'let a=[1,3,5,7,9], has=false;\n/* ваш код */\nconsole.log(has);', sol:'let a=[1,3,5,7,9], has=false;\nfor(let i=0;i<a.length;i++) if(a[i]===5) has=true;\nconsole.log(has);', check:c=>exact(c,'true')},
   ]},
 ]},
 
 { id:'w4', title:'Неделя 4 · Подпрограммы', lessons:[
-  { id:'w4l1', title:'4.1. Универсальная подпрограмма ⭐', theory:`
-    <h2>4.1. Подпрограмма для объектов одинаковой структуры</h2>
-    <p><b>Идея:</b> одна функция — много массивов. Пишем алгоритм один раз, применяем ко всем.</p>
+  
+  // === 4.1. Универсальные функции ===
+  { id:'w4l1', title:'4.1. Подпрограмма для разных объектов ⭐', theory:`
+    <h2>4.1. Применение подпрограммы к различным объектам</h2>
+    <p><b>Идея:</b> одна функция — много массивов. Пишем алгоритм один раз, а применяем к любому массиву.</p>
+    <p>⚠️ Функция не должна знать конкретных чисел — она принимает массив как параметр и работает с его структурой.</p>
     <pre><code>function sumArray(arr) {
     let s = 0;
     for (let i = 0; i &lt; arr.length; i++) s += arr[i];
     return s;
 }
+// Применяем к разным массивам:
 console.log(sumArray([1, 2, 3]));    // 6
 console.log(sumArray([10, 20, 30])); // 60</code></pre>
-    <p>⚠️ Функция не должна знать конкретных чисел — только структуру. <b>Чистая функция</b> не зависит от глобальных переменных.</p>
   `, tasks:[
-    {id:'t4_1_1', title:'sumArray на двух массивах', desc:'[1,2,3]→6, [10,20,30]→60. Выведи две строки.', init:'function sumArray(a){\n/* код */\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', check:c=>exactLines(c,'6\n60')},
-    {id:'t4_1_2', title:'maxArray на трёх массивах', desc:'[4,8,1]→8, [2,2,2]→2, [-5,-2,-9]→-2.', init:'function maxArray(a){\n/* код */\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', sol:'function maxArray(a){\n  let m=a[0];\n  for(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\n  return m;\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', check:c=>exactLines(c,'8\n2\n-2')},
-    {id:'t4_1_3', title:'countPositive на двух массивах', desc:'[1,-2,3,0,-5,6]→3, [-1,-2,-3]→0.', init:'function countPositive(a){\n/* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', check:c=>exactLines(c,'3\n0')},
-    {id:'t4_1_4', title:'productArray на двух массивах', desc:'[1,2,3,4]→24, [5,5]→25.', init:'function productArray(a){\n/* код */\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', sol:'function productArray(a){\n  let p=1;\n  for(let i=0;i<a.length;i++) p*=a[i];\n  return p;\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', check:c=>exactLines(c,'24\n25')},
-    {id:'t4_1_5', title:'averageArray на двух массивах', desc:'[2,4,6]→4, [10,20,30,40]→25.', init:'function averageArray(a){\n/* код */\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', sol:'function averageArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', check:c=>exactLines(c,'4\n25')},
+    {id:'t4_1_1', title:'Функция sumArray', desc:'Напишите функцию sumArray(arr) и примените к двум массивам: [1,2,3] → 6, [10,20,30] → 60. Выведите результаты (две строки).', init:'function sumArray(a){\n  /* код */\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', check:c=>exactLines(c,'6\n60')},
+    {id:'t4_1_2', title:'Функция maxArray', desc:'Напишите функцию maxArray(arr) и примените к трём массивам: [4,8,1] → 8, [2,2,2] → 2, [-5,-2,-9] → -2.', init:'function maxArray(a){\n  /* код */\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', sol:'function maxArray(a){\n  let m=a[0];\n  for(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\n  return m;\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', check:c=>exactLines(c,'8\n2\n-2')},
+    {id:'t4_1_3', title:'Функция countPositive', desc:'Напишите функцию countPositive(arr) и примените: [1,-2,3,0,-5,6] → 3, [-1,-2,-3] → 0.', init:'function countPositive(a){\n  /* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', check:c=>exactLines(c,'3\n0')},
+    {id:'t4_1_4', title:'Функция productArray', desc:'Напишите функцию productArray(arr) и примените: [1,2,3,4] → 24, [5,5] → 25.', init:'function productArray(a){\n  /* код */\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', sol:'function productArray(a){\n  let p=1;\n  for(let i=0;i<a.length;i++) p*=a[i];\n  return p;\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', check:c=>exactLines(c,'24\n25')},
+    {id:'t4_1_5', title:'Функция averageArray', desc:'Напишите функцию averageArray(arr) и примените: [2,4,6] → 4, [10,20,30,40] → 25.', init:'function averageArray(a){\n  /* код */\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', sol:'function averageArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', check:c=>exactLines(c,'4\n25')},
   ]},
+
+  // === 4.3. Обработка нескольких массивов ===
   { id:'w4l2', title:'4.3. Обработка нескольких массивов ⭐', theory:`
     <h2>4.3. Обработка нескольких массивов</h2>
     <p>Функция принимает <b>два и более</b> массива и обрабатывает их совместно.</p>
     <h3>Типовые операции</h3>
     <ul>
-      <li><b>Сравнение</b> — какой массив «больше»</li>
+      <li><b>Сравнение</b> — найти массив с большей суммой</li>
       <li><b>Объединение</b> — склеить в один</li>
-      <li><b>Пересечение</b> — общие элементы</li>
+      <li><b>Пересечение</b> — найти общие элементы</li>
       <li><b>Поэлементно</b> — C[i] = A[i] + B[i]</li>
     </ul>
     <pre><code>let C = [];
-for (let i = 0; i &lt; A.length; i++)
-    if (B.indexOf(A[i]) !== -1) C.push(A[i]);</code></pre>
+for (let i = 0; i &lt; A.length; i++) {
+    if (B.indexOf(A[i]) !== -1) C.push(A[i]);
+}</code></pre>
   `, tasks:[
-    {id:'t4_3_1', title:'Большая из двух сумм', desc:'A=[1,2,3], B=[5,10,15] → большая сумма 30.', init:'let A=[1,2,3],B=[5,10,15];\n/* код */', sol:'let A=[1,2,3],B=[5,10,15];\nfunction s(a){let r=0;for(let i=0;i<a.length;i++)r+=a[i];return r;}\nconsole.log(Math.max(s(A),s(B)));', check:c=>exact(c,30)},
-    {id:'t4_3_2', title:'Объединение двух массивов', desc:'A=[1,2,3], B=[4,5] → [1,2,3,4,5].', init:'let A=[1,2,3],B=[4,5];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3],B=[4,5];\nconsole.log(JSON.stringify([...A,...B]));', check:c=>exact(c,'[1,2,3,4,5]')},
-    {id:'t4_3_3', title:'Общие элементы', desc:'A=[1,2,3,4,5], B=[3,4,5,6,7] → [3,4,5].', init:'let A=[1,2,3,4,5],B=[3,4,5,6,7];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3,4,5],B=[3,4,5,6,7];\nlet C=[];\nfor(let i=0;i<A.length;i++) if(B.indexOf(A[i])!==-1) C.push(A[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[3,4,5]')},
-    {id:'t4_3_4', title:'Поэлементная сумма', desc:'A=[1,2,3], B=[10,20,30] → C=[11,22,33].', init:'let A=[1,2,3],B=[10,20,30];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3],B=[10,20,30];\nlet C=[];\nfor(let i=0;i<A.length;i++) C.push(A[i]+B[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[11,22,33]')},
-    {id:'t4_3_5', title:'Максимум из двух массивов', desc:'A=[3,9,1], B=[2,7,8] → 9.', init:'let A=[3,9,1],B=[2,7,8];\n/* код */\nconsole.log(/*...*/);', sol:'let A=[3,9,1],B=[2,7,8];\nlet m=A[0];\nfor(let i=0;i<A.length;i++) if(A[i]>m) m=A[i];\nfor(let i=0;i<B.length;i++) if(B[i]>m) m=B[i];\nconsole.log(m);', check:c=>exact(c,9)},
+    {id:'t4_3_1', title:'Большая из двух сумм', desc:'A=[1,2,3], B=[5,10,15]. Выведите сумму того массива, у которого она больше. Ответ: 30.', init:'let A=[1,2,3], B=[5,10,15];\n/* код */', sol:'let A=[1,2,3], B=[5,10,15];\nfunction s(a){let r=0;for(let i=0;i<a.length;i++)r+=a[i];return r;}\nconsole.log(Math.max(s(A),s(B)));', check:c=>exact(c,30)},
+    {id:'t4_3_2', title:'Объединение двух массивов', desc:'A=[1,2,3], B=[4,5]. Получите один массив [1,2,3,4,5]. Выведите через JSON.stringify.', init:'let A=[1,2,3], B=[4,5];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3], B=[4,5];\nlet C=[...A,...B];\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[1,2,3,4,5]')},
+    {id:'t4_3_3', title:'Общие элементы', desc:'A=[1,2,3,4,5], B=[3,4,5,6,7]. Выведите общие элементы [3,4,5] через JSON.stringify.', init:'let A=[1,2,3,4,5], B=[3,4,5,6,7];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3,4,5], B=[3,4,5,6,7];\nlet C=[];\nfor(let i=0;i<A.length;i++) if(B.indexOf(A[i])!==-1) C.push(A[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[3,4,5]')},
+    {id:'t4_3_4', title:'Поэлементная сумма', desc:'A=[1,2,3], B=[10,20,30]. Получите C[i] = A[i] + B[i] = [11,22,33]. Выведите через JSON.stringify.', init:'let A=[1,2,3], B=[10,20,30];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3], B=[10,20,30];\nlet C=[];\nfor(let i=0;i<A.length;i++) C.push(A[i]+B[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[11,22,33]')},
+    {id:'t4_3_5', title:'Максимум из двух массивов', desc:'A=[3,9,1], B=[2,7,8]. Найдите максимум среди всех элементов. Ответ: 9.', init:'let A=[3,9,1], B=[2,7,8];\n/* код */\nconsole.log(/*...*/);', sol:'let A=[3,9,1], B=[2,7,8];\nlet m=A[0];\nfor(let i=0;i<A.length;i++) if(A[i]>m) m=A[i];\nfor(let i=0;i<B.length;i++) if(B[i]>m) m=B[i];\nconsole.log(m);', check:c=>exact(c,9)},
   ]},
 ]},
 
