@@ -1,1133 +1,642 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Курс программирования — подготовка за месяц</title>
-    <style>
-        :root {
-            --primary: #007bff;
-            --primary-dark: #0056b3;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --dark: #343a40;
-            --light: #f8f9fa;
-            --border: #dee2e6;
-            --text: #212529;
-            --text-muted: #6c757d;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            display: flex;
-            min-height: 100vh;
-            background: var(--light);
-            color: var(--text);
-            line-height: 1.6;
-        }
-        /* Боковая панель */
-        .sidebar {
-            width: 300px;
-            background: var(--dark);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-        }
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #495057;
-        }
-        .sidebar-header h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        .progress-bar-container {
-            padding: 15px 20px;
-            background: #23272b;
-        }
-        .progress-bar {
-            height: 8px;
-            background: #495057;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .progress-text {
-            font-size: 0.85rem;
-            color: #adb5bd;
-        }
-        .sidebar-nav {
-            list-style: none;
-            padding: 10px 0;
-            flex: 1;
-        }
-        .sidebar-nav li a {
-            display: block;
-            padding: 10px 20px;
-            color: #adb5bd;
-            text-decoration: none;
-            font-size: 0.9rem;
-            border-left: 3px solid transparent;
-            transition: 0.2s;
-        }
-        .sidebar-nav li a:hover {
-            background: #495057;
-            color: #fff;
-        }
-        .sidebar-nav li a.active {
-            background: #495057;
-            color: #fff;
-            border-left-color: var(--primary);
-        }
-        .sidebar-nav li a.completed::after {
-            content: " ✓";
-            color: var(--success);
-            font-weight: bold;
-        }
-        .module-title {
-            padding: 10px 20px 5px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6c757d;
-            font-weight: 600;
-        }
-        /* Основной контент */
-        .main-content {
-            margin-left: 300px;
-            flex: 1;
-            padding: 30px 40px;
-            max-width: 1000px;
-        }
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        h2 {
-            font-size: 1.4rem;
-            margin: 25px 0 15px;
-            color: var(--primary-dark);
-        }
-        h3 {
-            font-size: 1.1rem;
-            margin: 20px 0 10px;
-            color: var(--dark);
-        }
-        p {
-            margin-bottom: 12px;
-        }
-        pre {
-            background: #282c34;
-            color: #abb2bf;
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9rem;
-            margin: 10px 0;
-        }
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.9rem;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-        .card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .task {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .task-header h4 {
-            font-size: 1rem;
-            color: var(--primary-dark);
-        }
-        .task textarea {
-            width: 100%;
-            min-height: 140px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9rem;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            resize: vertical;
-            margin: 10px 0;
-            background: #fafafa;
-        }
-        .task textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: 0.2s;
-            text-decoration: none;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-        .btn-secondary {
-            background: #6c757d;
-            color: #fff;
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        .btn-success {
-            background: var(--success);
-            color: #fff;
-        }
-        .btn-success:hover {
-            background: #218838;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .result {
-            margin-top: 12px;
-            padding: 12px;
-            border-radius: 4px;
-            font-weight: 500;
-            display: none;
-        }
-        .result.show {
-            display: block;
-        }
-        .result.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .result.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .result.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        .solution {
-            display: none;
-            margin-top: 12px;
-        }
-        .solution.show {
-            display: block;
-        }
-        .theory {
-            background: #fff;
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .badge-km {
-            background: var(--danger);
-            color: #fff;
-        }
-        .badge-week {
-            background: var(--primary);
-            color: #fff;
-        }
-        .test-cases {
-            background: #f1f3f5;
-            border-radius: 4px;
-            padding: 10px 15px;
-            margin: 10px 0;
-            font-size: 0.85rem;
-        }
-        .test-cases strong {
-            color: var(--dark);
-        }
-        .test-cases ul {
-            margin: 5px 0 0 20px;
-        }
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-        }
-        /* Скрытие/показ */
-        .hidden {
-            display: none !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Курс программирования · Ubuntu Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#E95420; --orange-hover:#C7401E; --purple:#77216F;
+  --dark:#2C001E; --grey:#F2F1EF; --grey-2:#E8E6E3;
+  --text:#2C001E; --muted:#5E2750; --success:#0E8420; --danger:#C7162B;
+  --border:#DCD9D5; --shadow-sm:0 1px 3px rgba(44,0,30,.08);
+  --shadow-md:0 4px 12px rgba(44,0,30,.1); --shadow-lg:0 12px 32px rgba(44,0,30,.18);
+  --radius:8px; --radius-sm:4px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Ubuntu',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--grey);color:var(--text);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:var(--orange);text-decoration:none}
+#auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(circle at 20% 20%,rgba(233,84,32,.25) 0%,transparent 40%),radial-gradient(circle at 80% 80%,rgba(119,33,111,.35) 0%,transparent 45%),linear-gradient(135deg,#2C001E 0%,#4A0E3C 50%,#77216F 100%);padding:24px}
+.auth-card{background:rgba(255,255,255,.98);border-radius:16px;padding:40px 36px;box-shadow:var(--shadow-lg);width:100%;max-width:420px;animation:fadeUp .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:28px}
+.auth-logo svg{width:72px;height:72px;filter:drop-shadow(0 4px 12px rgba(233,84,32,.35))}
+.auth-logo h1{font-size:1.65rem;font-weight:500;margin-top:16px;color:var(--dark)}
+.auth-logo p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.auth-form{display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.82rem;font-weight:500;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
+.field input{padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius);font-size:1rem;background:#fafafa;transition:all .2s}
+.field input:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(233,84,32,.12)}
+.btn-auth{padding:13px;background:linear-gradient(135deg,var(--orange) 0%,#F27C3E 100%);color:#fff;border-radius:var(--radius);font-size:1rem;font-weight:500;margin-top:8px;transition:all .2s;box-shadow:0 2px 8px rgba(233,84,32,.35)}
+.btn-auth:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(233,84,32,.45)}
+.btn-auth:disabled{opacity:.65;cursor:not-allowed}
+.auth-toggle{text-align:center;margin-top:20px;font-size:.88rem;color:var(--muted)}
+.auth-toggle a{font-weight:500;color:var(--orange)}
+.auth-msg{padding:10px 14px;border-radius:var(--radius);font-size:.88rem;font-weight:500;display:none}
+.auth-msg.show{display:block}
+.auth-msg.error{background:#FFE5E8;color:#8B0A19;border-left:3px solid var(--danger)}
+.auth-msg.success{background:#E8F6EA;color:#0A5C16;border-left:3px solid var(--success)}
+#app-screen{display:none;min-height:100vh}
+#app-screen.show{display:flex}
+.sidebar{width:300px;flex-shrink:0;background:linear-gradient(180deg,var(--dark) 0%,#240019 100%);color:#F2F1EF;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;border-right:1px solid rgba(255,255,255,.06);z-index:100}
+.sidebar-header{padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
+.sidebar-header svg{width:28px;height:28px;flex-shrink:0}
+.sidebar-header h2{font-size:1rem;font-weight:500}
+.user-card{padding:14px 20px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.user-card .email{font-size:.82rem;color:#B6A0B0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.logout-btn{padding:6px 12px;background:rgba(233,84,32,.15);color:#F27C3E;border:1px solid rgba(233,84,32,.3);border-radius:var(--radius-sm);font-size:.75rem;font-weight:500;transition:all .2s}
+.logout-btn:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+.progress-wrap{padding:16px 22px;background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.06)}
+.progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:#B6A0B0;margin-bottom:8px}
+.progress-label strong{color:#fff;font-weight:500}
+.progress-bar{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange) 0%,#F27C3E 100%);width:0%;transition:width .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(233,84,32,.5)}
+.nav-list{list-style:none;padding:12px 0;flex:1}
+.nav-module-title{padding:14px 22px 6px;font-size:.7rem;font-weight:700;color:#8B6A85;text-transform:uppercase;letter-spacing:.08em}
+.nav-item a{display:flex;align-items:center;gap:10px;padding:10px 22px;color:#C9B8C4;font-size:.9rem;border-left:3px solid transparent;transition:all .18s}
+.nav-item a:hover{background:rgba(233,84,32,.08);color:#fff;border-left-color:rgba(233,84,32,.4)}
+.nav-item a.active{background:rgba(233,84,32,.14);color:#fff;border-left-color:var(--orange);font-weight:500}
+.nav-item a.completed::after{content:'✓';margin-left:auto;color:var(--orange);font-weight:700}
+.admin-link{background:rgba(233,84,32,.18)!important;color:#F27C3E!important;font-weight:500!important;border-left-color:var(--orange)!important;margin:8px 12px;border-radius:6px;padding:12px 16px!important;display:block;text-align:center}
+.admin-link:hover{background:var(--orange)!important;color:#fff!important}
+.main-content{margin-left:300px;flex:1;padding:40px 48px;max-width:1000px;width:100%;min-height:100vh}
+h1{font-size:1.9rem;font-weight:500;color:var(--dark);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+h1::before{content:'';display:inline-block;width:4px;height:32px;background:var(--orange);border-radius:2px}
+h2{font-size:1.3rem;font-weight:500;color:var(--purple);margin:24px 0 14px}
+h3{font-size:1.05rem;font-weight:500;color:var(--dark);margin:18px 0 10px}
+p{margin-bottom:12px}
+.theory{background:#fff;border-radius:var(--radius);padding:24px 28px;margin:16px 0 24px;box-shadow:var(--shadow-sm);border-left:4px solid var(--orange)}
+.theory h2:first-child{margin-top:0}
+pre{background:#300A24;color:#E8DEE6;padding:16px 20px;border-radius:var(--radius);overflow-x:auto;font-family:'Ubuntu Mono',monospace;font-size:.92rem;line-height:1.55;margin:12px 0}
+code{font-family:'Ubuntu Mono',monospace;background:var(--grey-2);padding:2px 7px;border-radius:3px;font-size:.9em;color:var(--purple)}
+pre code{background:none;padding:0;color:inherit}
+.task{background:#fff;border-radius:var(--radius);padding:24px 28px;margin:20px 0;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.task-title{font-size:1.05rem;font-weight:500;color:var(--dark);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.task-title::before{content:'📝';font-size:1.1rem}
+.task-desc{color:var(--text);margin-bottom:14px;font-size:.95rem}
+.task textarea{width:100%;min-height:150px;padding:14px 16px;border:2px solid var(--border);border-radius:var(--radius);font-family:'Ubuntu Mono',monospace;font-size:.92rem;line-height:1.5;background:#FAFAF9;resize:vertical;transition:all .2s;color:var(--dark)}
+.task textarea:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(233,84,32,.1)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{padding:10px 18px;border-radius:var(--radius);font-size:.9rem;font-weight:500;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:0 2px 6px rgba(233,84,32,.3)}
+.btn-primary:hover{background:var(--orange-hover);transform:translateY(-1px)}
+.btn-secondary{background:var(--grey-2);color:var(--text)}
+.btn-secondary:hover{background:#D6D3D0}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#0A6B18}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#A01020}
+.result{margin-top:14px;padding:12px 16px;border-radius:var(--radius);font-size:.9rem;font-weight:500;display:none;white-space:pre-wrap}
+.result.show{display:block}
+.result.success{background:#E8F6EA;color:#0A5C16;border-left:4px solid var(--success)}
+.result.error{background:#FFE5E8;color:#8B0A19;border-left:4px solid var(--danger)}
+.solution{display:none;margin-top:14px}
+.solution.show{display:block}
+.saving-toast{position:fixed;top:24px;right:24px;background:var(--dark);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;font-weight:500;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(-10px);transition:all .25s;pointer-events:none;z-index:1000}
+.saving-toast.show{opacity:1;transform:translateY(0)}
+.admin-table{width:100%;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);border-collapse:collapse;margin:20px 0}
+.admin-table th,.admin-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.9rem}
+.admin-table th{background:var(--dark);color:#fff;font-weight:500;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover{background:#fafaf9}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0}
+.stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--orange)}
+.stat-card .label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+.stat-card .value{font-size:2rem;font-weight:700;color:var(--dark);margin-top:6px}
+@media(max-width:900px){.sidebar{position:relative;width:100%;height:auto}.main-content{margin-left:0;padding:24px}#app-screen.show{flex-direction:column}}
+@media(max-width:480px){.auth-card{padding:28px 22px}.main-content{padding:18px}h1{font-size:1.5rem}.btn-group{flex-direction:column}.btn{width:100%;justify-content:center}}
+</style>
 </head>
 <body>
 
-<!-- Боковая панель -->
-<aside class="sidebar">
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#E95420" stroke-width="5"/><circle cx="50" cy="50" r="22" fill="#E95420"/><circle cx="50" cy="14" r="9" fill="#E95420"/><circle cx="81" cy="68" r="9" fill="#E95420"/><circle cx="19" cy="68" r="9" fill="#E95420"/></svg>
+      <h1 id="auth-title">Вход</h1>
+      <p id="auth-subtitle">Войдите, чтобы сохранять прогресс</p>
+    </div>
+    <div id="auth-error" class="auth-msg error"></div>
+    <div id="auth-success" class="auth-msg success"></div>
+    <form id="auth-form" class="auth-form">
+      <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="password">Пароль</label><input type="password" id="password" required placeholder="Минимум 6 символов" minlength="6"></div>
+      <button type="submit" class="btn-auth" id="auth-submit">Войти</button>
+    </form>
+    <div class="auth-toggle"><span id="toggle-text">Нет аккаунта?</span> <a href="#" id="toggle-auth">Зарегистрироваться</a></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <aside class="sidebar">
     <div class="sidebar-header">
-        <h2>📘 Программирование</h2>
-        <p style="font-size: 0.8rem; color: #adb5bd; margin-top: 5px;">Подготовка за месяц</p>
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#E95420" stroke-width="5"/><circle cx="50" cy="50" r="22" fill="#E95420"/><circle cx="50" cy="14" r="9" fill="#E95420"/><circle cx="81" cy="68" r="9" fill="#E95420"/><circle cx="19" cy="68" r="9" fill="#E95420"/></svg>
+      <h2>Курс программирования</h2>
     </div>
-    <div class="progress-bar-container">
-        <div class="progress-text">Прогресс: <span id="progress-percent">0%</span></div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
+    <div class="user-card"><span class="email" id="user-email">...</span><button class="logout-btn" onclick="logout()">Выйти</button></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Прогресс</span><strong id="progress-percent">0%</strong></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
-    <ul class="sidebar-nav" id="nav-list">
-        <!-- Навигация генерируется JS -->
-    </ul>
-</aside>
+    <ul class="nav-list" id="nav-list"></ul>
+    <div id="admin-link-container"></div>
+  </aside>
+  <main class="main-content" id="main-content"></main>
+</div>
 
-<!-- Основной контент -->
-<main class="main-content" id="main-content">
-    <!-- Контент генерируется JS -->
-</main>
+<div class="saving-toast" id="saving-toast">Сохранение…</div>
 
-<script>
-    // ============================================================
-    // ДАННЫЕ КУРСА
-    // ============================================================
-    const courseData = {
-        modules: [
-            {
-                id: 'week1',
-                title: 'Неделя 1: Основы',
-                lessons: [
-                    {
-                        id: 'w1l1',
-                        title: '1.1. Вычисления по формулам',
-                        theory: `
-                            <h2>1.1. Вычисления по формулам</h2>
-                            <p>Программа — это последовательность инструкций. Простейшие программы вычисляют значения по математическим формулам.</p>
-                            <h3>Пример: вычисление выражения</h3>
-                            <p>Вычислить \( y = \frac{a + b}{c} \).</p>
-                            <pre><code>let a = 5, b = 3, c = 2;
-let y = (a + b) / c;
-console.log(y); // 4</code></pre>
-                            <h3>Важно!</h3>
-                            <ul>
-                                <li>Порядок операций: сначала умножение/деление, потом сложение/вычитание.</li>
-                                <li>Используйте скобки для изменения порядка.</li>
-                                <li>Математические функции: <code>Math.sqrt()</code>, <code>Math.sin()</code>, <code>Math.exp()</code>, <code>Math.log()</code>, <code>Math.abs()</code>.</li>
-                                <li>Константа π: <code>Math.PI</code>.</li>
-                            </ul>
-                        `,
-                        tasks: [
-                            {
-                                id: 't1_1',
-                                title: 'Задача 1.1. Формула с экспонентой и синусом',
-                                description: 'Вычислите значение функции <b>f(x) = √(e^(2.3x)) - sin(πx / (x + 2/3)) + 1.7</b> при x = 0.5. Результат должен быть примерно <b>2.45833</b>.',
-                                initialCode: 'let x = 0.5;\nlet f = // ваш код\nconsole.log(f);',
-                                solution: 'let x = 0.5;\nlet f = Math.sqrt(Math.exp(2.3 * x)) - Math.sin(Math.PI * x / (x + 2/3)) + 1.7;\nconsole.log(f);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output !== null && Math.abs(output - 2.45833) < 0.01,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'w1l2',
-                        title: '1.2. Ввод и вывод данных',
-                        theory: `
-                            <h2>1.2. Ввод и вывод данных</h2>
-                            <p>В реальных программах данные обычно вводятся пользователем. В JavaScript для ввода можно использовать <code>prompt()</code>, а для вывода — <code>console.log()</code> или <code>alert()</code>.</p>
-                            <h3>Пример</h3>
-                            <pre><code>let a = parseFloat(prompt("Введите a:"));
-let b = parseFloat(prompt("Введите b:"));
-alert("Сумма: " + (a + b));</code></pre>
-                            <p><b>Примечание:</b> В задачах на этом сайте мы используем <code>console.log()</code> для вывода результата, чтобы можно было проверить код.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 't1_2',
-                                title: 'Задача 1.2. Площадь круга',
-                                description: 'Вычислите площадь круга радиуса <b>r = 5</b> по формуле S = πr². Выведите результат в консоль. Ответ должен быть примерно <b>78.5398</b>.',
-                                initialCode: 'let r = 5;\nlet s = // ваш код\nconsole.log(s);',
-                                solution: 'let r = 5;\nlet s = Math.PI * r * r;\nconsole.log(s);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output !== null && Math.abs(output - 78.5398) < 0.1,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'week2',
-                title: 'Неделя 2: Циклы',
-                lessons: [
-                    {
-                        id: 'w2l1',
-                        title: '2.1. Условный оператор',
-                        theory: `
-                            <h2>2.1. Условный оператор</h2>
-                            <p>Позволяет выполнять разные действия в зависимости от условия.</p>
-                            <pre><code>if (x > 0) {
-    console.log("Положительное");
-} else if (x < 0) {
-    console.log("Отрицательное");
-} else {
-    console.log("Ноль");
-}</code></pre>
-                        `,
-                        tasks: [
-                            {
-                                id: 't2_1',
-                                title: 'Задача 2.1. Четное или нечетное',
-                                description: 'Напишите код, который проверяет число <b>n = 7</b>. Если оно четное, выведите "Четное", иначе — "Нечетное".',
-                                initialCode: 'let n = 7;\n// ваш код',
-                                solution: 'let n = 7;\nif (n % 2 === 0) {\n    console.log("Четное");\n} else {\n    console.log("Нечетное");\n}',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 'Нечетное',
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'w2l2',
-                        title: '2.2. Циклы и накопление сумм',
-                        theory: `
-                            <h2>2.2. Циклы и накопление сумм</h2>
-                            <p>Циклы позволяют многократно выполнять блок кода. Основные виды: <code>for</code>, <code>while</code>.</p>
-                            <h3>Пример: сумма чисел от 1 до 100</h3>
-                            <pre><code>let sum = 0;
-for (let i = 1; i <= 100; i++) {
-    sum += i;
-}
-console.log(sum); // 5050</code></pre>
-                            <h3>Накопление произведения</h3>
-                            <pre><code>let product = 1;
-for (let i = 1; i <= 5; i++) {
-    product *= i;
-}
-console.log(product); // 120</code></pre>
-                        `,
-                        tasks: [
-                            {
-                                id: 't2_2',
-                                title: 'Задача 2.2. Сумма чисел от 1 до N',
-                                description: 'Напишите код, который вычисляет сумму чисел от 1 до <b>N = 100</b>. Выведите результат в консоль. Ответ: <b>5050</b>.',
-                                initialCode: 'let N = 100;\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
-                                solution: 'let N = 100;\nlet sum = 0;\nfor (let i = 1; i <= N; i++) {\n    sum += i;\n}\nconsole.log(sum);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 5050,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            },
-                            {
-                                id: 't2_3',
-                                title: 'Задача 2.3. Табулирование функции',
-                                description: 'Выведите таблицу значений функции <b>y = x²</b> для x от 0 до 1 с шагом 0.1. Каждая строка: <code>x y</code>. Используйте <code>console.log(x, y)</code>.',
-                                initialCode: '// ваш код',
-                                solution: 'for (let x = 0; x <= 1.001; x += 0.1) {\n    console.log(x.toFixed(1), (x*x).toFixed(4));\n}',
-                                check: function(code) {
-                                    try {
-                                        let logs = [];
-                                        const originalLog = console.log;
-                                        console.log = (...args) => logs.push(args.join(' '));
-                                        eval(code);
-                                        console.log = originalLog;
-                                        // Проверяем, что выведено 11 строк
-                                        if (logs.length >= 11) {
-                                            return { success: true, message: `Выведено ${logs.length} строк. Проверьте значения.` };
-                                        } else {
-                                            return { success: false, message: `Выведено мало строк (${logs.length}). Ожидалось 11.` };
-                                        }
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'week3',
-                title: 'Неделя 3: Одномерные массивы',
-                lessons: [
-                    {
-                        id: 'w3l1',
-                        title: '3.1. Одномерные массивы',
-                        theory: `
-                            <h2>3.1. Одномерные массивы</h2>
-                            <p>Массив — это структура данных, хранящая набор элементов одного типа.</p>
-                            <pre><code>let arr = [10, 20, 30, 40, 50];
-console.log(arr[0]); // 10
-console.log(arr.length); // 5</code></pre>
-                            <h3>Типовые алгоритмы</h3>
-                            <ul>
-                                <li>Сумма элементов</li>
-                                <li>Поиск максимума/минимума</li>
-                                <li>Подсчет элементов по условию</li>
-                            </ul>
-                            <h3>Пример: сумма элементов</h3>
-                            <pre><code>let arr = [1, 2, 3, 4, 5];
-let sum = 0;
-for (let i = 0; i < arr.length; i++) {
-    sum += arr[i];
-}
-console.log(sum); // 15</code></pre>
-                        `,
-                        tasks: [
-                            {
-                                id: 't3_1',
-                                title: 'Задача 3.1. Сумма элементов массива',
-                                description: 'Дан массив <b>[10, 20, 30, 40, 50]</b>. Вычислите сумму его элементов и выведите в консоль. Ответ: <b>150</b>.',
-                                initialCode: 'let arr = [10, 20, 30, 40, 50];\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
-                                solution: 'let arr = [10, 20, 30, 40, 50];\nlet sum = 0;\nfor (let i = 0; i < arr.length; i++) {\n    sum += arr[i];\n}\nconsole.log(sum);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 150,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            },
-                            {
-                                id: 't3_2',
-                                title: 'Задача 3.2. Максимум в массиве',
-                                description: 'Дан массив <b>[3, 7, 2, 9, 5]</b>. Найдите максимальный элемент и выведите в консоль. Ответ: <b>9</b>.',
-                                initialCode: 'let arr = [3, 7, 2, 9, 5];\nlet max = arr[0];\n// ваш код\nconsole.log(max);',
-                                solution: 'let arr = [3, 7, 2, 9, 5];\nlet max = arr[0];\nfor (let i = 1; i < arr.length; i++) {\n    if (arr[i] > max) max = arr[i];\n}\nconsole.log(max);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 9,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'w3l2',
-                        title: '3.2. Функции для работы с массивами',
-                        theory: `
-                            <h2>3.2. Функции для работы с массивами</h2>
-                            <p>Функции позволяют вынести повторяющийся код в отдельный блок и использовать его многократно.</p>
-                            <h3>Пример: функция суммы массива</h3>
-                            <pre><code>function sumArray(arr) {
-    let s = 0;
-    for (let i = 0; i < arr.length; i++) {
-        s += arr[i];
+<!-- FIREBASE MODULE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoNhWX_8vGWaQl9rgFeq2Ni-YXpjMbI5Q",
+  authDomain: "mpei-aad98.firebaseapp.com",
+  projectId: "mpei-aad98",
+  storageBucket: "mpei-aad98.firebasestorage.app",
+  messagingSenderId: "1012888887163",
+  appId: "1:1012888887163:web:a9fc5cc1f928277bf327de",
+  measurementId: "G-9WMYX3J1EV"
+};
+
+const app = initializeApp(firebaseConfig);
+try { getAnalytics(app); } catch(e) { console.warn('Analytics:', e); }
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ============================================================
+// КУРС
+// ============================================================
+const courseData = { modules: [
+
+{ id:'w1', title:'Неделя 1 · Основы', lessons:[
+  { id:'w1l1', title:'1.1. Вычисления по формулам', theory:`
+    <h2>Вычисления по формулам</h2>
+    <p>Простейшая программа — последовательность инструкций, вычисляющих выражение.</p>
+    <h3>Математические функции JS</h3>
+    <pre><code>Math.sqrt(x)  // √x
+Math.cbrt(x)  // ∛x
+Math.exp(x)   // e^x
+Math.log(x)   // ln(x)
+Math.sin(x)   // sin
+Math.abs(x)   // |x|
+Math.PI       // π</code></pre>
+    <p><b>Правило:</b> сомневаетесь в порядке операций — ставьте скобки.</p>
+  `, tasks:[
+    {id:'t1_1', title:'Формула с экспонентой', desc:'f(x)=√(e^(2.3x))−sin(πx/(x+2/3))+1.7 при x=0.5. Ответ ≈2.45833.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.sqrt(Math.exp(2.3*x))-Math.sin(Math.PI*x/(x+2/3))+1.7;\nconsole.log(f);', check:c=>num(c,2.45833,0.01)},
+    {id:'t1_2', title:'Кубический корень и логарифм', desc:'f(x)=∛(x⁴)+∛(x⁴−x)+ln|x−20.5| при x=0.5. Ответ ≈4.08657.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.cbrt(Math.pow(x,4))+Math.cbrt(Math.pow(x,4)-x)+Math.log(Math.abs(x-20.5));\nconsole.log(f);', check:c=>num(c,4.08657,0.01)},
+    {id:'t1_3', title:'Тригонометрия и модуль', desc:'f(x)=√x·sin(x²/2)−1.3 при x=0.5. Ответ ≈−0.19452.', init:'let x=0.5;\nlet f=/* код */;\nconsole.log(f);', sol:'let x=0.5;\nlet f=Math.sqrt(x)*Math.sin(x*x/2)-1.3;\nconsole.log(f);', check:c=>num(c,-0.19452,0.01)},
+  ]},
+  { id:'w1l2', title:'1.2. Ввод и вывод', theory:`
+    <h2>Ввод и вывод</h2>
+    <pre><code>let a = parseFloat(prompt("a:"));
+alert("Вы ввели " + a);</code></pre>
+  `, tasks:[
+    {id:'t1_4', title:'Площадь круга', desc:'r=5. Ответ ≈78.5398.', init:'let r=5, s=/* код */;\nconsole.log(s);', sol:'let r=5, s=Math.PI*r*r;\nconsole.log(s);', check:c=>num(c,78.5398,0.1)},
+    {id:'t1_5', title:'Периметр прямоугольника', desc:'a=7, b=3. Ответ 20.', init:'let a=7,b=3,p=/* код */;\nconsole.log(p);', sol:'let a=7,b=3,p=2*(a+b);\nconsole.log(p);', check:c=>exact(c,20)},
+  ]}
+]},
+
+{ id:'w2', title:'Неделя 2 · Циклы', lessons:[
+  { id:'w2l1', title:'2.1. Условный оператор', theory:`
+    <h2>2.1. Условный оператор</h2>
+    <pre><code>if (x > 0) console.log("+");
+else if (x < 0) console.log("-");
+else console.log("0");</code></pre>
+  `, tasks:[
+    {id:'t2_1_1', title:'Чётное / нечётное', desc:'n=7 → "Нечетное".', init:'let n=7;\n/* код */', sol:'let n=7;\nif(n%2===0) console.log("Четное");\nelse console.log("Нечетное");', check:c=>exact(c,'Нечетное')},
+    {id:'t2_1_2', title:'Знак числа', desc:'n=−5 → "отрицательное".', init:'let n=-5;\n/* код */', sol:'let n=-5;\nif(n>0) console.log("положительное");\nelse if(n<0) console.log("отрицательное");\nelse console.log("ноль");', check:c=>exact(c,'отрицательное')},
+  ]},
+  { id:'w2l2', title:'2.2. Ветвление в теле цикла ⭐', theory:`
+    <h2>2.2. Обработка массива с ветвлением в теле цикла</h2>
+    <p><b>Идея:</b> цикл перебирает все элементы, <code>if</code> внутри решает, что делать с каждым.</p>
+    <h3>Шаблон</h3>
+    <pre><code>let sum = 0;
+for (let i = 0; i &lt; arr.length; i++) {
+    if (arr[i] % 2 === 0) {
+        sum += arr[i];
     }
+}
+console.log(sum);</code></pre>
+  `, tasks:[
+    {id:'t2_2_1', title:'Сумма чётных элементов', desc:'[1,2,3,4,5,6,7,8] → сумма чётных = 20.', init:'let a=[1,2,3,4,5,6,7,8],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,2,3,4,5,6,7,8],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]%2===0) s+=a[i];\nconsole.log(s);', check:c=>exact(c,20)},
+    {id:'t2_2_2', title:'Произведение положительных', desc:'[2,-3,4,-1,5] → произведение положительных = 40.', init:'let a=[2,-3,4,-1,5],p=1;\n/* код */\nconsole.log(p);', sol:'let a=[2,-3,4,-1,5],p=1;\nfor(let i=0;i<a.length;i++) if(a[i]>0) p*=a[i];\nconsole.log(p);', check:c=>exact(c,40)},
+    {id:'t2_2_3', title:'Количество кратных 3', desc:'[1,3,6,7,9,12] → 4.', init:'let a=[1,3,6,7,9,12],cnt=0;\n/* код */\nconsole.log(cnt);', sol:'let a=[1,3,6,7,9,12],cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]%3===0) cnt++;\nconsole.log(cnt);', check:c=>exact(c,4)},
+    {id:'t2_2_4', title:'Замена отрицательных на 0', desc:'[3,-2,5,-1] → [3,0,5,0].', init:'let a=[3,-2,5,-1];\n/* код */\nconsole.log(JSON.stringify(a));', sol:'let a=[3,-2,5,-1];\nfor(let i=0;i<a.length;i++) if(a[i]<0) a[i]=0;\nconsole.log(JSON.stringify(a));', check:c=>exact(c,'[3,0,5,0]')},
+    {id:'t2_2_5', title:'Сумма элементов > 3', desc:'[1,5,2,7,4,9] → 25.', init:'let a=[1,5,2,7,4,9],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,5,2,7,4,9],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>3) s+=a[i];\nconsole.log(s);', check:c=>exact(c,25)},
+  ]},
+]},
+
+{ id:'w3', title:'Неделя 3 · Поиск', lessons:[
+  { id:'w3l1', title:'3.1. Одномерные массивы', theory:`
+    <h2>3.1. Одномерные массивы</h2>
+    <pre><code>let arr = [10, 20, 30];
+console.log(arr[0]);      // 10
+console.log(arr.length);  // 3</code></pre>
+  `, tasks:[
+    {id:'t3_1_1', title:'Сумма элементов', desc:'[10,20,30,40,50] → 150.', init:'let a=[10,20,30,40,50],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[10,20,30,40,50],s=0;\nfor(let i=0;i<a.length;i++) s+=a[i];\nconsole.log(s);', check:c=>exact(c,150)},
+    {id:'t3_1_2', title:'Максимум в массиве', desc:'[3,7,2,9,5] → 9.', init:'let a=[3,7,2,9,5],m=a[0];\n/* код */\nconsole.log(m);', sol:'let a=[3,7,2,9,5],m=a[0];\nfor(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\nconsole.log(m);', check:c=>exact(c,9)},
+  ]},
+  { id:'w3l2', title:'2.4. Поиск по условию ⭐', theory:`
+    <h2>2.4. Поиск элементов, удовлетворяющих условию</h2>
+    <p><b>Отличие от 2.2:</b> ищем <b>один</b> или <b>несколько</b> нужных элементов, а не обрабатываем все подходящие.</p>
+    <h3>Приёмы</h3>
+    <ul>
+      <li><b>Первый подходящий</b> — <code>break</code> в цикле</li>
+      <li><b>Все подходящие</b> — <code>push</code> в новый массив</li>
+      <li><b>Максимум</b> — два прохода: найти max, затем искать совпадения</li>
+    </ul>
+    <pre><code>let idx = -1;
+for (let i = 0; i &lt; a.length; i++) {
+    if (a[i] &lt; 0) { idx = i; break; }
+}
+console.log(idx);</code></pre>
+  `, tasks:[
+    {id:'t2_4_1', title:'Индекс первого отрицательного', desc:'[5,3,-2,7,-1] → индекс = 2.', init:'let a=[5,3,-2,7,-1],idx=-1;\n/* код */\nconsole.log(idx);', sol:'let a=[5,3,-2,7,-1],idx=-1;\nfor(let i=0;i<a.length;i++) if(a[i]<0){idx=i;break;}\nconsole.log(idx);', check:c=>exact(c,2)},
+    {id:'t2_4_2', title:'Сколько элементов = максимум', desc:'[3,7,2,7,5] → 2.', init:'let a=[3,7,2,7,5],mx=a[0],cnt=0;\n/* код */\nconsole.log(cnt);', sol:'let a=[3,7,2,7,5],mx=a[0],cnt=0;\nfor(let i=0;i<a.length;i++) if(a[i]>mx) mx=a[i];\nfor(let i=0;i<a.length;i++) if(a[i]===mx) cnt++;\nconsole.log(cnt);', check:c=>exact(c,2)},
+    {id:'t2_4_3', title:'Сумма в диапазоне [3;7]', desc:'[1,5,3,9,7,2] → 15.', init:'let a=[1,5,3,9,7,2],s=0;\n/* код */\nconsole.log(s);', sol:'let a=[1,5,3,9,7,2],s=0;\nfor(let i=0;i<a.length;i++) if(a[i]>=3 && a[i]<=7) s+=a[i];\nconsole.log(s);', check:c=>exact(c,15)},
+    {id:'t2_4_4', title:'Первое кратное 7', desc:'[4,8,14,21] → 14.', init:'let a=[4,8,14,21],found=null;\n/* код */\nconsole.log(found);', sol:'let a=[4,8,14,21],found=null;\nfor(let i=0;i<a.length;i++) if(a[i]%7===0){found=a[i];break;}\nconsole.log(found);', check:c=>exact(c,14)},
+    {id:'t2_4_5', title:'Есть ли элемент 5', desc:'[1,3,5,7,9] → true.', init:'let a=[1,3,5,7,9],has=false;\n/* код */\nconsole.log(has);', sol:'let a=[1,3,5,7,9],has=false;\nfor(let i=0;i<a.length;i++) if(a[i]===5){has=true;break;}\nconsole.log(has);', check:c=>exact(c,'true')},
+  ]},
+]},
+
+{ id:'w4', title:'Неделя 4 · Подпрограммы', lessons:[
+  { id:'w4l1', title:'4.1. Универсальная подпрограмма ⭐', theory:`
+    <h2>4.1. Подпрограмма для объектов одинаковой структуры</h2>
+    <p><b>Идея:</b> одна функция — много массивов. Пишем алгоритм один раз, применяем ко всем.</p>
+    <pre><code>function sumArray(arr) {
+    let s = 0;
+    for (let i = 0; i &lt; arr.length; i++) s += arr[i];
     return s;
 }
-console.log(sumArray([1, 2, 3])); // 6</code></pre>
-                            <p><b>Статические функции</b> — это функции, которые не зависят от внешнего состояния и всегда возвращают одинаковый результат для одинаковых аргументов.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 't3_3',
-                                title: 'Задача 3.3. Функция поиска максимума',
-                                description: 'Напишите функцию <code>maxArray(arr)</code>, которая возвращает максимальный элемент массива. Проверьте на массиве <b>[4, 8, 1, 6]</b> — должно вернуться <b>8</b>.',
-                                initialCode: 'function maxArray(arr) {\n    // ваш код\n}\nconsole.log(maxArray([4, 8, 1, 6]));',
-                                solution: 'function maxArray(arr) {\n    let max = arr[0];\n    for (let i = 1; i < arr.length; i++) {\n        if (arr[i] > max) max = arr[i];\n    }\n    return max;\n}\nconsole.log(maxArray([4, 8, 1, 6]));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 8,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'week4',
-                title: 'Неделя 4: Двумерные массивы',
-                lessons: [
-                    {
-                        id: 'w4l1',
-                        title: '4.1. Двумерные массивы',
-                        theory: `
-                            <h2>4.1. Двумерные массивы</h2>
-                            <p>Двумерный массив — это массив массивов (матрица).</p>
-                            <pre><code>let matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-];
-console.log(matrix[1][2]); // 6</code></pre>
-                            <h3>Обход матрицы</h3>
-                            <pre><code>for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-        console.log(matrix[i][j]);
-    }
-}</code></pre>
-                        `,
-                        tasks: [
-                            {
-                                id: 't4_1',
-                                title: 'Задача 4.1. Сумма всех элементов матрицы',
-                                description: 'Дана матрица <b>[[1,2],[3,4]]</b>. Вычислите сумму всех элементов и выведите в консоль. Ответ: <b>10</b>.',
-                                initialCode: 'let matrix = [[1,2],[3,4]];\nlet sum = 0;\n// ваш код\nconsole.log(sum);',
-                                solution: 'let matrix = [[1,2],[3,4]];\nlet sum = 0;\nfor (let i = 0; i < matrix.length; i++) {\n    for (let j = 0; j < matrix[i].length; j++) {\n        sum += matrix[i][j];\n    }\n}\nconsole.log(sum);',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 10,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'w4l2',
-                        title: '4.2. Динамические функции и массивы',
-                        theory: `
-                            <h2>4.2. Динамические функции и массивы</h2>
-                            <p>В JavaScript памятью управляет сборщик мусора, но можно создавать массивы динамически.</p>
-                            <h3>Пример: создание массива заданной длины</h3>
-                            <pre><code>function createArray(n, value) {
-    let arr = [];
-    for (let i = 0; i < n; i++) {
-        arr.push(value);
-    }
-    return arr;
+console.log(sumArray([1, 2, 3]));    // 6
+console.log(sumArray([10, 20, 30])); // 60</code></pre>
+    <p>⚠️ Функция не должна знать конкретных чисел — только структуру. <b>Чистая функция</b> не зависит от глобальных переменных.</p>
+  `, tasks:[
+    {id:'t4_1_1', title:'sumArray на двух массивах', desc:'[1,2,3]→6, [10,20,30]→60. Выведи две строки.', init:'function sumArray(a){\n/* код */\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([1,2,3]));\nconsole.log(sumArray([10,20,30]));', check:c=>exactLines(c,'6\n60')},
+    {id:'t4_1_2', title:'maxArray на трёх массивах', desc:'[4,8,1]→8, [2,2,2]→2, [-5,-2,-9]→-2.', init:'function maxArray(a){\n/* код */\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', sol:'function maxArray(a){\n  let m=a[0];\n  for(let i=1;i<a.length;i++) if(a[i]>m) m=a[i];\n  return m;\n}\nconsole.log(maxArray([4,8,1]));\nconsole.log(maxArray([2,2,2]));\nconsole.log(maxArray([-5,-2,-9]));', check:c=>exactLines(c,'8\n2\n-2')},
+    {id:'t4_1_3', title:'countPositive на двух массивах', desc:'[1,-2,3,0,-5,6]→3, [-1,-2,-3]→0.', init:'function countPositive(a){\n/* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));\nconsole.log(countPositive([-1,-2,-3]));', check:c=>exactLines(c,'3\n0')},
+    {id:'t4_1_4', title:'productArray на двух массивах', desc:'[1,2,3,4]→24, [5,5]→25.', init:'function productArray(a){\n/* код */\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', sol:'function productArray(a){\n  let p=1;\n  for(let i=0;i<a.length;i++) p*=a[i];\n  return p;\n}\nconsole.log(productArray([1,2,3,4]));\nconsole.log(productArray([5,5]));', check:c=>exactLines(c,'24\n25')},
+    {id:'t4_1_5', title:'averageArray на двух массивах', desc:'[2,4,6]→4, [10,20,30,40]→25.', init:'function averageArray(a){\n/* код */\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', sol:'function averageArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(averageArray([2,4,6]));\nconsole.log(averageArray([10,20,30,40]));', check:c=>exactLines(c,'4\n25')},
+  ]},
+  { id:'w4l2', title:'4.3. Обработка нескольких массивов ⭐', theory:`
+    <h2>4.3. Обработка нескольких массивов</h2>
+    <p>Функция принимает <b>два и более</b> массива и обрабатывает их совместно.</p>
+    <h3>Типовые операции</h3>
+    <ul>
+      <li><b>Сравнение</b> — какой массив «больше»</li>
+      <li><b>Объединение</b> — склеить в один</li>
+      <li><b>Пересечение</b> — общие элементы</li>
+      <li><b>Поэлементно</b> — C[i] = A[i] + B[i]</li>
+    </ul>
+    <pre><code>let C = [];
+for (let i = 0; i &lt; A.length; i++)
+    if (B.indexOf(A[i]) !== -1) C.push(A[i]);</code></pre>
+  `, tasks:[
+    {id:'t4_3_1', title:'Большая из двух сумм', desc:'A=[1,2,3], B=[5,10,15] → большая сумма 30.', init:'let A=[1,2,3],B=[5,10,15];\n/* код */', sol:'let A=[1,2,3],B=[5,10,15];\nfunction s(a){let r=0;for(let i=0;i<a.length;i++)r+=a[i];return r;}\nconsole.log(Math.max(s(A),s(B)));', check:c=>exact(c,30)},
+    {id:'t4_3_2', title:'Объединение двух массивов', desc:'A=[1,2,3], B=[4,5] → [1,2,3,4,5].', init:'let A=[1,2,3],B=[4,5];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3],B=[4,5];\nconsole.log(JSON.stringify([...A,...B]));', check:c=>exact(c,'[1,2,3,4,5]')},
+    {id:'t4_3_3', title:'Общие элементы', desc:'A=[1,2,3,4,5], B=[3,4,5,6,7] → [3,4,5].', init:'let A=[1,2,3,4,5],B=[3,4,5,6,7];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3,4,5],B=[3,4,5,6,7];\nlet C=[];\nfor(let i=0;i<A.length;i++) if(B.indexOf(A[i])!==-1) C.push(A[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[3,4,5]')},
+    {id:'t4_3_4', title:'Поэлементная сумма', desc:'A=[1,2,3], B=[10,20,30] → C=[11,22,33].', init:'let A=[1,2,3],B=[10,20,30];\n/* код */\nconsole.log(JSON.stringify(/*...*/));', sol:'let A=[1,2,3],B=[10,20,30];\nlet C=[];\nfor(let i=0;i<A.length;i++) C.push(A[i]+B[i]);\nconsole.log(JSON.stringify(C));', check:c=>exact(c,'[11,22,33]')},
+    {id:'t4_3_5', title:'Максимум из двух массивов', desc:'A=[3,9,1], B=[2,7,8] → 9.', init:'let A=[3,9,1],B=[2,7,8];\n/* код */\nconsole.log(/*...*/);', sol:'let A=[3,9,1],B=[2,7,8];\nlet m=A[0];\nfor(let i=0;i<A.length;i++) if(A[i]>m) m=A[i];\nfor(let i=0;i<B.length;i++) if(B[i]>m) m=B[i];\nconsole.log(m);', check:c=>exact(c,9)},
+  ]},
+]},
+
+{ id:'km', title:'📦 Блок «Массивы» · КМ', lessons:[
+  { id:'km1', title:'КМ1 · Количество положительных', theory:`<h2>КМ1</h2><p><code>countPositive([1,-2,3,0,-5,6])</code> → 3.</p>`, tasks:[
+    {id:'km_1', title:'countPositive', desc:'[1,-2,3,0,-5,6] → 3.', init:'function countPositive(a){\n/* код */\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));', sol:'function countPositive(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]>0) c++;\n  return c;\n}\nconsole.log(countPositive([1,-2,3,0,-5,6]));', check:c=>exact(c,3)},
+  ]},
+  { id:'km2', title:'КМ2 · Сумма элементов', theory:`<h2>КМ2</h2><p><code>sumArray([5,10,15])</code> → 30.</p>`, tasks:[
+    {id:'km_2', title:'sumArray', desc:'[5,10,15] → 30.', init:'function sumArray(a){\n/* код */\n}\nconsole.log(sumArray([5,10,15]));', sol:'function sumArray(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s;\n}\nconsole.log(sumArray([5,10,15]));', check:c=>exact(c,30)},
+  ]},
+  { id:'km3', title:'КМ3 · Максимум в матрице', theory:`<h2>КМ3</h2><p><code>maxMatrix([[1,2,3],[4,9,6],[7,8,5]])</code> → 9.</p>`, tasks:[
+    {id:'km_3', title:'maxMatrix', desc:'→ 9.', init:'function maxMatrix(m){\n/* код */\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));', sol:'function maxMatrix(m){\n  let mx=m[0][0];\n  for(let i=0;i<m.length;i++) for(let j=0;j<m[i].length;j++) if(m[i][j]>mx) mx=m[i][j];\n  return mx;\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));', check:c=>exact(c,9)},
+  ]},
+  { id:'km4', title:'КМ4 · Подсчёт чётных', theory:`<h2>КМ4</h2><p><code>countEven([1,2,4,7,8])</code> → 3.</p>`, tasks:[
+    {id:'km_4', title:'countEven', desc:'[1,2,4,7,8] → 3.', init:'function countEven(a){\n/* код */\n}\nconsole.log(countEven([1,2,4,7,8]));', sol:'function countEven(a){\n  let c=0;\n  for(let i=0;i<a.length;i++) if(a[i]%2===0) c++;\n  return c;\n}\nconsole.log(countEven([1,2,4,7,8]));', check:c=>exact(c,3)},
+  ]},
+  { id:'km5', title:'КМ5 · Среднее арифметическое', theory:`<h2>КМ5</h2><p><code>average([2,4,6])</code> → 4.</p>`, tasks:[
+    {id:'km_5', title:'average', desc:'[2,4,6] → 4.', init:'function average(a){\n/* код */\n}\nconsole.log(average([2,4,6]));', sol:'function average(a){\n  let s=0;\n  for(let i=0;i<a.length;i++) s+=a[i];\n  return s/a.length;\n}\nconsole.log(average([2,4,6]));', check:c=>exact(c,4)},
+  ]},
+]},
+]};
+
+// ============================================================
+// ХЕЛПЕРЫ
+// ============================================================
+function captureLog(code){
+  let out=[]; const orig=console.log;
+  console.log=(...a)=>out.push(a.join(' '));
+  try{eval(code);}finally{console.log=orig;}
+  return out;
 }
-console.log(createArray(3, 7)); // [7, 7, 7]</code></pre>
-                            <p><b>Динамическая функция</b> — функция, которая ведет себя по-разному в зависимости от аргументов.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 't4_2',
-                                title: 'Задача 4.2. Создание массива',
-                                description: 'Напишите функцию <code>createFilledArray(n, value)</code>, которая создает массив длины <b>n</b>, заполненный значением <b>value</b>. Проверьте: <code>createFilledArray(3, 7)</code> должно вернуть <b>[7, 7, 7]</b>.',
-                                initialCode: 'function createFilledArray(n, value) {\n    // ваш код\n}\nconsole.log(JSON.stringify(createFilledArray(3, 7)));',
-                                solution: 'function createFilledArray(n, value) {\n    let arr = [];\n    for (let i = 0; i < n; i++) {\n        arr.push(value);\n    }\n    return arr;\n}\nconsole.log(JSON.stringify(createFilledArray(3, 7)));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === '[7,7,7]',
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'km',
-                title: '📦 Блок «Массивы» (КМ)',
-                lessons: [
-                    {
-                        id: 'km1',
-                        title: 'КМ. Задача 1: Количество положительных',
-                        theory: `
-                            <h2>Контрольное мероприятие: Задача 1</h2>
-                            <p>Напишите функцию <code>countPositive(arr)</code>, которая возвращает количество положительных чисел в массиве.</p>
-                            <p><b>Пример:</b> <code>countPositive([1, -2, 3, 0, -5, 6])</code> должно вернуть <b>3</b>.</p>
-                            <p><b>Внимание:</b> Это задача для сдачи КМ. Решите её самостоятельно, затем проверьте.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 'km_1',
-                                title: 'Задача 1. Количество положительных',
-                                description: 'Напишите функцию <code>countPositive(arr)</code>, которая возвращает количество положительных чисел в массиве. Проверьте на <b>[1, -2, 3, 0, -5, 6]</b> — должно быть <b>3</b>.',
-                                initialCode: 'function countPositive(arr) {\n    // ваш код\n}\nconsole.log(countPositive([1, -2, 3, 0, -5, 6]));',
-                                solution: 'function countPositive(arr) {\n    let count = 0;\n    for (let i = 0; i < arr.length; i++) {\n        if (arr[i] > 0) count++;\n    }\n    return count;\n}\nconsole.log(countPositive([1, -2, 3, 0, -5, 6]));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 3,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'km2',
-                        title: 'КМ. Задача 2: Реверс массива',
-                        theory: `
-                            <h2>Контрольное мероприятие: Задача 2</h2>
-                            <p>Напишите функцию <code>reverseArray(arr)</code>, которая возвращает новый массив — перевернутую копию исходного.</p>
-                            <p><b>Пример:</b> <code>reverseArray([1, 2, 3, 4])</code> должно вернуть <b>[4, 3, 2, 1]</b>.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 'km_2',
-                                title: 'Задача 2. Реверс массива',
-                                description: 'Напишите функцию <code>reverseArray(arr)</code>, которая возвращает новый массив — перевернутую копию. Проверьте на <b>[1,2,3,4]</b> — должно быть <b>[4,3,2,1]</b>.',
-                                initialCode: 'function reverseArray(arr) {\n    // ваш код\n}\nconsole.log(JSON.stringify(reverseArray([1,2,3,4])));',
-                                solution: 'function reverseArray(arr) {\n    let res = [];\n    for (let i = arr.length - 1; i >= 0; i--) {\n        res.push(arr[i]);\n    }\n    return res;\n}\nconsole.log(JSON.stringify(reverseArray([1,2,3,4])));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === '[4,3,2,1]',
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'km3',
-                        title: 'КМ. Задача 3: Сумма главной диагонали',
-                        theory: `
-                            <h2>Контрольное мероприятие: Задача 3</h2>
-                            <p>Напишите функцию <code>sumMainDiagonal(matrix)</code>, которая возвращает сумму элементов главной диагонали квадратной матрицы.</p>
-                            <p><b>Пример:</b> для матрицы <code>[[1,2,3],[4,5,6],[7,8,9]]</code> сумма = 1 + 5 + 9 = <b>15</b>.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 'km_3',
-                                title: 'Задача 3. Сумма главной диагонали',
-                                description: 'Напишите функцию <code>sumMainDiagonal(matrix)</code>, которая возвращает сумму элементов главной диагонали. Проверьте на <b>[[1,2,3],[4,5,6],[7,8,9]]</b> — должно быть <b>15</b>.',
-                                initialCode: 'function sumMainDiagonal(matrix) {\n    // ваш код\n}\nconsole.log(sumMainDiagonal([[1,2,3],[4,5,6],[7,8,9]]));',
-                                solution: 'function sumMainDiagonal(matrix) {\n    let sum = 0;\n    for (let i = 0; i < matrix.length; i++) {\n        sum += matrix[i][i];\n    }\n    return sum;\n}\nconsole.log(sumMainDiagonal([[1,2,3],[4,5,6],[7,8,9]]));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 15,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'km4',
-                        title: 'КМ. Задача 4: Максимум в матрице',
-                        theory: `
-                            <h2>Контрольное мероприятие: Задача 4</h2>
-                            <p>Напишите функцию <code>maxMatrix(matrix)</code>, которая возвращает максимальный элемент двумерного массива.</p>
-                            <p><b>Пример:</b> для <code>[[1,2,3],[4,9,6],[7,8,5]]</code> максимум = <b>9</b>.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 'km_4',
-                                title: 'Задача 4. Максимум в матрице',
-                                description: 'Напишите функцию <code>maxMatrix(matrix)</code>, которая возвращает максимальный элемент. Проверьте на <b>[[1,2,3],[4,9,6],[7,8,5]]</b> — должно быть <b>9</b>.',
-                                initialCode: 'function maxMatrix(matrix) {\n    // ваш код\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));',
-                                solution: 'function maxMatrix(matrix) {\n    let max = matrix[0][0];\n    for (let i = 0; i < matrix.length; i++) {\n        for (let j = 0; j < matrix[i].length; j++) {\n            if (matrix[i][j] > max) max = matrix[i][j];\n        }\n    }\n    return max;\n}\nconsole.log(maxMatrix([[1,2,3],[4,9,6],[7,8,5]]));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        return {
-                                            success: output === 9,
-                                            message: output !== null ? `Результат: ${output}` : 'Нет вывода в консоль'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        id: 'km5',
-                        title: 'КМ. Задача 5: Динамическое создание',
-                        theory: `
-                            <h2>Контрольное мероприятие: Задача 5</h2>
-                            <p>Напишите функцию <code>createRandomArray(n, min, max)</code>, которая создает массив из <b>n</b> случайных целых чисел в диапазоне [min, max].</p>
-                            <p><b>Подсказка:</b> используйте <code>Math.random()</code> и <code>Math.floor()</code>.</p>
-                        `,
-                        tasks: [
-                            {
-                                id: 'km_5',
-                                title: 'Задача 5. Случайный массив',
-                                description: 'Напишите функцию <code>createRandomArray(n, min, max)</code>, которая создает массив из n случайных целых чисел в диапазоне [min, max]. Проверьте: <code>createRandomArray(5, 1, 10)</code> — должно вернуть массив из 5 чисел от 1 до 10.',
-                                initialCode: 'function createRandomArray(n, min, max) {\n    // ваш код\n}\nconsole.log(JSON.stringify(createRandomArray(5, 1, 10)));',
-                                solution: 'function createRandomArray(n, min, max) {\n    let arr = [];\n    for (let i = 0; i < n; i++) {\n        arr.push(Math.floor(Math.random() * (max - min + 1)) + min);\n    }\n    return arr;\n}\nconsole.log(JSON.stringify(createRandomArray(5, 1, 10)));',
-                                check: function(code) {
-                                    try {
-                                        let output = null;
-                                        const originalLog = console.log;
-                                        console.log = (...args) => { output = args[0]; };
-                                        eval(code);
-                                        console.log = originalLog;
-                                        if (!output) return { success: false, message: 'Нет вывода в консоль' };
-                                        let arr = JSON.parse(output);
-                                        let ok = Array.isArray(arr) && arr.length === 5 && arr.every(v => Number.isInteger(v) && v >= 1 && v <= 10);
-                                        return {
-                                            success: ok,
-                                            message: ok ? 'Массив корректен' : 'Массив не соответствует условию'
-                                        };
-                                    } catch (e) {
-                                        return { success: false, message: 'Ошибка: ' + e.message };
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
+function exact(code, expected){
+  try{
+    let out=captureLog(code).join('\n').trim();
+    let ok=out===String(expected).trim();
+    return {success:ok, message:ok?'Правильно!':`Ожидалось: ${expected}\nПолучено: ${out}`};
+  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
+}
+function exactLines(code, expected){
+  try{
+    let out=captureLog(code).join('\n').trim();
+    let ok=out===String(expected).trim();
+    return {success:ok, message:ok?'Правильно!':`Ожидалось:\n${expected}\nПолучено:\n${out}`};
+  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
+}
+function num(code, expected, eps){
+  try{
+    let out=captureLog(code)[0];
+    let n=parseFloat(out);
+    if(isNaN(n)) return{success:false,message:'Нет числа'};
+    let ok=Math.abs(n-expected)<eps;
+    return{success:ok, message:ok?`Правильно! ${n}`:`Ожидалось ≈${expected}, получено ${n}`};
+  }catch(e){return{success:false,message:'Ошибка: '+e.message};}
+}
 
-    // ============================================================
-    // ЛОГИКА ПРИЛОЖЕНИЯ
-    // ============================================================
+// ============================================================
+// СОСТОЯНИЕ
+// ============================================================
+let state={currentUser:null,currentLessonId:null,completed:{},code:{},register:false,isAdmin:false,saveTimer:null,loading:false};
+const $=id=>document.getElementById(id);
+const totalLessons=()=>courseData.modules.reduce((s,m)=>s+m.lessons.length,0);
 
-    // Состояние
-    let state = {
-        currentLessonId: null,
-        completed: JSON.parse(localStorage.getItem('course_completed') || '{}')
-    };
-
-    // Сохранение прогресса
-    function saveProgress() {
-        localStorage.setItem('course_completed', JSON.stringify(state.completed));
-        updateProgress();
+// ============================================================
+// ОБЛАКО
+// ============================================================
+async function saveCloud(){
+  if(!state.currentUser||state.loading) return;
+  const t=$('saving-toast');
+  t.textContent='Сохранение…'; t.classList.add('show');
+  try{
+    await setDoc(doc(db,'users',state.currentUser.uid),{
+      email:state.currentUser.email,
+      completed:state.completed,
+      code:state.code,
+      updatedAt:serverTimestamp()
+    },{merge:true});
+  }catch(e){console.error('save:',e);}
+  clearTimeout(state.saveTimer);
+  state.saveTimer=setTimeout(()=>t.classList.remove('show'),1200);
+}
+async function loadCloud(){
+  if(!state.currentUser) return;
+  state.loading=true;
+  try{
+    const snap=await getDoc(doc(db,'users',state.currentUser.uid));
+    if(snap.exists()){
+      const d=snap.data();
+      state.completed=d.completed||{};
+      state.code=d.code||{};
     }
+    // проверка на админа
+    try{
+      const adminSnap=await getDoc(doc(db,'config','admins'));
+      if(adminSnap.exists()){
+        const emails=adminSnap.data().emails||[];
+        state.isAdmin=emails.map(e=>e.toLowerCase()).includes((state.currentUser.email||'').toLowerCase());
+      }
+    }catch(e){console.warn('admin check:',e);}
+  }catch(e){console.error('load:',e);}
+  state.loading=false;
+}
 
-    // Обновление прогресс-бара
-    function updateProgress() {
-        let total = 0;
-        let done = 0;
-        courseData.modules.forEach(m => {
-            m.lessons.forEach(l => {
-                total++;
-                if (state.completed[l.id]) done++;
-            });
-        });
-        let percent = total > 0 ? Math.round((done / total) * 100) : 0;
-        document.getElementById('progress-percent').textContent = percent + '%';
-        document.getElementById('progress-fill').style.width = percent + '%';
-    }
+// ============================================================
+// AUTH UI
+// ============================================================
+function updateAuthUI(){
+  $('auth-title').textContent=state.register?'Регистрация':'Вход';
+  $('auth-subtitle').textContent=state.register?'Создайте аккаунт для сохранения прогресса':'Войдите, чтобы сохранять прогресс';
+  $('auth-submit').textContent=state.register?'Зарегистрироваться':'Войти';
+  $('toggle-text').textContent=state.register?'Уже есть аккаунт?':'Нет аккаунта?';
+  $('toggle-auth').textContent=state.register?'Войти':'Зарегистрироваться';
+}
+function authMsg(el,msg,type){el.textContent=msg;el.className='auth-msg '+type+' show';setTimeout(()=>el.classList.remove('show'),5000);}
+function translateErr(code){
+  return {'auth/invalid-email':'Некорректный email.','auth/user-not-found':'Пользователь не найден.','auth/wrong-password':'Неверный пароль.','auth/invalid-credential':'Неверный email или пароль.','auth/email-already-in-use':'Email уже зарегистрирован.','auth/weak-password':'Пароль слишком слабый (мин. 6).','auth/too-many-requests':'Слишком много попыток.','auth/network-request-failed':'Проблема с сетью.','auth/operation-not-allowed':'Email/Password не включён в Firebase.','auth/unauthorized-domain':'Домен не добавлен в Firebase (Authorized domains).','auth/configuration-not-found':'Firebase не настроен.'}[code]||('Ошибка: '+code);
+}
+$('auth-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=$('email').value.trim(), pass=$('password').value;
+  const btn=$('auth-submit'); btn.disabled=true; btn.textContent='Загрузка…';
+  try{
+    if(state.register) await createUserWithEmailAndPassword(auth,email,pass);
+    else await signInWithEmailAndPassword(auth,email,pass);
+  }catch(err){
+    authMsg($('auth-error'),translateErr(err.code),'error');
+    btn.disabled=false; updateAuthUI();
+  }
+});
+$('toggle-auth').addEventListener('click',e=>{e.preventDefault();state.register=!state.register;updateAuthUI();});
 
-    // Поиск урока по id
-    function findLesson(id) {
-        for (let m of courseData.modules) {
-            for (let l of m.lessons) {
-                if (l.id === id) return { module: m, lesson: l };
-            }
-        }
-        return null;
-    }
+// ============================================================
+// OBSERVER
+// ============================================================
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    state.currentUser=user;
+    $('user-email').textContent=user.email;
+    await loadCloud();
+    $('auth-screen').style.display='none';
+    $('app-screen').classList.add('show');
+    renderApp();
+  }else{
+    state.currentUser=null; state.completed={}; state.code={}; state.isAdmin=false;
+    $('auth-screen').style.display='flex';
+    $('app-screen').classList.remove('show');
+    $('admin-link-container').innerHTML='';
+    updateAuthUI();
+  }
+});
+async function logout(){ if(!confirm('Выйти?')) return; await signOut(auth); }
 
-    // Рендер навигации
-    function renderNav() {
-        const nav = document.getElementById('nav-list');
-        nav.innerHTML = '';
-        courseData.modules.forEach(m => {
-            let moduleTitle = document.createElement('div');
-            moduleTitle.className = 'module-title';
-            moduleTitle.textContent = m.title;
-            nav.appendChild(moduleTitle);
+// ============================================================
+// APP UI
+// ============================================================
+function updateProgress(){
+  let total=0, done=0;
+  courseData.modules.forEach(m=>m.lessons.forEach(l=>{total++; if(state.completed[l.id]) done++;}));
+  const p=total?Math.round(done/total*100):0;
+  $('progress-percent').textContent=p+'%';
+  $('progress-fill').style.width=p+'%';
+}
+function renderNav(){
+  const nav=$('nav-list'); nav.innerHTML='';
+  courseData.modules.forEach(m=>{
+    const t=document.createElement('div'); t.className='nav-module-title'; t.textContent=m.title; nav.appendChild(t);
+    m.lessons.forEach(l=>{
+      const li=document.createElement('li'); li.className='nav-item';
+      const a=document.createElement('a'); a.href='#'; a.textContent=l.title;
+      if(state.currentLessonId===l.id) a.classList.add('active');
+      if(state.completed[l.id]) a.classList.add('completed');
+      a.addEventListener('click',ev=>{ev.preventDefault();loadLesson(l.id);});
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+  // кнопка админа
+  const ac=$('admin-link-container');
+  ac.innerHTML='';
+  if(state.isAdmin){
+    const b=document.createElement('a');
+    b.href='#'; b.className='admin-link'; b.textContent='👑 Админ-панель';
+    b.addEventListener('click',ev=>{ev.preventDefault();loadAdmin();});
+    ac.appendChild(b);
+  }
+}
+function loadLesson(id){
+  const found=findLesson(id);
+  if(!found) return;
+  state.currentLessonId=id;
+  renderNav();
+  const main=$('main-content');
+  let html=`<h1>${found.lesson.title}</h1><div class="theory">${found.lesson.theory}</div>`;
+  found.lesson.tasks.forEach(t=>{
+    const saved=state.code[t.id]!==undefined?state.code[t.id]:t.init;
+    html+=`<div class="task" id="task-${t.id}">
+      <div class="task-title">${t.title}</div>
+      <p class="task-desc">${t.desc}</p>
+      <textarea id="code-${t.id}" spellcheck="false">${esc(saved)}</textarea>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="checkTask('${t.id}')">▶ Проверить</button>
+        <button class="btn btn-secondary" onclick="toggleSol('${t.id}')">Показать решение</button>
+        <button class="btn btn-success" onclick="markDone('${found.lesson.id}')">✓ Отметить пройденным</button>
+      </div>
+      <div class="result" id="res-${t.id}"></div>
+      <div class="solution" id="sol-${t.id}"><pre><code>${esc(t.sol)}</code></pre></div>
+    </div>`;
+  });
+  main.innerHTML=html;
+  found.lesson.tasks.forEach(t=>{
+    const ta=$('code-'+t.id); if(!ta) return;
+    let timer;
+    ta.addEventListener('input',()=>{
+      state.code[t.id]=ta.value;
+      clearTimeout(timer);
+      timer=setTimeout(saveCloud,1500);
+    });
+  });
+}
+function findLesson(id){for(let m of courseData.modules)for(let l of m.lessons)if(l.id===id)return{module:m,lesson:l};return null;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function checkTask(id){
+  const found=findLesson(state.currentLessonId);
+  const t=found.lesson.tasks.find(x=>x.id===id);
+  const code=$('code-'+id).value; state.code[id]=code;
+  const res=$('res-'+id); res.className='result show';
+  try{
+    const r=t.check(code);
+    if(r.success){res.className='result show success';res.textContent='✅ '+r.message;markDone(found.lesson.id,true);}
+    else{res.className='result show error';res.textContent='❌ '+r.message;}
+  }catch(e){res.className='result show error';res.textContent='❌ '+e.message;}
+  saveCloud();
+}
+function toggleSol(id){$('sol-'+id).classList.toggle('show');}
+function markDone(lessonId,silent){
+  state.completed[lessonId]=true;
+  updateProgress(); renderNav(); saveCloud();
+  if(!silent){const t=$('saving-toast');t.textContent='Урок пройден ✓';t.classList.add('show');clearTimeout(state.saveTimer);state.saveTimer=setTimeout(()=>t.classList.remove('show'),1500);}
+}
+function renderApp(){ renderNav(); updateProgress(); loadLesson(courseData.modules[0].lessons[0].id); }
 
-            m.lessons.forEach(l => {
-                let li = document.createElement('li');
-                let a = document.createElement('a');
-                a.href = '#';
-                a.textContent = l.title;
-                a.dataset.lessonId = l.id;
-                if (state.currentLessonId === l.id) a.classList.add('active');
-                if (state.completed[l.id]) a.classList.add('completed');
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    loadLesson(l.id);
-                });
-                li.appendChild(a);
-                nav.appendChild(li);
-            });
-        });
-    }
+// ============================================================
+// АДМИН-ПАНЕЛЬ (ROOT)
+// ============================================================
+async function loadAdmin(){
+  const main=$('main-content');
+  main.innerHTML=`<h1>👑 Админ-панель</h1><p>Загрузка пользователей…</p>`;
+  try{
+    const snap=await getDocs(collection(db,'users'));
+    const users=[];
+    snap.forEach(d=>users.push({uid:d.id, ...d.data()}));
+    users.sort((a,b)=>{
+      const ta=a.updatedAt?.seconds||0, tb=b.updatedAt?.seconds||0;
+      return tb-ta;
+    });
+    const total=totalLessons();
+    const avgProgress=users.length?Math.round(users.reduce((s,u)=>{
+      const done=Object.keys(u.completed||{}).length;
+      return s+(done/total*100);
+    },0)/users.length):0;
+    const activeToday=users.filter(u=>{
+      const t=u.updatedAt?.seconds||0;
+      return Date.now()/1000-t<86400;
+    }).length;
 
-    // Загрузка урока
-    function loadLesson(id) {
-        let found = findLesson(id);
-        if (!found) return;
-        state.currentLessonId = id;
-        renderNav();
+    let html=`
+      <h1>👑 Админ-панель</h1>
+      <p style="color:var(--muted);margin-bottom:20px">Полный доступ ко всем пользователям. Только для администраторов.</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="label">Всего пользователей</div><div class="value">${users.length}</div></div>
+        <div class="stat-card"><div class="label">Средний прогресс</div><div class="value">${avgProgress}%</div></div>
+        <div class="stat-card"><div class="label">Активны за сутки</div><div class="value">${activeToday}</div></div>
+        <div class="stat-card"><div class="label">Уроков в курсе</div><div class="value">${total}</div></div>
+      </div>
+      <h2>Пользователи</h2>
+      <table class="admin-table">
+        <thead><tr><th>Email</th><th>Прогресс</th><th>Уроков</th><th>Последняя активность</th><th>Действия</th></tr></thead>
+        <tbody>`;
+    users.forEach(u=>{
+      const done=Object.keys(u.completed||{}).length;
+      const pct=Math.round(done/total*100);
+      const dt=u.updatedAt?.toDate?.()||null;
+      const dateStr=dt?dt.toLocaleString('ru-RU'):'—';
+      const isMe=u.uid===state.currentUser.uid;
+      html+=`<tr>
+        <td>${esc(u.email||'—')}${isMe?' <span style="color:var(--orange);font-size:.75rem">(вы)</span>':''}</td>
+        <td><b>${pct}%</b></td>
+        <td>${done} / ${total}</td>
+        <td style="font-size:.82rem;color:var(--muted)">${dateStr}</td>
+        <td>
+          ${!isMe?`<button class="btn btn-danger" style="padding:6px 12px;font-size:.8rem" onclick="resetUser('${u.uid}','${esc(u.email||'')}')">Сбросить прогресс</button>`:'<span style="color:var(--muted);font-size:.82rem">—</span>'}
+        </td>
+      </tr>`;
+    });
+    html+=`</tbody></table>
+      <div class="theory" style="margin-top:24px">
+        <h3>⚠️ Что можно и нельзя</h3>
+        <ul>
+          <li>✅ <b>Смотреть</b> прогресс любого пользователя</li>
+          <li>✅ <b>Сбрасывать</b> прогресс (обнуляет Firestore-документ)</li>
+          <li>❌ <b>Удалять аккаунт</b> — только через Firebase Console (Authentication)</li>
+          <li>❌ <b>Менять пароль</b> другого пользователя — только он сам или через консоль</li>
+        </ul>
+      </div>`;
+    main.innerHTML=html;
+  }catch(e){
+    main.innerHTML=`<h1>👑 Админ-панель</h1><div class="theory" style="border-left-color:var(--danger)"><h3>Ошибка доступа</h3><p>${esc(e.message)}</p><p>Проверь правила Firestore и документ <code>config/admins</code>.</p></div>`;
+  }
+}
+async function resetUser(uid,email){
+  if(!confirm(`Сбросить прогресс пользователя ${email}?\n\nЭто обнулит все выполненные уроки и сохранённый код.`)) return;
+  try{
+    await updateDoc(doc(db,'users',uid),{
+      completed:{},
+      code:{},
+      updatedAt:serverTimestamp()
+    });
+    alert('Прогресс сброшен.');
+    loadAdmin();
+  }catch(e){ alert('Ошибка: '+e.message); }
+}
 
-        const main = document.getElementById('main-content');
-        let html = `<h1>${found.lesson.title}</h1>`;
-        html += `<div class="theory">${found.lesson.theory}</div>`;
-
-        found.lesson.tasks.forEach(task => {
-            html += `
-                <div class="task" id="task-${task.id}">
-                    <div class="task-header">
-                        <h4>${task.title}</h4>
-                    </div>
-                    <p>${task.description}</p>
-                    <div class="test-cases">
-                        <strong>Тесты:</strong> проверьте на примере из условия.
-                    </div>
-                    <textarea id="code-${task.id}" placeholder="Введите код здесь...">${task.initialCode}</textarea>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="checkTask('${task.id}')">Проверить</button>
-                        <button class="btn btn-secondary" onclick="toggleSolution('${task.id}')">Показать решение</button>
-                        <button class="btn btn-success" onclick="markCompleted('${found.lesson.id}')">Отметить урок пройденным</button>
-                    </div>
-                    <div class="result" id="result-${task.id}"></div>
-                    <div class="solution" id="solution-${task.id}">
-                        <pre><code>${escapeHtml(task.solution)}</code></pre>
-                    </div>
-                </div>
-            `;
-        });
-
-        main.innerHTML = html;
-
-        // Восстанавливаем код из localStorage
-        found.lesson.tasks.forEach(task => {
-            let saved = localStorage.getItem('code_' + task.id);
-            if (saved) {
-                let textarea = document.getElementById('code-' + task.id);
-                if (textarea) textarea.value = saved;
-            }
-        });
-    }
-
-    // Проверка задачи
-    function checkTask(taskId) {
-        let found = findLesson(state.currentLessonId);
-        if (!found) return;
-        let task = found.lesson.tasks.find(t => t.id === taskId);
-        if (!task) return;
-
-        let code = document.getElementById('code-' + taskId).value;
-        localStorage.setItem('code_' + taskId, code);
-
-        let resultDiv = document.getElementById('result-' + taskId);
-        resultDiv.className = 'result show';
-
-        try {
-            let res = task.check(code);
-            if (res.success) {
-                resultDiv.className = 'result show success';
-                resultDiv.textContent = '✅ ' + res.message;
-                // Автоматически отмечаем урок пройденным
-                markCompleted(found.lesson.id, true);
-            } else {
-                resultDiv.className = 'result show error';
-                resultDiv.textContent = '❌ ' + res.message;
-            }
-        } catch (e) {
-            resultDiv.className = 'result show error';
-            resultDiv.textContent = '❌ Ошибка: ' + e.message;
-        }
-    }
-
-    // Показать/скрыть решение
-    function toggleSolution(taskId) {
-        let el = document.getElementById('solution-' + taskId);
-        if (el) el.classList.toggle('show');
-    }
-
-    // Отметить урок пройденным
-    function markCompleted(lessonId, silent = false) {
-        state.completed[lessonId] = true;
-        saveProgress();
-        renderNav();
-        if (!silent) {
-            alert('Урок отмечен как пройденный!');
-        }
-    }
-
-    // Экранирование HTML
-    function escapeHtml(text) {
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    // ============================================================
-    // ИНИЦИАЛИЗАЦИЯ
-    // ============================================================
-    function init() {
-        renderNav();
-        updateProgress();
-        // Загружаем первый урок
-        let first = courseData.modules[0].lessons[0];
-        loadLesson(first.id);
-    }
-
-    init();
-
-    // Глобальные функции для onclick
-    window.checkTask = checkTask;
-    window.toggleSolution = toggleSolution;
-    window.markCompleted = markCompleted;
+// ============================================================
+// ГЛОБАЛЬНЫЕ ОБРАБОТЧИКИ
+// ============================================================
+window.checkTask=checkTask;
+window.toggleSol=toggleSol;
+window.markDone=markDone;
+window.logout=logout;
+window.resetUser=resetUser;
 </script>
 </body>
 </html>
